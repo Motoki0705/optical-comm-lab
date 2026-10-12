@@ -302,19 +302,19 @@
     },
     {
       "path": "artifacts/verification/ordinary_checks.json",
-      "sha256": "73d39a74a3c131610679a1e425419d1cc56bd62a52655eefd667532216049263"
+      "sha256": "7055503171837bbb1832ad526d974aecb6cfa91a07a84eaec0aef3b93bc4a90c"
     }
   ],
   "outputs": [
     {
       "path": "reports/final_report.md",
-      "sha256": "b34defd1a63621ecda1782b62d1c707557702f44addb8c7ac13ce2abd9c9cafa",
-      "bytes": 14559
+      "sha256": "686e41ac3bfda79791e2075b86d018c20c82d155009e927b0e379a6fe05a933a",
+      "bytes": 14666
     },
     {
       "path": "reports/final_report.html",
-      "sha256": "948e6d308cc6f85283df0b2c8253e197118e14db9c6dbf19f0dc3b1f86fedd13",
-      "bytes": 2504166
+      "sha256": "c62ae323f8c7ced1919de012a143237c465dcc1000da3c5ce1a4a7f68fbf8b94",
+      "bytes": 2504273
     }
   ],
   "measured_summary": {

@@ -63,7 +63,7 @@ main{max-width:1120px;margin:0 auto;padding:48px 52px 64px;background:var(--pape
 .venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --output-dir reports/figures --constellation-power 0 --dpi 180 --format svg png
 .venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --figures-dir reports/figures --output-dir reports --qualification artifacts/numerical-qualification --review-record artifacts/verification/independent_review.json --verification-record artifacts/verification/ordinary_checks.json</code></pre>
 <p class="">HTMLは全7図を埋め込み、ネット接続なしで読める。図は保存結果から生成し、結果の置換や都合のよい条件・受信点の選別をしていない。</p>
-<p class="">統合通常テスト40件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、保存・再読込、数値資格確認の集計・provenanceを検証した。数値資格確認では距離刻み・サンプリング数の28集計と、フレーム長・境界の40集計がすべて基準内。</p>
+<p class="">統合通常テスト52件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、モデル保存・再読込、数値資格確認、および保存runの監査・改変検出を検証した。数値資格確認では距離刻み・サンプリング数の28集計とフレーム長・境界の40集計が基準内。追跡済みファイルだけをコピーした環境で補助監査も成功した。</p>
 <p>通常検証： <a href="../artifacts/verification/ordinary_checks.json">ordinary_checks.json</a>。</p>
 <p class="">独立評価：指定1回、試行0回、完了0回。通常検証と最終成果物を揃えた後、独立validatorを1回実施する。現在は未実施。 親の実効設定OpenAI/gpt-6-astra/maxを確認済み。起動時に同じ設定と実効情報を確認する。</p>
 <p>独立評価の原記録と親による対応： <a href="../artifacts/verification/independent_review.json">評価・対応記録</a>。</p>
