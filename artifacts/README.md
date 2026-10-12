@@ -1,0 +1,37 @@
+# Compact reproducible runs
+
+Each run is a `pilot-*` or `final-*` directory. Pilot scores are exploratory and
+are not mixed into held-out final scores. Raw waveforms can be regenerated from
+the resolved channel configuration and frame seeds; bulk traces and temporary
+outputs belong in ignored `.work/` rather than this directory.
+
+| File | Content |
+| --- | --- |
+| `config.json` | Fully resolved physical, frame, context, and candidate settings |
+| `manifest.json` | Source/package hashes and versions, commit, seed contract, future context |
+| `summary.csv`, `summary.json` | Pooled results from completed launch powers |
+| `power_*/metrics.csv`, `metrics.json` | Per-method direct BER, bounds, counts, EVM/SNR, frame spread, timing, model size |
+| `power_*/test_frames.csv`, `test_frames.json` | Every test seed, frame, and receiver result |
+| `power_*/selection.json` | Validation candidates and frozen selected IDs; saved before test generation |
+| `power_*/calibration.json` | Train-only EDC and DBP forward-gain inversion and input standardization |
+| `power_*/seeds.json`, `generation.json` | Whole-frame independent bit/ASE recipes and measured generation times |
+| `power_*/linear.npz`, `esn.npz` | Prediction-complete selected model checkpoints without pickle |
+| `power_*/constellations.npz` | Same fixed first-test-frame indices and symbols for all receivers |
+| `power_*/complete.json` | Compatibility record and hashes of per-power deliverables |
+
+The power-directory format is a signed fixed-width number with `p`/`m` for the
+sign and `p` for the decimal point, e.g. `power_m0006p000` and
+`power_p0000p000`. Checkpoints load with `optical_comm.reservoir.load_equalizer`;
+prediction takes a `SymbolFrame` of normalized received XY symbols and a valid
+mask. Labels are optional for prediction and required only for metrics/training.
+
+Clopper-Pearson BER intervals have an independent-bit assumption; use the saved
+independent-frame spread to assess repeatability. No finite measurement proves
+zero error risk. Effective SNR is label-normalized EVM, with `null` for a perfect
+zero-error-energy realization. Receiver timing is additional processing after
+shared generation/EDC, so it is not a claim of end-to-end device throughput.
+
+Add a named run when it provides interpretable evidence. Keep configurations,
+compact metrics, selected models, diagnostics, figures, and provenance together
+through the controlling research PR. Do not save transient tuning notebooks or
+unexplained variants as permanent run artifacts.
