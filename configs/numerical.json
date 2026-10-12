@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "root_seed": 20261014,
+  "backend": "cupy",
+  "n_symbols": 65536,
+  "calibration_symbols": 65536,
+  "powers_dbm": [0, 6],
+  "ase_modes": [false, true],
+  "noisy_repeats": 3,
+  "deterministic_repeats": 1,
+  "snr_tolerance_db": 0.1,
+  "ber_consistency_confidence": 0.999,
+  "refinement_cases": [
+    {"name": "sps4_step1", "sps": 4, "step_km": 1.0},
+    {"name": "sps4_step0p5", "sps": 4, "step_km": 0.5},
+    {"name": "sps4_step0p25", "sps": 4, "step_km": 0.25},
+    {"name": "sps8_step0p5", "sps": 8, "step_km": 0.5},
+    {"name": "sps8_step0p25", "sps": 8, "step_km": 0.25}
+  ],
+  "refinement_pairs": [
+    ["sps4_step1", "sps4_step0p5", "step"],
+    ["sps4_step0p5", "sps4_step0p25", "step"],
+    ["sps8_step0p5", "sps8_step0p25", "step"],
+    ["sps4_step0p5", "sps8_step0p5", "sampling"],
+    ["sps4_step0p25", "sps8_step0p25", "sampling"],
+    ["sps4_step1", "sps8_step0p5", "accepted_initial_reference"],
+    ["sps4_step1", "sps8_step0p25", "initial_to_finest"]
+  ],
+  "frame_lengths": [32768, 65536, 131072],
+  "guards": [0, 256, 512, 1024, 2048],
+  "boundary_repeats": 2,
+  "boundary_case": "sps4_step1",
+  "diagnostic_symbols": 1024,
+  "awgn_snr_db": [0, 8, 16],
+  "awgn_repeats": 3,
+  "link": {
+    "n_spans": 20,
+    "span_km": 80,
+    "alpha_db_per_km": 0.2,
+    "dispersion_ps_nm_km": 17,
+    "gamma_per_w_km": 1.3,
+    "symbol_rate_hz": 32000000000,
+    "wavelength_m": 0.00000155,
+    "sps": 4,
+    "step_km": 1,
+    "rolloff": 0.1,
+    "rrc_span_symbols": 64,
+    "guard_symbols": 1024,
+    "edfa_noise_figure_db": 5,
+    "ase_enabled": true,
+    "ase_bandwidth_hz": 128000000000
+  }
+}

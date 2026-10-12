@@ -86,7 +86,7 @@ test frames. Linear and ESN checkpoints include all transforms, fixed weights,
 and readouts; the runner checks exact prediction equality after reload.
 No retraining on validation labels is performed before testing.
 
-The pilot uses two past and two future symbols; the initial full configuration
+The pilot uses two past and two future symbols; the full configuration
 uses four past and four future symbols. The latter needs four future symbols,
 or 125 ps at 32 GBd, before a symbol prediction can be released. Reservoir
 memory also summarizes past windows. That context delay excludes block EDC,
@@ -99,7 +99,11 @@ explicit memory. ESN and numerical DBP are evaluated on the same held-out
 symbols. DBP includes backward propagation of the noisy waveform with the
 configured inverse steps; it is a computational reference, not a guaranteed
 upper bound. Numerical qualification of the forward channel is a separate
-task; the training runner does not label its settings converged.
+task; the training runner does not label its settings converged. The retained
+full settings are 4 samples/symbol, 1 km steps, 65,536 symbols/frame, and 1024
+excluded symbols at each edge, as qualified in
+[numerical-qualification.md](numerical-qualification.md). Together with context
+and washout, five held-out frames count 2,534,080 bits per receiver and power.
 
 BER is counted from Gray-demapped bits with explicit `bit_errors` and `n_bits`.
 Clopper-Pearson bounds quantify finite counts under an independent-bit model.

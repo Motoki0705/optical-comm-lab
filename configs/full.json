@@ -14,7 +14,7 @@
     "step_km": 1,
     "rolloff": 0.1,
     "rrc_span_symbols": 64,
-    "guard_symbols": 256,
+    "guard_symbols": 1024,
     "edfa_noise_figure_db": 5,
     "ase_enabled": true,
     "ase_bandwidth_hz": 128000000000

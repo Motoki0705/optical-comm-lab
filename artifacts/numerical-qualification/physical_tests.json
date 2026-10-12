@@ -1,0 +1,15 @@
+{
+  "command": ".venv/bin/python -m pytest tests/test_channel.py tests/test_metrics.py -q",
+  "tests_passed": 19,
+  "tests_failed": 0,
+  "elapsed_seconds": 1.89,
+  "scope": "short analytic and numerical verification; includes optional CPU/GPU parity on actual machine",
+  "not_a_full_link_convergence_or_held_out_claim": true,
+  "python": "3.12.3",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "numba": "0.68.0",
+  "cupy": "14.2.0",
+  "methods_document": "docs/channel-methods.md",
+  "independent_validator_evaluations_by_this_worker": 0
+}

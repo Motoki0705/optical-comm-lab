@@ -1,0 +1,8 @@
+{
+  "command": ".venv/bin/python -m pytest tests/test_qualification.py -q",
+  "tests_passed": 9,
+  "tests_failed": 0,
+  "elapsed_seconds": 0.81,
+  "scope": "training-only forward gain, independent Gray decision-bin theory, common TX/ASE prefix, guard semantics, common physical sampling comparison",
+  "independent_validator_evaluations": 0
+}
