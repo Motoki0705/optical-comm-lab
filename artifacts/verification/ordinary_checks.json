@@ -1,0 +1,11 @@
+{
+  "summary_ja": "統合通常テスト40件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、保存・再読込、数値資格確認の集計・provenanceを検証した。数値資格確認では距離刻み・サンプリング数の28集計と、フレーム長・境界の40集計がすべて基準内。",
+  "tests_command": ".venv/bin/python -m pytest -q",
+  "tests_result": "40 passed in 3.54s",
+  "log": "artifacts/verification/integration-tests.txt",
+  "github_ci": {
+    "url": "https://github.com/Motoki0705/optical-comm-lab/actions/runs/38242010757",
+    "head_commit": "daa52bf810f213b057fada90e8c1b903509c766c",
+    "status": "success"
+  }
+}

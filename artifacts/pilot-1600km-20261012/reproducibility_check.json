@@ -1,0 +1,35 @@
+{
+  "checkpoint_and_diagnostic_arrays_equal": {
+    "constellations.npz": true,
+    "esn.npz": true,
+    "linear.npz": true
+  },
+  "evaluation_class": "normal verification; exploratory pilot reproduction, not final held-out evidence or independent validator",
+  "exact_per_frame_metrics_equal": true,
+  "exact_pooled_metrics_equal": true,
+  "original_config_sha256": "c0fb38cda48256b0bb5b70c30397ef9863a13283ae16ea11794b2a39418b1ffc",
+  "original_manifest_sha256": "2b63d3385575ed6e9060cc8c16e92eebdba10caf3db102c1ea71c687f6c061db",
+  "original_run": "artifacts/pilot-1600km-20261012",
+  "pooled_metric_keys_compared": [
+    "launch_power_dbm",
+    "method",
+    "bit_errors",
+    "n_bits",
+    "ber",
+    "ber_ci_low",
+    "ber_ci_high",
+    "evm",
+    "effective_snr_db",
+    "n_frames",
+    "frame_ber_min",
+    "frame_ber_max",
+    "frame_ber_std",
+    "error_energy",
+    "signal_energy",
+    "selected_candidate"
+  ],
+  "repeat_command": ".venv/bin/python scripts/run_experiment.py --config configs/pilot.json --run-id pilot-1600km-20261012 --powers 0 --output-directory .work/experiment-reproduction",
+  "repeat_run": ".work/experiment-reproduction/pilot-1600km-20261012",
+  "schema_version": 1,
+  "timings_and_dates_excluded": true
+}

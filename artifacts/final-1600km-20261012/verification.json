@@ -1,0 +1,167 @@
+{
+  "additional_test_frames_generated": 0,
+  "all_source_config_and_complete_hashes_verified": true,
+  "command": ".venv/bin/python .work/audit_final_run.py",
+  "distinct_frame_bit_and_ase_seeds": 126,
+  "errors_by_power_method": {
+    "-2": {
+      "calibrated_dbp": 440,
+      "calibrated_edc": 1151,
+      "esn": 1174,
+      "linear": 1143
+    },
+    "-4": {
+      "calibrated_dbp": 5100,
+      "calibrated_edc": 6051,
+      "esn": 6171,
+      "linear": 6160
+    },
+    "-6": {
+      "calibrated_dbp": 25638,
+      "calibrated_edc": 26462,
+      "esn": 26879,
+      "linear": 26837
+    },
+    "0": {
+      "calibrated_dbp": 16,
+      "calibrated_edc": 738,
+      "esn": 775,
+      "linear": 746
+    },
+    "2": {
+      "calibrated_dbp": 0,
+      "calibrated_edc": 4489,
+      "esn": 4549,
+      "linear": 4550
+    },
+    "4": {
+      "calibrated_dbp": 0,
+      "calibrated_edc": 39027,
+      "esn": 39599,
+      "linear": 39525
+    },
+    "6": {
+      "calibrated_dbp": 0,
+      "calibrated_edc": 169021,
+      "esn": 171403,
+      "linear": 171068
+    }
+  },
+  "evaluation_class": "normal verification; no independent validator evaluation",
+  "expected_test_bits_per_receiver_power": 2534080,
+  "git_commit_at_execution": "daa52bf810f213b057fada90e8c1b903509c766c",
+  "limitations": [
+    "This is artifact/schema verification, not an independent validator evaluation.",
+    "Test labels/constellations were audited as saved; no new channel realization was generated."
+  ],
+  "models_or_hyperparameters_refit": false,
+  "per_frame_receiver_rows": 140,
+  "per_power": [
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": -6,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": -4,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": -2,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": 0,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": 2,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": 4,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    },
+    {
+      "all_complete_hashes_verified": true,
+      "candidate_rows": 28,
+      "checkpoint_config_transforms_and_readout_verified": true,
+      "checkpoint_reload_prediction_equal_recorded_by_runner": true,
+      "counted_bits_per_receiver": 2534080,
+      "diagnostic_indices_and_tx_recipe_verified": true,
+      "independent_test_frames": 5,
+      "pooled_receiver_rows": 4,
+      "power_dbm": 6,
+      "same_frame_denominators_verified": true,
+      "validation_tie_rule_verified": true
+    }
+  ],
+  "pooled_rows": 28,
+  "resume_integrity_check": {
+    "additional_test_frames_generated": 0,
+    "all_per_power_artifact_hashes_and_mtimes_unchanged": true,
+    "command": ".venv/bin/python scripts/run_experiment.py --config configs/full.json --run-id final-1600km-20261012 --resume",
+    "elapsed_seconds": 0.9484524989966303,
+    "exit_code": 0,
+    "stdout": "Saved compact artifacts to artifacts/final-1600km-20261012"
+  },
+  "run": "artifacts/final-1600km-20261012",
+  "runner_elapsed_manifest_to_last_complete_seconds": 318.37985849380493,
+  "schema_version": 1,
+  "selection_before_test_evidence": "Frozen runner writes selection/calibration before the test-generation loop; test_experiment regression asserts this ordering; per-power output hashes preserve the final records.",
+  "verified_utc": "2026-10-12T11:27:31.528261+00:00",
+  "wall_time_scope": "excludes process import/startup and final summary write; includes all per-power runner work"
+}
