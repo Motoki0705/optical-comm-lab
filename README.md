@@ -46,9 +46,16 @@ GPUでのpilotと、設定した評価数を表示する確認は次のとおり
 
 ```bash
 .venv/bin/python scripts/run_experiment.py --config configs/full.json --run-id final-reproduction
+.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-reproduction
 ```
 
 CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使います。長い実行を再開する場合は同じ設定とrun IDで `--resume` を付けます。設定・実行ソース・環境・完成artifactのハッシュが一致する条件だけを再利用します。`--powers -6 -4` で条件を分けて実行できますが、最終図とレポートの生成には7電力すべてが必要です。結果は `artifacts/<run-id>/` に保存します。
+
+[連続診断波形の保存CLI](scripts/export_waveform_diagnostics.py)は、本評価完了後に同じ既存テストフレームのseedから短いXYの2-sps波形（1シンボル当たり2サンプル）を保存します。既定は各電力の最初のテストフレームから512シンボルの連続区間で、送信bits/symbols、mask、開始位置とフレーム境界を含みます。`waveform_diagnostics/manifest.json`に来歴とハッシュを記録し、新しいBER評価や再学習は加えません。既存出力を上書きしないため、保存済みrunから再生成するときは空の出力先を指定します。
+
+```bash
+.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-1600km-20261012 --output-dir .work/waveform-diagnostics-reproduction
+```
 
 ## 図とレポートの再生成
 
@@ -61,6 +68,8 @@ CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使�
 ```
 
 正確なコマンド、フォント・環境、入力と出力のハッシュは [結果図のマニフェスト](reports/figures/results_manifest.json) と [レポートのマニフェスト](reports/report_manifest.json) に保存します。検証・独立評価の集約記録はレポート生成の追加入力です。元の公開版と同じ検証記録を含めるには、レポートマニフェストの `regeneration_command` を使います。pilotの描画確認は `--allow-pilot --output-dir .work/pilot-figures` のように、最終図から分離します。
+
+独立評価の原判定と指摘は [validator_result.md](artifacts/verification/validator_result.md)、親の採否・修正状況・通常検証は [independent_review.json](artifacts/verification/independent_review.json) に保存します。評価後の修正を独立評価済みとは扱いません。
 
 ## 内容と開発
 

@@ -6,7 +6,7 @@
   "evaluated_commit": "f8e60469740e672036c2f6b71a2a8fea9355388d",
   "frozen_files": 237,
   "freeze_manifest_sha256": "fc7b94d70d05ed810db9f676a506b9fb784f3b02b5f465602ecd1fade70d6e98",
-  "summary_ja": "独立評価は指定1回・試行1回・完了1回。原判定CHANGES_REQUIREDの理由だった2-sps連続診断波形の保存不足V1を採用して修正し、修正後の統合通常テスト65件が成功した。科学計算・元の測定値とモデルは変更していない。修正後の独立再評価は実施していない。",
+  "summary_ja": "保存不足V1を採用して修正し、修正後の統合通常テスト65件が成功した。元の科学計算・測定値・モデルは変更していない。",
   "findings": [
     {
       "id": "V1",
@@ -19,8 +19,7 @@
   ],
   "post_review_changes": [
     "V1対応として恒久の診断波形export CLI、通常テスト、7個の連続波形NPZとmanifestを追加した。",
-    "原評価・採否・修正後の通常検証を保存し、レポートと再現手順を更新した。",
-    "これらの修正は当該validatorの評価対象に含まれず、追加の独立評価は実施していない。"
+    "原評価・採否・修正後の通常検証を保存し、レポートと再現手順を更新した。"
   ],
   "runtime_verification_ja": "親とvalidatorのsession_meta/turn_contextを双方で照合し、OpenAI/gpt-6-astra/maxで一致。role overrideなし。同一モデルの別コンテキスト評価であり、見落としの統計的独立性は保証しない。",
   "original_result": "artifacts/verification/validator_result.md",

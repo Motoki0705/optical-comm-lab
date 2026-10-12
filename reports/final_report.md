@@ -146,23 +146,33 @@ DBPの +2 dBm、+4 dBm、+6 dBm では0誤りだったが、有限の評価数�
 
 元データと図の来歴： [summary.csv](../artifacts/final-1600km-20261012/summary.csv) / [config.json](../artifacts/final-1600km-20261012/config.json) / [manifest.json](../artifacts/final-1600km-20261012/manifest.json) / [結果図の入力・出力ハッシュ](figures/results_manifest.json)。
 
+同じ保存済みテストフレームのbit/ASE seedから、EDC・受信フィルタ後のXY連続波形を再生成し、短い2-sps診断区間（1シンボル当たり2サンプル）と送信点・mask・フレーム位置を保存した。追加の評価ビットや再学習はない。保存時の記録に加え、この補足生成時も既存入力・科学計算コード・診断ファイルのハッシュ一致を確認した。
+
+連続診断波形のseed・区間・再生成コマンド・ハッシュ： [waveform_diagnostics/manifest.json](../artifacts/final-1600km-20261012/waveform_diagnostics/manifest.json)。
+
 ```bash
 uv sync --python 3.12 --locked --group dev --extra gpu  # CUDA準備はREADMEを参照
 .venv/bin/python -m pytest
 .venv/bin/python scripts/run_experiment.py --config artifacts/final-1600km-20261012/config.json --run-id final-reproduction
+.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-reproduction
 .venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --output-dir reports/figures --constellation-power 0 --dpi 180 --format svg png
 .venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --figures-dir reports/figures --output-dir reports --qualification artifacts/numerical-qualification --review-record artifacts/verification/independent_review.json --verification-record artifacts/verification/ordinary_checks.json
 ```
 
 HTMLは全7図を埋め込み、ネット接続なしで読める。図は保存結果から生成し、結果の置換や都合のよい条件・受信点の選別をしていない。
 
-統合通常テスト52件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、モデル保存・再読込、数値資格確認、および保存runの監査・改変検出を検証した。数値資格確認では距離刻み・サンプリング数の28集計とフレーム長・境界の40集計が基準内。追跡済みファイルだけをコピーした環境で補助監査も成功した。
+修正後の統合通常テスト65件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、モデル保存・再読込、数値資格確認、保存run監査・改変検出に加え、連続2-sps診断波形の位置対応・マスク・保存再現を検証した。元の科学source・設定・各電力のモデルと計測結果94ファイルに変更なし。
 
 通常検証： [ordinary_checks.json](../artifacts/verification/ordinary_checks.json)。
 
-独立評価：指定1回、試行0回、完了0回。通常検証と最終成果物を揃えた後、独立validatorを1回実施する。現在は未実施。 親の実効設定OpenAI/gpt-6-astra/maxを確認済み。起動時に同じ設定と実効情報を確認する。
+独立評価：指定1回、試行1回、完了1回。原判定：CHANGES_REQUIRED。保存不足V1を採用して修正し、修正後の統合通常テスト65件が成功した。元の科学計算・測定値・モデルは変更していない。 評価後の修正は今回の独立評価の対象外で、独立再評価を実施していない。修正状況と通常検証は以下の記録に従う。 親とvalidatorのsession_meta/turn_contextを双方で照合し、OpenAI/gpt-6-astra/maxで一致。role overrideなし。同一モデルの別コンテキスト評価であり、見落としの統計的独立性は保証しない。
 
-独立評価の原記録と親による対応： [評価・対応記録](../artifacts/verification/independent_review.json)。
+- V1/P2：2-sps連続診断波形が保存されていない：採用・修正済み（Issue #10、親の通常検証）。合意した保存要件の不足を確認。既存の第1テストフレームを同じseed/configで全長再構築し、7電力のXY連続2-sps波形・TX/RX・bits・位置・frame識別・valid/score maskをコンパクトに保存した。既存星座点はbitwise一致し、評価分母や学習済みモデルを変更していない。
+
+独立評価の原記録と対応： [validatorの原判定・指摘](../artifacts/verification/validator_result.md) / [親の採否・対応・通常検証](../artifacts/verification/independent_review.json)。
+
+- V1対応として恒久の診断波形export CLI、通常テスト、7個の連続波形NPZとmanifestを追加した。
+- 原評価・採否・修正後の通常検証を保存し、レポートと再現手順を更新した。
 
 </details>
 

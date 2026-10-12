@@ -24,6 +24,8 @@ PNGはMarkdown/HTML用、SVGは拡大表示用。結果図には必要に応じ�
 
 生成前に、完成artifactのハッシュ、集計とフレームごとの誤り数・評価数の一致、比較するデータ数、検証データだけで選択した候補を確認する。最終runは7電力すべてが完成している必要がある。pilotは `--allow-pilot --output-dir .work/pilot-figures` を使い、最終成果物へ書き込めない。
 
+技術補足4は、連続2-sps診断波形が存在するrunでだけ、既存テストフレームのseedと入力・出力ハッシュを照合してそのマニフェストへリンクする。保存手順はルートREADMEと `scripts/export_waveform_diagnostics.py` を参照する。独立評価の回数・原判定・指摘への対応は親の記録から表示し、`validator_result.md`の原判定を保持する。評価後の修正と通常検証を、独立再評価の実施済み表示に置き換えない。
+
 [concepts_manifest.json](figures/concepts_manifest.json)、[results_manifest.json](figures/results_manifest.json)、[report_manifest.json](report_manifest.json)に、入力・実行コード・出力ハッシュ、環境、フォント、正確な再生成コマンドを保存する。通常検証と独立評価は親が作った別JSONを `--verification-record`、`--review-record` で指定する。記録を指定しない場合は「記録待ち」と表示し、評価を実施済みとは称しない。公開版と同じ添付を再現するときは `report_manifest.json` のコマンドを使う。
 
 Matplotlibと日本語フォントが必要。`Noto Sans CJK JP`、`IPAexGothic`、`IPAGothic` の順に利用可能なフォントを選び、ない場合は明示する。フォント本体はリポジトリに複製しない。

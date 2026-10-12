@@ -46,6 +46,56 @@ def relpath(path: Path, output: Path) -> str:
     return Path(os.path.relpath(path.resolve(), output.resolve())).as_posix()
 
 
+def load_waveform_diagnostics(run):
+    """Link completed diagnostics only after checking their recorded provenance."""
+    manifest_path = run.path / "waveform_diagnostics/manifest.json"
+    if not manifest_path.is_file():
+        return None, []
+    record = read_json(manifest_path)
+    if record.get("schema_version") != 1 or record.get("run_id") != run.manifest["run_id"]:
+        raise ValueError("Waveform diagnostics refer to a different run/schema")
+    if record.get("original_source_hash") != run.manifest["compatibility"]["source_hash"]:
+        raise ValueError("Waveform diagnostic source provenance differs from the run")
+    if (record.get("existing_input_hashes_unchanged") is not True
+            or record.get("scientific_source_hash_unchanged") is not True
+            or record.get("new_independent_test_frames") != 0
+            or record.get("evaluation_bits_added") != 0
+            or record.get("fit_selection_prediction_or_training_executed") is not False):
+        raise ValueError("Diagnostics lack existing-frame/no-added-evaluation evidence")
+    inputs = [manifest_path]
+    for name, expected in record["input_files_sha256"].items():
+        source = (run.path / name).resolve()
+        if not source.is_relative_to(run.path) or not source.is_file() or sha256(source) != expected:
+            raise ValueError(f"Waveform diagnostic input changed: {name}")
+        inputs.append(source)
+    for name, expected in record["scientific_source_sha256"].items():
+        source = ROOT / name
+        if not source.is_file() or sha256(source) != expected:
+            raise ValueError(f"Scientific source differs from the diagnostic record: {name}")
+        inputs.append(source)
+    for key in ("exporter_code", "saved_data_audit_code"):
+        source = Path(record[key]["path"])
+        if not source.is_absolute():
+            source = ROOT / source
+        if not source.is_file() or sha256(source) != record[key]["sha256"]:
+            raise ValueError(f"Diagnostic provenance code changed: {key}")
+        inputs.append(source)
+    entries = record["files"]
+    if len(entries) != len(run.powers) or {float(entry["launch_power_dbm"]) for entry in entries} != set(run.powers):
+        raise ValueError("Waveform diagnostics do not cover the saved run powers")
+    for entry in entries:
+        source = (manifest_path.parent / entry["file"]).resolve()
+        if not source.is_relative_to(manifest_path.parent) or not source.is_file() or sha256(source) != entry["sha256"]:
+            raise ValueError("Waveform diagnostic output hash differs")
+        replicas = run.frames[float(entry["launch_power_dbm"])]["calibrated_edc"]
+        matched = [row for row in replicas if row["frame_index"] == entry["original_frame_index"]]
+        if (entry["split"] != "test" or len(matched) != 1
+                or any(entry[key] != matched[0][key] for key in ("bit_seed", "noise_seed"))):
+            raise ValueError("Waveform diagnostic seeds are not an existing test frame")
+        inputs.append(source)
+    return record, inputs
+
+
 class Report:
     def __init__(self, output: Path):
         self.output = output
@@ -104,12 +154,17 @@ def review_text(record: dict | None):
     requested = record.get("requested", 1)
     attempted, completed = record.get("attempted", 0), record.get("completed", 0)
     intro = f"独立評価：指定{requested}回、試行{attempted}回、完了{completed}回。"
+    verdict = record.get("original_verdict", record.get("verdict"))
+    if verdict:
+        intro += f"原判定：{verdict}。"
     intro += str(record.get("summary_ja", ""))
     findings = []
     for finding in record.get("findings", []):
-        findings.append(f"{finding.get('title_ja', finding.get('title', '指摘'))}：{finding.get('disposition_ja', finding.get('disposition', '未記録'))}。{finding.get('reason_ja', finding.get('reason', ''))}")
+        identity = "/".join(str(finding[key]) for key in ("id", "severity") if finding.get(key))
+        prefix = identity + "：" if identity else ""
+        findings.append(f"{prefix}{finding.get('title_ja', finding.get('title', '指摘'))}：{finding.get('disposition_ja', finding.get('disposition', '未記録'))}。{finding.get('reason_ja', finding.get('reason', ''))}")
     if record.get("post_review_changes"):
-        intro += " 評価後の修正は通常検証を行ったが、独立評価を再実施していない。"
+        intro += " 評価後の修正は今回の独立評価の対象外で、独立再評価を実施していない。修正状況と通常検証は以下の記録に従う。"
     if record.get("runtime_verification_ja"):
         intro += " " + record["runtime_verification_ja"]
     return intro, findings
@@ -143,6 +198,14 @@ def build(args):
     hardware_record = read_json(hardware_path) if hardware_path.is_file() else None
     review = read_json(args.review_record) if args.review_record else None
     verification = read_json(args.verification_record) if args.verification_record else None
+    diagnostics, diagnostic_inputs = load_waveform_diagnostics(run)
+    original_review_path = None
+    if review and review.get("original_result"):
+        original_review_path = Path(review["original_result"])
+        if not original_review_path.is_absolute():
+            original_review_path = ROOT / original_review_path
+        if not original_review_path.is_file():
+            raise ValueError("Original independent review record is missing")
     n = len(run.powers)
     improved = [p for p in run.powers if run.metrics[p]["esn"]["ber"] < run.metrics[p]["calibrated_edc"]["ber"]]
     worsened = [p for p in run.powers if run.metrics[p]["esn"]["ber"] > run.metrics[p]["calibrated_edc"]["ber"]]
@@ -269,7 +332,11 @@ def build(args):
     report.open_details("補足4：再現コマンド、元データ、通常検証・独立評価")
     report.paragraph(f"実行ID：{run.manifest['run_id']}。全候補、校正値、bit/ASEの種、モデル、ソフトウェア版とハッシュを保存した。大きな生波形はレシピから再生成する。pilotは最終BERに合算していない。")
     report.links("元データと図の来歴：", [("summary.csv", relpath(run.path / "summary.csv", output)), ("config.json", relpath(run.path / "config.json", output)), ("manifest.json", relpath(run.path / "manifest.json", output)), ("結果図の入力・出力ハッシュ", relpath(figures_dir / "results_manifest.json", output))])
+    if diagnostics:
+        report.paragraph("同じ保存済みテストフレームのbit/ASE seedから、EDC・受信フィルタ後のXY連続波形を再生成し、短い2-sps診断区間（1シンボル当たり2サンプル）と送信点・mask・フレーム位置を保存した。追加の評価ビットや再学習はない。保存時の記録に加え、この補足生成時も既存入力・科学計算コード・診断ファイルのハッシュ一致を確認した。")
+        report.links("連続診断波形のseed・区間・再生成コマンド・ハッシュ：", [("waveform_diagnostics/manifest.json", relpath(run.path / "waveform_diagnostics/manifest.json", output))])
     cmd_run = f".venv/bin/python scripts/run_experiment.py --config {display_path(run.path / 'config.json')} --run-id {'pilot' if run.pilot else 'final'}-reproduction"
+    cmd_export = f".venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/{'pilot' if run.pilot else 'final'}-reproduction"
     cmd_fig = figure_manifest["regeneration_command"]
     cmd_report = [".venv/bin/python", "scripts/build_report.py", "--run", display_path(run.path), "--figures-dir", display_path(figures_dir), "--output-dir", display_path(output)]
     if args.qualification:
@@ -283,7 +350,7 @@ def build(args):
     if args.allow_pilot:
         cmd_report += ["--allow-pilot"]
     sync_command = "uv sync --python 3.12 --locked --group dev" + (" --extra gpu" if config["backend"] == "cupy" else "")
-    report.command([sync_command + "  # CUDA準備はREADMEを参照", ".venv/bin/python -m pytest", cmd_run, cmd_fig, shlex.join(cmd_report)])
+    report.command([sync_command + "  # CUDA準備はREADMEを参照", ".venv/bin/python -m pytest", cmd_run, cmd_export, cmd_fig, shlex.join(cmd_report)])
     report.paragraph(f"HTMLは全{len(report.inputs)}図を埋め込み、ネット接続なしで読める。図は保存結果から生成し、結果の置換や都合のよい条件・受信点の選別をしていない。")
     if verification:
         report.paragraph(str(verification.get("summary_ja", "通常検証は添付記録を参照。")))
@@ -295,7 +362,12 @@ def build(args):
     if findings:
         report.bullets(findings)
     if args.review_record:
-        report.links("独立評価の原記録と親による対応：", [("評価・対応記録", relpath(args.review_record, output))])
+        review_links = [("親の採否・対応・通常検証", relpath(args.review_record, output))]
+        if original_review_path:
+            review_links.insert(0, ("validatorの原判定・指摘", relpath(original_review_path, output)))
+        report.links("独立評価の原記録と対応：", review_links)
+    if review and review.get("post_review_changes"):
+        report.bullets([str(item) for item in review["post_review_changes"]])
     report.close_details()
     report.links("研究設計・開発管理：", [("元の要件", relpath(ROOT / "docs/requirements.md", output)), ("Issue #6", "https://github.com/Motoki0705/optical-comm-lab/issues/6"), ("統合PR #7", "https://github.com/Motoki0705/optical-comm-lab/pull/7"), ("scoutによる保守点検", relpath(ROOT / "docs/repository-maintenance.md", output)), ("AGENTS.md", relpath(ROOT / "AGENTS.md", output))])
     report.links("基礎資料：", [("OptiCommPy Manakov", "https://opticommpy.readthedocs.io/en/latest/generated/optic.models.channels.manakovSSF.html"), ("EDFA", "https://opticommpy.readthedocs.io/en/latest/generated/optic.models.devices.edfa.html"), ("DBP：Ip・Kahn（2008）", "https://www-ee.stanford.edu/~jmk/pubs/digital.backpropagation.jlt.10-08.pdf"), ("学習評価の注意：Freireら", "https://arxiv.org/html/2109.14942")])
@@ -312,8 +384,11 @@ def build(args):
         inputs.add(args.review_record)
     if args.verification_record:
         inputs.add(args.verification_record)
+    inputs.update(diagnostic_inputs)
+    if original_review_path:
+        inputs.add(original_review_path)
     manifest = {"schema_version":1, "source_run":display_path(run.path), "run_id":run.manifest["run_id"], "evidence_scope":run.scope, "generator":{"path":display_path(Path(__file__)), "sha256":sha256(Path(__file__))}, "runtime":{"python":platform.python_version()}, "regeneration_command":shlex.join(cmd_report),
-        "inputs":[{"path":display_path(path), "sha256":sha256(path)} for path in sorted(inputs)], "outputs":[{"path":display_path(path), "sha256":sha256(path), "bytes":path.stat().st_size} for path in (md,htm)], "measured_summary":{"esn_lower_ber_than_edc_powers_dbm":improved,"esn_higher_ber_than_edc_powers_dbm":worsened,"esn_lower_ber_than_linear_powers_dbm":better_linear,"selected_candidate_ids":chosen_ids}, "review":{"requested":1,"attempted":review.get("attempted",0) if review else 0,"completed":review.get("completed",0) if review else 0}}
+        "inputs":[{"path":display_path(path), "sha256":sha256(path)} for path in sorted(inputs)], "outputs":[{"path":display_path(path), "sha256":sha256(path), "bytes":path.stat().st_size} for path in (md,htm)], "measured_summary":{"esn_lower_ber_than_edc_powers_dbm":improved,"esn_higher_ber_than_edc_powers_dbm":worsened,"esn_lower_ber_than_linear_powers_dbm":better_linear,"selected_candidate_ids":chosen_ids}, "review":{"requested":review.get("requested",1) if review else 1,"attempted":review.get("attempted",0) if review else 0,"completed":review.get("completed",0) if review else 0,"original_verdict":review.get("original_verdict",review.get("verdict")) if review else None,"post_review_changes_independently_evaluated":False if review and review.get("post_review_changes") else None}}
     (output / "report_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2, allow_nan=False)+"\n",encoding="utf-8")
     print(f"Saved {display_path(md)} and {display_path(htm)} from {run.manifest['run_id']}")
 

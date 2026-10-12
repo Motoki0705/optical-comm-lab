@@ -4,8 +4,8 @@
   "tests_result": "65 passed in 6.55s",
   "log": "artifacts/verification/integration-tests.txt",
   "github_ci": {
-    "url": "https://github.com/Motoki0705/optical-comm-lab/actions/runs/38247918223",
-    "head_commit": "7f9188756ebcd115bd9fabb1d3f2e1c1f9aa2150",
+    "url": "https://github.com/Motoki0705/optical-comm-lab/actions/runs/38252500111",
+    "head_commit": "7d37e1c2bf4bd4de598e0ecce840b55ba413f735",
     "status": "success"
   },
   "audit_cli_tests": "12 targeted corruption/provenance/clone tests included",
