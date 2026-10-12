@@ -17,3 +17,13 @@ Clarifications supplied by the user:
 ## Accepted simulation proposal
 
 The user authorized implementing the preceding proposal. Its numerical settings, data contract, controls, comparisons, and completion criteria are preserved in `experiment-plan.md`. It is a simulation study of ideal terminals and a single wavelength; performance on physical hardware or WDM is not claimed. Training success is not defined as mandatory improvement: negative or inconclusive held-out results must be reported honestly.
+
+## Repository maintenance follow-up (verbatim)
+
+> scoutを用いて、構造化されていないファイル、使われていなモジュールやスクリプト、一時限りのコード等がないかを定期的にスキャンして、issue化するというワークフローをお願いします。
+
+Confirmed cadence:
+
+> 開発の節目ごとに実施（推奨：変更に追従でき、不要な定期実行を避けられる）
+
+The workflow runs at development checkpoints (start of work, structural changes, and before PR review), rather than on a calendar. A read-only scout gathers evidence; an authorized parent or implementation worker creates or updates GitHub Issues after deduplication. This maintenance investigation is distinct from the single independent validator evaluation. The simulation, training, visualization, and final report requirements remain active.
