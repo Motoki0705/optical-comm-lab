@@ -1,0 +1,48 @@
+{
+  "compatibility": {
+    "backend": "cupy",
+    "config_hash": "71b65382f3a0031b10b2c4b9937d4eda6a4a6255e93317f05a79457be4850c8b",
+    "packages": {
+      "cupy-cuda12x": null,
+      "cupy-cuda13x": "14.2.0",
+      "numba": "0.68.0",
+      "numpy": "2.5.4",
+      "optical-comm-lab": "0.1.0",
+      "scipy": "1.18.1"
+    },
+    "python": "3.12.3",
+    "source_hash": "3873aa64fdd676d5f78ff844bdf9c81f5d2c9677b60903913c0abc821d1c3e82"
+  },
+  "created_utc": "2026-10-12T11:44:02.559912+00:00",
+  "future_context_seconds": 6.25e-11,
+  "future_context_symbols": 2,
+  "mode": "pilot",
+  "power_generalization": "Models trained separately per power; unseen-power generalization is not assessed",
+  "run_id": "pilot-800km-development",
+  "schema_version": 1,
+  "seed_contract": "Independent whole frames, distinct bit/ASE streams, split before windows",
+  "software": {
+    "git_commit": "690ad1f8894be49a9ee7fcb0a319318d6e4c6d63",
+    "packages": {
+      "cupy-cuda12x": null,
+      "cupy-cuda13x": "14.2.0",
+      "numba": "0.68.0",
+      "numpy": "2.5.4",
+      "optical-comm-lab": "0.1.0",
+      "scipy": "1.18.1"
+    },
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "source_hash": "3873aa64fdd676d5f78ff844bdf9c81f5d2c9677b60903913c0abc821d1c3e82",
+    "source_sha256": {
+      "scripts/run_experiment.py": "09bdfb5ef7dc05b8c32b338d984f1b17ae7d92ded43040df9f583874202eaece",
+      "src/optical_comm/__init__.py": "7be7e87dec6fecec2b3b0763b70981c173920317f1afb8640f284a5431c949fd",
+      "src/optical_comm/channel.py": "9b00b0fbbd423733dd20de409d184ce73a65e623e7839e6ffa9a6d5164deba56",
+      "src/optical_comm/config.py": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2",
+      "src/optical_comm/dsp.py": "ab80dfe8f59d60fb9f828c5882b906121e1fb7a546c76ec4a4e19044b058aca9",
+      "src/optical_comm/experiment.py": "f191a1cb395948a523ba366d2f765e502cd37907330454be0304fe5264293b72",
+      "src/optical_comm/metrics.py": "7c4bb5b789085434d03281807b7bfb8856a42d667b3548fc52d3a1a394c83c4d",
+      "src/optical_comm/reservoir.py": "02f2440a7698f61b7e1d84be180e723c1e79a93e1c296bfb980ac2420d1ee48d"
+    }
+  }
+}

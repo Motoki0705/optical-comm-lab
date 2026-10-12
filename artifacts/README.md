@@ -35,3 +35,29 @@ Add a named run when it provides interpretable evidence. Keep configurations,
 compact metrics, selected models, diagnostics, figures, and provenance together
 through the controlling research PR. Do not save transient tuning notebooks or
 unexplained variants as permanent run artifacts.
+
+## Normal verification and independent review
+
+`verification/` is a permanent supplement for the reader-facing report. It
+contains `ordinary_checks.json` and its integration-test log, plus
+`independent_review.json` with the requested/attempted/completed counts, the
+original evaluation, the coordinator's disposition, and any changes afterward.
+These records are report inputs and are committed so regeneration from a clone
+does not depend on ignored `.work/` files. Independent evaluation is distinct
+from analytic tests, numerical qualification, validation-data model selection,
+and held-out testing. A pending record must not be described as completed.
+
+The final run also keeps `execution-hardware.json`, a separately observed
+CPU/GPU/environment supplement. Receiver times compare extra processing on
+those devices, not a hardware throughput benchmark. The supplement does not
+modify the immutable configuration, selected weights, or test metrics.
+
+`pilot-800km-development/` records a separate 800 km development check at 0 dBm
+using the existing pilot candidates and independent splits. It counts 145824
+bits per receiver across three test frames. Its exploratory scores verify the
+distance parameter and pipeline; they are not evidence of distance
+generalization, receiver improvement, or 1600 km final performance. Scope,
+commands, counts, and hash/resume checks are in its `verification.json`.
+Regenerate with `.venv/bin/python scripts/run_experiment.py --config artifacts/pilot-800km-development/config.json --run-id pilot-800km-reproduction`;
+verify existing outputs by replacing the run ID with `pilot-800km-development`
+and adding `--resume`.

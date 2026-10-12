@@ -1,21 +1,37 @@
 # レポートと図
 
-このディレクトリには、専門外の読者に向けた日本語の最終レポートと、その説明図・実験結果の図を保存する。図は軸・単位・不確かさ・比較条件を示し、説明用の模式図と測定結果を区別する。最終レポートは、実際に得られた結果と限界を表・図を中心に説明する。
+[日本語レポート](final_report.md)と[オフラインHTML](final_report.html)は、専門外の読者に向けて実際の結果を図表中心に説明する。HTMLはPNGを埋め込み、表示時にネット接続や日本語フォントの取得を要しない。ブラウザの印刷でPDF化できる。説明用の模式図と、保存済みデータから描く結果図を区別する。本文は結論・測定内容・結果の意味・限界を中心とし、候補選択・数値条件・実装依存の資源比較・再現記録は4つの折り畳み補足に保存する。HTMLとMarkdownの両方で開閉でき、印刷には必要な補足を開いてから進む。
 
-現在の説明図は、[通信路の流れ](figures/link_overview.png)と[学習・評価の分離](figures/learning_workflow.png)。いずれも研究設計の模式図であり、補償効果を測った結果ではない。PNG は Markdown 用、SVG は拡大表示用、PDF は印刷用。図の説明・入力文書のハッシュ・生成環境・出力ハッシュは [concepts_manifest.json](figures/concepts_manifest.json) に記録する。
+| 図 | 内容・保存元 |
+| --- | --- |
+| [link_overview](figures/link_overview.png) | 通信路と4方式の説明図。測定値ではない |
+| [learning_workflow](figures/learning_workflow.png) | 学習・候補選択・評価の分離。測定値ではない |
+| [result_ber](figures/result_ber.png) | 全7電力、全4方式の直接計数BER、95%計数区間、独立フレームのばらつき |
+| [result_constellations](figures/result_constellations.png) | 事前指定電力で同じテストフレーム・同じ点・同じ軸を比較 |
+| [result_validation](figures/result_validation.png) | 全検証候補と選択結果。読出しは一括計算なのでepoch曲線を作らない |
+| [result_resources](figures/result_resources.png) | 共通EDC後の追加処理時間と保存モデル配列量。装置と測定範囲を明示 |
+| [result_qualification](figures/result_qualification.png) | モデル評価とは別の、数値条件と境界の確認 |
 
-リポジトリ直下で次を実行すると、２図とマニフェストを再生成する。
+PNGはMarkdown/HTML用、SVGは拡大表示用。結果図には必要に応じて `--format svg png pdf` を指定できる。0誤りのBERは対数軸上で実測ゼロ点に置き換えず、計数区間の上限から下向き矢印を描く。図に都合のよい電力・点を選別したり、結果の補間や平滑化をしない。
+
+リポジトリ直下で実行する。今回の最終runは `final-1600km-20261012`。
 
 ```bash
 .venv/bin/python scripts/visualize_concepts.py
+.venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification
+.venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --verification-record artifacts/verification/ordinary_checks.json --review-record artifacts/verification/independent_review.json
 ```
 
-Matplotlib と日本語フォントが必要。生成スクリプトは `Noto Sans CJK JP`、`IPAexGothic`、`IPAGothic` の順に利用可能なフォントを選ぶ。Debian/Ubuntu では `fonts-noto-cjk` または `fonts-ipaexfont-gothic` をシステムのパッケージ管理で導入できる。管理者権限を使わない場合は、正規に取得した日本語 TTF/OTF/TTC ファイルを次のように指定する。フォント本体はリポジトリに複製しない。
+生成前に、完成artifactのハッシュ、集計とフレームごとの誤り数・評価数の一致、比較するデータ数、検証データだけで選択した候補を確認する。最終runは7電力すべてが完成している必要がある。pilotは `--allow-pilot --output-dir .work/pilot-figures` を使い、最終成果物へ書き込めない。
+
+[concepts_manifest.json](figures/concepts_manifest.json)、[results_manifest.json](figures/results_manifest.json)、[report_manifest.json](report_manifest.json)に、入力・実行コード・出力ハッシュ、環境、フォント、正確な再生成コマンドを保存する。通常検証と独立評価は親が作った別JSONを `--verification-record`、`--review-record` で指定する。記録を指定しない場合は「記録待ち」と表示し、評価を実施済みとは称しない。公開版と同じ添付を再現するときは `report_manifest.json` のコマンドを使う。
+
+Matplotlibと日本語フォントが必要。`Noto Sans CJK JP`、`IPAexGothic`、`IPAGothic` の順に利用可能なフォントを選び、ない場合は明示する。フォント本体はリポジトリに複製しない。
 
 ```bash
-.venv/bin/python scripts/visualize_concepts.py --font .work/fonts/IPAexGothic.ttf
+.venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --font /path/to/Japanese-font.ttf
 ```
 
-SVG は文字を輪郭として保存し、PDF は利用する文字のフォントを埋め込むため、閲覧側の日本語フォントには依存しない。同じフォントと生成環境を使うと同じ出力を再現できる。見出し・ボックスの文字が収まることは生成時に検査し、追加・変更後は PNG を目視確認する。
+SVGは文字を輪郭で保存し、PDFはフォントを埋め込む。方式の色はEDC `#6B7280`、線形補償 `#2677B8`、ESN `#D97706`、DBP `#25846C`。色に加えて名称・マーカーでも方式を識別する。変更後は生成PNGを目視確認する。
 
-比較方式の色は、EDC `#6B7280`、線形補償 `#2677B8`、ESN `#D97706`、DBP `#25846C` とする。色だけに意味を持たせず、名称・凡例でも方式を識別する。実験結果の図を追加するときは、対応する生成コマンドと入力 artifact を記録し、生成処理は `scripts/`、再利用する数値処理は `src/optical_comm/` に置く。
+このディレクトリは読者向けの文章と図を保存する。生成処理は `scripts/`、再利用する数値処理は `src/optical_comm/`、測定・学習のcompact artifactは `artifacts/` に置く。中間ログや一時的な描画確認は `.work/` に分離する。
