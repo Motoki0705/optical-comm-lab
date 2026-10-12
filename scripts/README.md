@@ -50,6 +50,28 @@ The tracked CLI's actual SHA-256 is recorded. In an isolated source copy, set
 `PYTHONPATH` to that copy's `src` and use the existing environment; the audit
 rejects accidentally importing a different scientific source tree.
 
+Continuous 2-sps waveform diagnostics are exported from existing saved test
+recipes through a separate CLI:
+
+```bash
+.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-1600km-20261012 --output-dir .work/waveform-diagnostics-reproduction
+```
+
+The exporter audits source/configuration/seed/artifact hashes, reconstructs the
+whole original frame, and then extracts a contiguous slice. Defaults are test
+frame 0, 512 symbols, and start `max(0, guard-16)`; `--frame-index`, `--symbols`,
+and `--start-symbol` select another nonwrapping slice. `--backend numpy` permits
+CPU reconstruction; the actual backend and comparison tolerances are recorded.
+The output directory must be empty, and input scientific files are read-only.
+Each NPZ contains uncalibrated EDC/matched-filter 2-sps XY samples, aligned
+1-sps RX and TX symbols/bits, global indices, frame identity/seeds, and separate
+channel-valid/common-score masks. The manifest records stage, time origin,
+frame boundaries, code/input/output hashes and regeneration command. Frame 0
+is checked against every original stored constellation point; later test frames
+explicitly lack that reference because the original diagnostics saved frame 0.
+This export reconstructs previously counted data and performs no fitting,
+model prediction, selection, or additional BER evaluation.
+
 This directory owns thin CLI adapters and reproducible figure generators.
 Reusable calibration, windowing, training, scoring, and artifact logic belong
 in `src/optical_comm/`; a new CLI should call those modules rather than copy

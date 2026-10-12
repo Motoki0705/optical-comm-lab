@@ -79,3 +79,15 @@ commands, counts, and hash/resume checks are in its `verification.json`.
 Regenerate with `.venv/bin/python scripts/run_experiment.py --config artifacts/pilot-800km-development/config.json --run-id pilot-800km-reproduction`;
 verify existing outputs by replacing the run ID with `pilot-800km-development`
 and adding `--resume`.
+
+The final run's `waveform_diagnostics/` supplement stores one contiguous NPZ for
+the first existing test frame at each of its seven powers. Each default slice
+contains 512 symbols and 1024 complex XY samples at 2 sps, including the guard
+boundary. Arrays retain uncalibrated EDC/matched-filter alphabet normalization,
+aligned 1-sps RX/TX symbols and TX bits, absolute indices, frame identity/seeds,
+and separate channel-valid and original common-score masks. `manifest.json`
+records Rs/Fs, full-frame periodic boundaries, source/input/output hashes,
+stored-constellation correspondence, and the export/regeneration commands.
+These are reconstructions of previously counted frames, not additional test
+evidence. Regenerate into a fresh directory with
+`scripts/export_waveform_diagnostics.py` as described in `scripts/README.md`.
