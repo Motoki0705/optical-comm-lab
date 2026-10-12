@@ -52,6 +52,24 @@ CPU/GPU/environment supplement. Receiver times compare extra processing on
 those devices, not a hardware throughput benchmark. The supplement does not
 modify the immutable configuration, selected weights, or test metrics.
 
+The final run's `verification.json` is reproducibly regenerated as a saved-data
+consistency audit through the tracked CLI:
+
+```bash
+.venv/bin/python scripts/audit_run.py --run artifacts/final-1600km-20261012 --output .work/final-audit.json
+```
+
+`semantic_checks` contains the source/config/artifact hashes, seed and candidate
+contracts, loaded-checkpoint fields, count/energy pools, and diagnostic checks.
+Its digest is stable for the same inputs. `observations` contains fresh audit
+time and environment information. Historical runner duration and its earlier
+resume check remain explicitly under `historical_measurements`; they are not
+recalculated from checkout timestamps. The audit reads existing evidence that
+the runner compared predictions on checkpoint reload, while recording that
+this audit performs no prediction, propagation, training, or new test-frame
+generation. This audit is normal verification, distinct from the independent
+validator. See `scripts/README.md` for output protection and isolated-copy use.
+
 `pilot-800km-development/` records a separate 800 km development check at 0 dBm
 using the existing pilot candidates and independent splits. It counts 145824
 bits per receiver across three test frames. Its exploratory scores verify the

@@ -46,7 +46,7 @@ Create a directory or document when it has a stable responsibility and a reader,
 
 ## Validation and final review
 
-Run normal verification appropriate to the change before requesting independent evaluation. The user authorized exactly **one** independent validator evaluation for this implementation task; attempts consume the count. Do not add or replace it with scout reviews.
+Run normal verification appropriate to the change before requesting independent evaluation. Use a validator only when the user explicitly authorizes a count for the current task; an unspecified count is zero, and do not carry an earlier task's count into later work. For the initial implementation recorded in `docs/requirements.md`, the user authorized exactly **one** evaluation; its consumption is recorded in `artifacts/verification/independent_review.json`. Attempts consume the count. Do not add or replace it with scout reviews.
 
 Before that attempt, confirm the validator inherits the parent's model, provider, and reasoning effort; the validator role must not override them. Report any unavailable effective-runtime verification. Freeze the commit, hashes of uncommitted/untracked deliverables, configurations, and input artifacts. Pass original requirements and acceptance criteria; put parent test logs in a separate supplement. No evaluated files may change during evaluation, and validator scratch output must be isolated.
 
