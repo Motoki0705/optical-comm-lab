@@ -1,5 +1,17 @@
 # レポートと図
 
+円形コアの空間場は、各6秒・24 fps・1080pの
+[反射](animations/spatial_kerr/01_reflection.mp4)、
+[Kerr OFF/ON比較](animations/spatial_kerr/02_kerr_comparison.mp4)、
+[位相と明暗](animations/spatial_kerr/03_phase_change.mp4)へ保存する。
+同じフォルダーに代表画、入口の静止画、各filmのBlenderシーン、contact sheet、
+`render_manifest.json` とフォントライセンスがある。
+強い仮係数と発光・色の表示上の強調を含む教育用CWモデルで、
+元の1600 kmの通信学習評価や80 kmの単独パルスとは別条件。
+カメラ・距離注記が定常場を観察し、光パルスの移動時間は描かない。再現入口は
+[`render_spatial_kerr.py`](../scripts/render_spatial_kerr.py)、座標・表示・検証の説明は
+[描画ガイド](../docs/spatial-kerr-rendering.md)を参照する。
+
 [日本語レポート](final_report.md)と[オフラインHTML](final_report.html)は、専門外の読者に向けて実際の結果を図表中心に説明する。HTMLはPNGを埋め込み、表示時にネット接続や日本語フォントの取得を要しない。ブラウザの印刷でPDF化できる。説明用の模式図と、保存済みデータから描く結果図を区別する。本文は結論・測定内容・結果の意味・限界を中心とし、候補選択・数値条件・実装依存の資源比較・再現記録は4つの折り畳み補足に保存する。HTMLとMarkdownの両方で開閉でき、印刷には必要な補足を開いてから進む。
 
 | 図 | 内容・保存元 |

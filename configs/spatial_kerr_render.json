@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "purpose": "Fixed-scale rendering of computed circular-core CW fields; educational coefficients, not physical SMF watts",
+  "width": 1920,
+  "height": 1080,
+  "fps": 24,
+  "duration_seconds": 6.0,
+  "samples": 96,
+  "poster_samples": 160,
+  "adaptive_threshold": 0.02,
+  "proof": {"seconds": 3.0, "width": 960, "height": 540, "samples": 32, "film": "01_reflection"},
+  "physical_display": {"um_per_world_unit": 100.0, "core_diameter_um": 50.0, "cladding_diameter_um": 125.0, "length_um": 3000.0, "ncore": 1.450, "nclad": 1.445, "window_z_um": [50.0, 2950.0]},
+  "camera": {"projection": "ORTHO", "ortho_height_world": 0.98, "target_z_um": [250.0, 2600.0], "poster_z_um": 550.0, "poster_z_um_per_film": {"03_phase_change": 1800.0}, "offset_world": [-30.0, 0.0, 7.0], "lens_mm": 62.0, "fstop": 11.0, "intro_frames": 24, "intro_hold_frames": 12, "intro_target_z_um": 480.0, "intro_offset_world": [-13.0, -9.0, 5.8], "intro_width_world": 9.0},
+  "isosurfaces": [
+    {"level": 0.1, "color_linear_rgb": [0.08, 0.32, 1.0], "opacity": 0.12},
+    {"level": 0.3, "color_linear_rgb": [0.02, 0.92, 0.67], "opacity": 0.23},
+    {"level": 0.6, "color_linear_rgb": [1.0, 0.31, 0.035], "opacity": 0.65}
+  ],
+  "isosurface_emission": 1.6,
+  "isosurface_display_shading": {"minimum": 0.42, "diffuse_weight": 0.58, "direction_world": [-0.25, 0.25, 0.94]},
+  "intensity_range_relative_to_input_peak": [0.0, 3.0],
+  "intensity_palette_linear_rgb": [[0.010, 0.017, 0.030], [0.10, 0.035, 0.32], [0.62, 0.08, 0.25], [1.0, 0.34, 0.08], [1.0, 0.91, 0.65]],
+  "phase_range_rad": [-3.141592653589793, 3.141592653589793],
+  "phase_palette_linear_rgb": [[0.64, 0.12, 0.83], [0.07, 0.32, 0.98], [0.025, 0.25, 0.20], [1.0, 0.37, 0.07], [0.64, 0.12, 0.83]],
+  "phase_joint_intensity_floor": 0.0001,
+  "masked_phase_color_linear_rgb": [0.025, 0.038, 0.054],
+  "flow": {"expected_seed_count": 25, "radius_um": 0.05, "color_linear_rgb": [0.79, 0.84, 0.87], "emission": 1.2, "display_stride": 1},
+  "observation_cursor": {"enabled": true, "color_linear_rgb": [0.30, 0.13, 0.52], "emission": 0.6, "core_ring_radius_um": 30.0, "ring_line_radius_um": 0.04, "cross_half_size_um": 0.40, "cross_radius_um": 0.07},
+  "core_boundary_guide": {"enabled": true, "radius_um": 0.08, "color_linear_rgb": [0.28, 0.47, 0.59], "emission": 0.95},
+  "studio": {"world_color_linear_rgb": [0.12, 0.17, 0.23], "world_strength": 0.4, "floor_color_linear_rgb": [0.055, 0.08, 0.115], "glass_reflection_weight": 0.08, "glass_roughness": 0.18, "intro_glass_reflection_weight": 0.8, "intro_glass_surface_fill": 0.09, "intro_glass_roughness": 0.10, "intro_coating_start_um": 1080.0, "intro_coating_end_um": 1600.0, "exposure": 0.0},
+  "encoding": {"crf": 18, "preset": "fast"},
+  "scope": [
+    "Stationary CW field; camera and observation section scan distance, not pulse time or photon flight",
+    "I/I_input_peak=0.1,0.3,0.6 are fixed display surfaces; not a measured scattering photograph",
+    "25 power-flow streamlines come from saved J/I; terminated seeds are never restarted",
+    "Infinite-cladding numerical approximation; the displayed 125 um glass-air surface is not in the propagation calculation",
+    "Normalized hypothetical Kerr coefficients 0 and 3e-4; not material n2 or watts and not the 80/1600 km SMF experiment",
+    "Straight-through presentation glass keeps computed geometry registered; surface reflection is illustrative",
+    "Thin rails at x=+/-25 um, y=0 mark the true circular-core boundary in the principal reflection plane; these are annotations, not field or flow data",
+    "Film-01 entrance context uses a stronger display-only glass sheen and a temporary partial coating; only presentation geometry/materials change during the camera transition",
+    "No production movie is rendered by the default posters/proof workflow"
+  ]
+}

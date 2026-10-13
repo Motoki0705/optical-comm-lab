@@ -6,6 +6,15 @@
 
 光ファイバ内部の変化は、[3本の物理シミュレーション映像と日本語解説](reports/animations/kerr_physics/index.html)で見られます。自己位相変調、波長分散、両者の同時作用を、計算した電場からBlenderで映像化しました。各12秒・1080pのMP4と編集できるシーン、[再生成記録](reports/animations/kerr_physics/README.md)を保存しています。80 kmの単独パルスによる説明用実験で、1600 kmの学習評価とは別のデータです。
 
+円形コア内の空間的な折り返しは、各6秒・1080pの
+[反射](reports/animations/spatial_kerr/01_reflection.mp4)、
+[Kerr OFF/ON比較](reports/animations/spatial_kerr/02_kerr_comparison.mp4)、
+[位相と明暗](reports/animations/spatial_kerr/03_phase_change.mp4)で見られます。
+計算された3D等強度面、パワー流線、位相断面を、定常場のカメラ観察として描きました。
+強い仮係数と表示の発光・色による強調を含む教育用モデルで、通信SMFの実パワー・材料n₂や
+時間的に進む光パルスの映像ではありません。入力・表示尺度・補修来歴・再生成手順は
+[空間Kerrの描画ガイド](docs/spatial-kerr-rendering.md)へ保存しています。
+
 ## 環境
 
 Python 3.12 と [uv](https://docs.astral.sh/uv/) が必要です。`.python-version` と `uv.lock` を用いて環境を固定します。CPUで全処理を実行できます。図の再生成には日本語フォント（推奨 `Noto Sans CJK JP`）が必要で、Ubuntu/Debianでは `fonts-noto-cjk` を導入します。フォントを導入できない場合は各描画CLIの `--font /path/to/font.ttf` を使えます。

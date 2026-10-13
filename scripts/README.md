@@ -145,3 +145,29 @@ seeded/masked power-flow lines, and fixed iso-intensity meshes for the primary
 two cases. Mesh extraction uses the optional scikit-image public API and
 physical spacing; Blender does not solve Kerr physics. The NPZ coordinate
 contract is in the run manifest and `artifacts/spatial_kerr/README.md`.
+
+`render_spatial_kerr.py` reads those completed numerical artifacts without
+propagating a new field. It draws fixed 0.1/0.3/0.6 iso-intensity surfaces,
+all 25 saved power-flow seeds, and joint-masked principal Kerr phase slices.
+The three delivered six-second, 24 fps, 1080p films and packed scenes are in
+`reports/animations/spatial_kerr/`. They observe a stationary educational CW
+field with hypothetical coefficients and illustrative emission/colors, not a
+physical-power SMF pulse. The final entry point uses target-facing intro keys,
+explicit active scene evaluation, and runtime OptiX checks.
+
+```bash
+.venv/bin/python scripts/render_spatial_kerr.py --mode inspect
+.venv/bin/python scripts/render_spatial_kerr.py --mode posters
+.venv/bin/python scripts/render_spatial_kerr.py --mode render
+.venv/bin/python scripts/render_spatial_kerr.py --mode verify-scene
+```
+
+Use `--data-dir` for external numerical artifacts and `--output-dir` for an
+isolated media reproduction. The saved scenes pack their Japanese font and
+float textures. See the [spatial rendering guide](../docs/spatial-kerr-rendering.md)
+for coordinate units, camera observation, fixed scales, and scientific limits.
+The guide also documents `repair-cameras`, a fixed-scope repair of the known
+original camera bugs, with original/current provenance and all frame hashes.
+It is separate from normal full reproduction and does not implement general
+resume. Encoder binary paths/versions/hashes are saved for the run where they
+were queried. The superseded short preview is kept only in ignored history.
