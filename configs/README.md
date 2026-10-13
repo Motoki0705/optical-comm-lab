@@ -44,3 +44,13 @@ combined cases. It uses the same Manakov solver with a 0.25 km step and a 2 ns
 window at dt=0.244140625 ps. Its ordinary pulse qualification and display-data
 contract are in [kerr-physics.md](../docs/kerr-physics.md). These parameters are
 not an alternative training/test configuration for the 1600 km data stream.
+
+`spatial_kerr.json` fixes a distinct circular-core CW experiment: physical core
+radius 25 µm, two transverse coordinates, analytic input peak intensity 1,
+and four retained normalized Kerr coefficients. It is an educational spatial
+model, without a watt scale, glass-air boundary, communication BER or temporal
+pulse. Numerical grid, artificial absorber, stored ROI/spacing, fixed 25 flow
+seeds, intensity cutoff and three isosurface levels are versioned together.
+Changing these settings requires a fresh output/scratch directory and a new
+manifest; weak-reference absolute accuracy is not inferred from the stronger
+cases or from visual similarity.

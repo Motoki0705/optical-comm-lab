@@ -100,3 +100,12 @@ raw data retain loss. The saved display data use qualified Fourier decimation
 and complex64; the actual solver and all numerical checks use complex128.
 Regenerate into a fresh directory with `scripts/simulate_kerr_films.py` as
 documented in [kerr-physics.md](../docs/kerr-physics.md).
+
+`spatial_kerr/` holds the distinct circular-core CW calculation: four normalized
+Kerr cases, compact complex spatial sections, all fixed-seed power-flow lines,
+fixed-threshold physical meshes, bounded numerical qualification and source/
+input/output hashes. Intensity is not calibrated to watts and no additional
+communications scores are implied. Bulk intensity/current volumes stay under
+ignored `.work`; the committed deliverables have physical XYZ coordinates in
+micrometres and do not require VDB. Regeneration and the case/axis contract are
+in its README, manifest, and `scripts/simulate_spatial_kerr.py`.
