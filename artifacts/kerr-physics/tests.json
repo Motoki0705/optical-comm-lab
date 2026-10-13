@@ -1,0 +1,7 @@
+{
+  "command": ".venv/bin/python -m pytest tests/test_kerr_pulses.py -q",
+  "exit_code": 0,
+  "passed": true,
+  "log": "tests.txt",
+  "scope": "Substantive analytic, data-unit, polarization and numerical-regression tests; normal verification, not an independent validator."
+}

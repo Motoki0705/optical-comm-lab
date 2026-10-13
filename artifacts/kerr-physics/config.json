@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "purpose": "Deterministic isolated-pulse SSFM trajectories for the Blender Kerr films; distinct from the 1600 km DP-16QAM study.",
+  "pulse": {
+    "peak_xy_power_W": 0.05,
+    "intensity_1e_half_width_s": 2e-11,
+    "polarizations": "Equal coherent XY envelopes, Ax=Ay=sqrt(Ppeak/2)*exp(-t^2/(2*T0^2)); powers and spectra are added incoherently across orthogonal XY."
+  },
+  "link": {
+    "n_spans": 1,
+    "span_km": 80.0,
+    "alpha_db_per_km": 0.2,
+    "dispersion_ps_nm_km": 17.0,
+    "gamma_per_w_km": 1.3,
+    "symbol_rate_hz": 32000000000.0,
+    "wavelength_m": 1.55e-06,
+    "sps": 128,
+    "step_km": 0.25,
+    "rolloff": 0.1,
+    "rrc_span_symbols": 64,
+    "guard_symbols": 0,
+    "edfa_noise_figure_db": 5.0,
+    "ase_enabled": false,
+    "ase_bandwidth_hz": 128000000000.0
+  },
+  "sampling": {
+    "n_samples": 8192,
+    "snapshot_interval_km": 1.0,
+    "display_decimation": 4
+  },
+  "cases": {
+    "pure_spm": {
+      "dispersion_ps_nm_km": 0.0,
+      "gamma_per_w_km": 1.3
+    },
+    "dispersion_only": {
+      "dispersion_ps_nm_km": 17.0,
+      "gamma_per_w_km": 0.0
+    },
+    "combined": {
+      "dispersion_ps_nm_km": 17.0,
+      "gamma_per_w_km": 1.3
+    }
+  },
+  "qualification": {
+    "step_sizes_km": [
+      0.5,
+      0.25,
+      0.125
+    ],
+    "time_grid_refinement_factor": 2,
+    "period_refinement_factor": 2
+  },
+  "display": {
+    "phase_relative_power_threshold": 1e-06,
+    "time_view_half_range_ps": 300.0,
+    "frequency_view_half_range_GHz": 60.0,
+    "field_convention": "E=Re[A(t)*exp(i*(k*z-omega0*t))]; delta_omega=-d(arg(A))/dt; physical spectral offset=-numpy FFT frequency.",
+    "spectrum_units": "J/Hz: |dt*FFT(A_pol)|^2. Integral over physical frequency is pulse energy per polarization.",
+    "loss_policy": "Raw power and spectral energy retain physical attenuation. A film may divide by attenuation_power_factor to isolate shape, only with an explicit loss-compensated label and fixed input normalization."
+  },
+  "scope": {
+    "model": "Lossy second-order-dispersion DP Manakov equation with instantaneous Kerr and factor 8/9; existing propagate_fiber only.",
+    "amplifiers": "None. No EDFA gain or ASE is applied; their LinkConfig fields are inactive for propagate_fiber.",
+    "transmitter": "Single deterministic Gaussian envelope. No 16QAM symbols, RRC filtering, receiver DSP or bit-error measurement.",
+    "sample_rate": "symbol_rate_hz*sps only defines Fs=4.096 THz here; the pulse is not a 32 GBd data stream.",
+    "omissions": [
+      "PMD",
+      "higher-order dispersion",
+      "Raman response",
+      "self-steepening",
+      "laser phase noise",
+      "hardware terminals"
+    ],
+    "independent_validator_count": 0
+  }
+}

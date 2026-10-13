@@ -102,7 +102,9 @@ def test_spectral_energy_units_and_orthogonal_xy_cannot_cancel_coherently():
 
 def test_optical_frequency_axis_uses_the_declared_negative_time_carrier_sign():
     times = time_grid(2048, 1e12)
-    optical_offset_hz = 16 / (len(times) * (times[1] - times[0]))
+    # Use the exact declared sampling rate to land on an integer FFT bin;
+    # subtraction of large centered time values would perturb periodicity.
+    optical_offset_hz = 16 * 1e12 / len(times)
     field = np.repeat((0.01*np.exp(-2j*np.pi*optical_offset_hz*times))[:, None], 2, axis=1)
     observed = field_observables(field[None, ...], times)
     peak = np.argmax(observed["spectrum_xy_J_per_Hz"][0, :, 0])
@@ -157,7 +159,7 @@ def test_display_fourier_filter_prevents_stride_aliasing_and_reports_lost_energy
     # An out-of-display-band tone would alias under a direct stride. It is
     # deliberately absent from the real Gaussian study, and must be rejected
     # by the display qualification instead of silently omitted.
-    field += 0.002 * np.exp(2j*np.pi*(1024/2e-9)*times)[:, None]
+    field += 0.002 * np.exp(2j*np.pi*(1536/2e-9)*times)[:, None]
     data, record = display_data(field[None, ...], times, np.array([0.0]), config)
     assert not record["passed"]
     assert record["max_discarded_spectral_energy_fraction"] > 0.001
