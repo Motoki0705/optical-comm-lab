@@ -10,6 +10,9 @@
 [反射](reports/animations/spatial_kerr/01_reflection.mp4)、
 [Kerr OFF/ON比較](reports/animations/spatial_kerr/02_kerr_comparison.mp4)、
 [位相と明暗](reports/animations/spatial_kerr/03_phase_change.mp4)で見られます。
+[映像を中心にした日本語解説](reports/animations/spatial_kerr/index.html)では、入口の構造、
+反射、Kerrによる分布差、位相の違いを順に読み、4条件を同じ尺度で切り替えて比較できます。
+図と解説の再生成は [解説のREADME](reports/animations/spatial_kerr/README.md)を参照してください。
 計算された3D等強度面、パワー流線、位相断面を、定常場のカメラ観察として描きました。
 強い仮係数と表示の発光・色による強調を含む教育用モデルで、通信SMFの実パワー・材料n₂や
 時間的に進む光パルスの映像ではありません。入力・表示尺度・補修来歴・再生成手順は
@@ -77,7 +80,13 @@ CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使�
 .venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification
 .venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --verification-record artifacts/verification/ordinary_checks.json --review-record artifacts/verification/independent_review.json
 .venv/bin/python scripts/build_kerr_explanation.py
+.venv/bin/python scripts/build_spatial_kerr_report.py
 ```
+
+空間Kerrの解説は、保存済みの数値場と完成した3動画から図・HTMLを再生成します。
+[生成CLI](scripts/build_spatial_kerr_report.py)と
+[解説のマニフェスト](reports/animations/spatial_kerr/explanation_manifest.json)に、入力・出力と
+この版のブラウザ通常確認を記録しています。
 
 正確なコマンド、フォント・環境、入力と出力のハッシュは [結果図のマニフェスト](reports/figures/results_manifest.json) と [レポートのマニフェスト](reports/report_manifest.json) に保存します。検証・独立評価の集約記録はレポート生成の追加入力です。元の公開版と同じ検証記録を含めるには、レポートマニフェストの `regeneration_command` を使います。pilotの描画確認は `--allow-pilot --output-dir .work/pilot-figures` のように、最終図から分離します。
 
