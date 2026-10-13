@@ -7,7 +7,10 @@ This repository studies software reservoir equalization of long-haul coherent op
 ## GitHub workflow
 
 - Track work and material defects in GitHub Issues before implementing them. Sub-agents may create scoped issues; check existing issues to avoid duplicates. Link issues to the controlling PR.
-- Work on a feature branch and use a draft PR while implementation is in progress. Do not push to the default branch or merge without the coordinating agent's explicit task authorization.
+- Scope each Issue to one coherent task, feature, or problem and record its acceptance criteria. Keep parent tracking Issues separate from actionable child Issues.
+- Open a separate PR for each coherent feature or change. Keep directly necessary supporting changes together; do not bundle unrelated work into an omnibus PR.
+- Link each PR to its scoped Issues, using closing keywords such as `Closes #123` only for Issues it fully resolves. Verify completion against the acceptance criteria and close resolved Issues; keep partial or unresolved work open, including parent tracking Issues with outstanding children.
+- Work on a feature branch and use a draft PR while implementation is in progress. Do not push to the default branch or merge without the coordinating agent's explicit task authorization; merge authorization must follow the user's explicit instruction for the task.
 - In a shared checkout, only the coordinating agent changes branches, stages, commits, and pushes. Workers edit only their assigned files and must not revert others' changes.
 - Keep generated, reproducible research artifacts together. Commit compact result tables, model checkpoints where reasonably sized, report figures, and provenance. Ignore environments, caches, raw bulk traces, and temporary work.
 
