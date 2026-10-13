@@ -44,6 +44,10 @@ Latest spatial-propagation request:
 
 > 光の光線が反射しつつ、どのような変化が起きるかを表現してください。今の表現は物理シミュレーションをする必要がないレベルです。claude code opus にアドバイスをもらってください。
 
+Confirmed educational-model choice (2026-10-13 JST, verbatim):
+
+> 反射と変化が見える教育用モデル（推奨：強度の誇張と元の通信モデルとの差を明記）
+
 The latest request requires a spatial field model with a fiber boundary; the
 existing 80 km temporal-envelope films do not establish reflecting spatial rays.
 The new method and its scope are recorded in [spatial-kerr.md](spatial-kerr.md).
@@ -53,12 +57,13 @@ studies. Claude Code Opus was consulted for design advice under
 and checking the circular spatial model is tracked in
 [Issue #24](https://github.com/Motoki0705/optical-comm-lab/issues/24).
 
-The current working proposal uses a circular multimode core, continuous light,
+The selected educational model uses a circular multimode core, continuous light,
 and a clearly labeled hypothetical strong Kerr coefficient, together with a
-linear control and a weak reference. The user has not yet selected between
-educational visibility and realism at communications powers; this proposal is
-not recorded as their accepted choice. Any later clarification must be applied
-if it changes that scope.
+linear control and a weak reference. It was initially pursued as a working
+assumption; the user explicitly selected that direction on 2026-10-13 JST.
+The exaggerated effect and differences from the original communications model
+must be disclosed. This confirmation requires no numerical recalculation or
+change to the saved model.
 
 Completion requires computed transverse fields and flow rather than manually
 placed reflecting paths, ordinary numerical checks, multiple high-quality
