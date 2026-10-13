@@ -689,6 +689,18 @@ def render_readme(context: dict[str, Any], view: dict[str, Any], output: Path, c
         f"| {film['number']} | {film['title']} | [{film['mp4'].name}]({relative(film['mp4'], output)}) | [{film['scene'].name}]({relative(film['scene'], output)}) |"
         for film in context["films"]
     )
+    if output.is_relative_to(ROOT):
+        page_url = "http://127.0.0.1:8000/" + quote((output.relative_to(ROOT) / "index.html").as_posix(), safe="/.")
+        http_guide = f"""保存リンクをHTTPで使う場合は、リポジトリ直下で次のローカルサーバーを
+起動し、`{page_url}` を開く。外部サービスへの接続は不要。
+
+```bash
+.venv/bin/python -m http.server 8000 --bind 127.0.0.1
+```"""
+    else:
+        http_guide = """この出力先はリポジトリ外なので、`index.html` をローカルファイルとして開く。
+HTTPで保存リンクを使う場合は `--output-dir .work/spatial-kerr-report-reproduction` などで
+リポジトリ内へ出力し、その出力先のREADMEにあるHTTP案内を使う。"""
     return f"""# 反射する光と Kerr 効果
 
 [説明ページ](index.html)で、3本の動画と4条件の比較を順に読める。
@@ -723,6 +735,9 @@ FFprobe を使う。標準では Noto Sans CJK JP、IPAexGothic、IPAGothic の�
 
 このコマンドは図の PNG/SVG、`index.html`、この README、
 `explanation_manifest.json` を再生成する。物理伝搬や Blender の描画は行わない。
+通常コマンドはブラウザ確認を実行・復元しない。
+`--browser-record /path/to/record.json` は、同じHTML・動画・render manifestに対する
+成功記録を添付するための引数で、UIテストを自動実行するものではない。
 入力不足・ハッシュ不一致では終了し、完成ページを出力しない。
 別の出力先は `--output-dir .work/spatial-kerr-report-reproduction`、
 日本語フォントは `--font /path/to/font.ttf` で指定できる。
@@ -734,13 +749,8 @@ K でも再生・一時停止を切り替えられる。キーによる移動幅
 再生を始めると他の動画は一時停止する。外部サービス、外部フォント、配信 CDN は使わない。
 
 ローカルファイルを直接開いた場合、保存リンクの扱いはブラウザによって異なる。
-動画の標準メニューから保存できる。保存リンクをHTTPで使う場合は、リポジトリ直下で
-次のローカルサーバーを起動し、表示されたURLの末尾へ
-`reports/animations/spatial_kerr/index.html` を付けて開く。外部サービスへの接続は不要。
-
-```bash
-.venv/bin/python -m http.server 8000 --bind 127.0.0.1
-```
+動画の標準メニューから保存できる。
+{http_guide}
 
 [方法と出典]({relative(ROOT / 'docs/spatial-kerr.md', output)})、
 [原データ]({relative(context['physics'] / 'README.md', output)})、
@@ -952,6 +962,10 @@ def main() -> None:
                 "schema_version": 1, "status": "assembled_and_browser_checked" if browser else "assembled",
                 "created_utc": datetime.now(timezone.utc).isoformat(), "scope": "Offline explanatory report; saved circular-core CW fields, no new propagation or communications evaluation",
                 "regeneration_command": command,
+                "regeneration_scope": {
+                    "ordinary_command": "Regenerates figures, HTML, README and provenance only; does not execute or restore browser checks",
+                    "browser_record_option": "Attaches a successful record for the same HTML, movies and render manifest; does not execute UI tests"
+                },
                 "inputs": {display(path): {"sha256": value, "bytes": path.stat().st_size} for path, value in sorted(context["inputs"].items(), key=lambda item: str(item[0]))},
                 "outputs": {path.relative_to(stage).as_posix(): {"sha256": sha256(path), "bytes": path.stat().st_size} for path in outputs},
                 "environment": {"python": platform.python_version(), "numpy": np.__version__, "matplotlib": matplotlib.__version__, "font": font_record},

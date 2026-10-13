@@ -1,9 +1,13 @@
 {
   "schema_version": 1,
   "status": "assembled_and_browser_checked",
-  "created_utc": "2026-10-13T15:11:55.876312+00:00",
+  "created_utc": "2026-10-13T15:37:48.266260+00:00",
   "scope": "Offline explanatory report; saved circular-core CW fields, no new propagation or communications evaluation",
   "regeneration_command": ".venv/bin/python scripts/build_spatial_kerr_report.py --physics-run artifacts/spatial_kerr --renders reports/animations/spatial_kerr",
+  "regeneration_scope": {
+    "ordinary_command": "Regenerates figures, HTML, README and provenance only; does not execute or restore browser checks",
+    "browser_record_option": "Attaches a successful record for the same HTML, movies and render manifest; does not execute UI tests"
+  },
   "inputs": {
     "artifacts/spatial_kerr/config.json": {
       "sha256": "44fdce2d7bd39421fba5ef5459b4855666adf1c7ef82719b185c9e9f1c213944",
@@ -154,8 +158,8 @@
       "bytes": 370696
     },
     "scripts/build_spatial_kerr_report.py": {
-      "sha256": "e4ced0cf2fd357c3c7dcc044536140bbc6e7353284605301f6f82606ad7df527",
-      "bytes": 73362
+      "sha256": "59bb608ab37edd18f52142499f9387d7d536fd1820d812c1ec37e3a23d75e6ae",
+      "bytes": 74440
     },
     "scripts/simulate_spatial_kerr.py": {
       "sha256": "fc8526ba44d18d12d2a8267650c97efc2fc232e67da766921d9873fe54d16531",
@@ -184,7 +188,7 @@
       "bytes": 282163
     },
     "figures/four_case_intensity.svg": {
-      "sha256": "d44f1c236553a374b71414899e74ec123706b68da087f9b3180de814e75e6b36",
+      "sha256": "ac920e44ce3bfae274f03fb819f2181c80f3c78eb5e7a9ec4a6f002c5c4c2c21",
       "bytes": 305234
     },
     "figures/intensity_linear.png": {
@@ -192,7 +196,7 @@
       "bytes": 91428
     },
     "figures/intensity_linear.svg": {
-      "sha256": "923e1b1135d0ae5e745cb7bab7fbb2e08a5a74b9b59780574da4e7854c5730f8",
+      "sha256": "d4d76d5f3e35f47ff8c61637c354b01b888bd61d4d750bcca2b1168a3bfd820b",
       "bytes": 101870
     },
     "figures/intensity_linear_mobile.png": {
@@ -204,7 +208,7 @@
       "bytes": 94736
     },
     "figures/intensity_weak_reference.svg": {
-      "sha256": "86b75a950f88fccc67d0390ece4393c1d44f6061ef1641262b2b0b7e3591a6ef",
+      "sha256": "b7c258880372972473456ebc902015feb5f1667e8f90ecff49d3ba4eae4b36f8",
       "bytes": 105264
     },
     "figures/intensity_weak_reference_mobile.png": {
@@ -216,7 +220,7 @@
       "bytes": 93101
     },
     "figures/intensity_intermediate_kerr.svg": {
-      "sha256": "07ce657d30797646429b6e614b6b8c313929cd66efe8e45cea04a4af88e9c0dd",
+      "sha256": "f095b80146b5385d5f99f2d9891745132f4314d952c5ba83138b67e93da810ed",
       "bytes": 103157
     },
     "figures/intensity_intermediate_kerr_mobile.png": {
@@ -228,7 +232,7 @@
       "bytes": 92619
     },
     "figures/intensity_educational_kerr.svg": {
-      "sha256": "ac424cd26e3641fbff36c65c6bf56b7d96186c79a8faa3fe73fcceaaa058be7c",
+      "sha256": "583e3134bbad889cbe09f3f52afe330bd2da37c11969d162fd2cacfdbb75951a",
       "bytes": 99850
     },
     "figures/intensity_educational_kerr_mobile.png": {
@@ -240,7 +244,7 @@
       "bytes": 191283
     },
     "figures/output_intensity_and_phase.svg": {
-      "sha256": "bc29e811241f8a85f8320e711efd089b527373f0cd8a8d0247f70a6afd3b0ef7",
+      "sha256": "23fe91f9b1a63e4699f5d602d4987274a90f5d3f5c2a5c8c6d4907b08de66746",
       "bytes": 147682
     },
     "figures/output_intensity_and_phase_mobile.png": {
@@ -248,7 +252,7 @@
       "bytes": 221772
     },
     "figures/figures_manifest.json": {
-      "sha256": "ae4833b62a05d0477793500429b6ab963686d3497f4385703f31911242585c6f",
+      "sha256": "d367fb7164df374d7521436cd1722fadcf7f183e536b21d22ff99efbe076105a",
       "bytes": 10206
     },
     "index.html": {
@@ -256,8 +260,8 @@
       "bytes": 24675
     },
     "README.md": {
-      "sha256": "f200616aae16b4f90e19dffbf8e7d9cde6251150571e2c5d07e726468f798c22",
-      "bytes": 4312
+      "sha256": "4e1955a5cfa9b147713c0de605735e3d22c70605c990be3f8ebc894228e3e34b",
+      "bytes": 4563
     }
   },
   "environment": {

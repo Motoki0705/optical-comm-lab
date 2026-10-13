@@ -34,6 +34,9 @@ FFprobe を使う。標準では Noto Sans CJK JP、IPAexGothic、IPAGothic の�
 
 このコマンドは図の PNG/SVG、`index.html`、この README、
 `explanation_manifest.json` を再生成する。物理伝搬や Blender の描画は行わない。
+通常コマンドはブラウザ確認を実行・復元しない。
+`--browser-record /path/to/record.json` は、同じHTML・動画・render manifestに対する
+成功記録を添付するための引数で、UIテストを自動実行するものではない。
 入力不足・ハッシュ不一致では終了し、完成ページを出力しない。
 別の出力先は `--output-dir .work/spatial-kerr-report-reproduction`、
 日本語フォントは `--font /path/to/font.ttf` で指定できる。
@@ -45,9 +48,9 @@ K でも再生・一時停止を切り替えられる。キーによる移動幅
 再生を始めると他の動画は一時停止する。外部サービス、外部フォント、配信 CDN は使わない。
 
 ローカルファイルを直接開いた場合、保存リンクの扱いはブラウザによって異なる。
-動画の標準メニューから保存できる。保存リンクをHTTPで使う場合は、リポジトリ直下で
-次のローカルサーバーを起動し、表示されたURLの末尾へ
-`reports/animations/spatial_kerr/index.html` を付けて開く。外部サービスへの接続は不要。
+動画の標準メニューから保存できる。
+保存リンクをHTTPで使う場合は、リポジトリ直下で次のローカルサーバーを
+起動し、`http://127.0.0.1:8000/reports/animations/spatial_kerr/index.html` を開く。外部サービスへの接続は不要。
 
 ```bash
 .venv/bin/python -m http.server 8000 --bind 127.0.0.1
