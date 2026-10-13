@@ -3,8 +3,10 @@
 
 This CLI never propagates light or invents a field. Start with ``--mode
 inspect``, ``--mode posters`` or ``--mode proof``. Full six-second films are
-an explicit separate ``--mode render`` operation. Cache reuse is deliberately
-unsupported: every run has a fresh isolated scratch directory.
+an explicit separate ``--mode render`` operation. Normal rendering uses fresh
+isolated caches and has no general resume. The fixed ``repair-cameras`` mode
+is an explicit exception: it retains verified corresponding original frames
+outside the recorded camera-defect scope and re-renders affected frames.
 """
 from __future__ import annotations
 
@@ -319,7 +321,7 @@ def arguments(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--data-dir", type=Path, default=ROOT / "artifacts/spatial_kerr")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports/animations/spatial_kerr")
     parser.add_argument("--scratch-dir", type=Path, default=ROOT / ".work/spatial-kerr-render")
-    parser.add_argument("--film", choices=list(FILMS), nargs="+", default=list(FILMS))
+    parser.add_argument("--film", choices=list(FILMS), nargs="+")
     parser.add_argument("--poster-frame", type=int, help="Render a selected camera frame for still review; does not alter the stored field or film schedule")
     parser.add_argument("--repair-manifest", type=Path, help="Completed original render manifest; required for repair-cameras")
     parser.add_argument("--repair-cache", type=Path, help="Original full-render cache, if moved from its recorded path")
@@ -332,7 +334,29 @@ def arguments(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--ffprobe", default=shutil.which("ffprobe"))
     parser.add_argument("--inside-blender", action="store_true", help=argparse.SUPPRESS)
     parser.add_argument("--request", type=Path, help=argparse.SUPPRESS)
-    return parser.parse_args(argv)
+    args = parser.parse_args(argv)
+    args.film_explicit = args.film is not None
+    if args.film is None:
+        args.film = list(FILMS)
+    validate_request(args)
+    return args
+
+
+def validate_request(args: argparse.Namespace) -> None:
+    """Reject ambiguous/ignored repair flags before reading inputs or writing output."""
+    repair_flags = args.preflight_only or args.repair_state is not None or args.repair_manifest is not None or args.repair_cache is not None
+    if args.mode!="repair-cameras":
+        if repair_flags:
+            raise ValueError("Repair-only arguments require --mode repair-cameras")
+        return
+    if args.film_explicit or args.poster_frame is not None:
+        raise ValueError("repair-cameras has a fixed scope; --film and --poster-frame are unsupported")
+    if bool(args.preflight_only)==bool(args.repair_state):
+        raise ValueError("Choose exactly one repair stage: --preflight-only or --repair-state")
+    if args.preflight_only and args.repair_manifest is None:
+        raise ValueError("Repair preflight requires --repair-manifest")
+    if args.repair_state is not None and (args.repair_manifest is not None or args.repair_cache is not None):
+        raise ValueError("Repair finish uses its state; --repair-manifest and --repair-cache are preflight-only")
 
 
 # Blender-only code is in this entry point; importing numerical/data helpers
@@ -1608,6 +1632,27 @@ def _compose(film_id: str, component_paths: dict[str,Path], output: Path, config
     canvas.save(output)
 
 
+def _export_entrance_image(scratch: Path, output: Path, native_films: list[dict], provenance: dict) -> dict:
+    """Export the actual full-render entrance frame without altering its bytes."""
+    film = next((row for row in native_films if row["id"]=="01_reflection"),None)
+    if film is None:
+        return {}
+    frame = film["frames"]["reflection"]["1"]
+    if frame["frame"]!=1 or frame["file"]!="frame_0001.png":
+        raise ValueError("Entrance export requires the recorded first native production frame")
+    source = scratch/"01_reflection"/"reflection"/"frame_0001.png"
+    digest = sha256(source)
+    if digest!=frame["sha256"]:
+        raise ValueError("Entrance source frame hash differs from its native render record")
+    target = output/"entrance_01.png"
+    shutil.copyfile(source,target)
+    if sha256(target)!=digest:
+        raise RuntimeError("Entrance copy did not preserve the native frame bytes")
+    entrance = {"file":target.name,"sha256":digest,"source_film":"01_reflection","source_frame":1}
+    context = {**entrance,"native_source_file":str(source),"width":frame["width"],"height":frame["height"],"samples":frame["samples"],"method":"Byte-for-byte copy from full native production frame 1; no scaling, separate render, or proof substitution","renderer_source_sha256":provenance["renderer_source_sha256"],"renderer_config_sha256":provenance["renderer_config_sha256"],"numerical_manifest_sha256":provenance["numerical_manifest_sha256"]}
+    return {"entrance_image":entrance,"geometry_context":context}
+
+
 def _encode(frame_dir: Path, path: Path, count: int, dimensions: tuple[int,int], config: dict, args) -> dict:
     if not args.ffmpeg or not args.ffprobe:
         raise FileNotFoundError("FFmpeg and FFprobe are required for video output")
@@ -1750,6 +1795,7 @@ def _repair_host(args, config_path, config, bundle):
 
 
 def host_main(args: argparse.Namespace) -> None:
+    validate_request(args)
     config_path = args.config.resolve()
     config = json.loads(config_path.read_text(encoding="utf-8"))
     validate_config(config)
@@ -1841,6 +1887,8 @@ def host_main(args: argparse.Namespace) -> None:
     manifest["camera_frame_mapping"] = {film_id:{"frames":count,"intro_frames":config["camera"].get("intro_frames",0) if film_id=="01_reflection" else 0,"camera_observation_z_um":[distance_at_frame(frame,count,config,film_id) for frame in range(1,count+1)],"time_scope":"Distance observation schedule only, no physical pulse or photon time"} for film_id in args.film}
     manifest["isosurface_display_shading"] = {"common_material":config.get("isosurface_display_shading"),"interpretation":"Shared normal-based display shading makes the saved 3D shape visible; it is not quantitative intensity or measured scattered brightness."}
     manifest["core_boundary_guide"] = {**config["core_boundary_guide"],"positions_physical_xyz_um":core_boundary_rails_um(config).tolist(),"scope":"Display annotation on y=0, x=+/-25 um throughout the actual circular core. Not simulated light."}
+    if args.mode=="render":
+        manifest.update(_export_entrance_image(scratch,output,native["films"],provenance))
     dump_json(output/"render_manifest.json",manifest)
     print(json.dumps({"output":str(output),"manifest":str(output/"render_manifest.json"),"production_movies_complete":manifest["production_movies_complete"],"films":[{"id":f["id"],"status":f["status"]} for f in films],"proof":manifest.get("phenomenon_proof",{}).get("file")},ensure_ascii=False))
 

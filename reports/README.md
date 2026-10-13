@@ -1,9 +1,14 @@
 # レポートと図
 
-円形コアの空間場の描画は `animations/spatial_kerr/` に、代表画、各filmの
-Blenderシーン、短い `phenomenon_proof.mp4` と `render_manifest.json` を保存する。
-Kerrの仮係数を比較する教育用CWモデルで、元の1600 kmの通信学習評価とは別条件。
-初回の短いproofは完成した6秒の本編ではない。描画の再現入口は
+円形コアの空間場は、各6秒・24 fps・1080pの
+[反射](animations/spatial_kerr/01_reflection.mp4)、
+[Kerr OFF/ON比較](animations/spatial_kerr/02_kerr_comparison.mp4)、
+[位相と明暗](animations/spatial_kerr/03_phase_change.mp4)へ保存する。
+同じフォルダーに代表画、入口の静止画、各filmのBlenderシーン、contact sheet、
+`render_manifest.json` とフォントライセンスがある。
+強い仮係数と発光・色の表示上の強調を含む教育用CWモデルで、
+元の1600 kmの通信学習評価や80 kmの単独パルスとは別条件。
+カメラ・距離注記が定常場を観察し、光パルスの移動時間は描かない。再現入口は
 [`render_spatial_kerr.py`](../scripts/render_spatial_kerr.py)、座標・表示・検証の説明は
 [描画ガイド](../docs/spatial-kerr-rendering.md)を参照する。
 

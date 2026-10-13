@@ -74,6 +74,38 @@ def test_camera_repair_rejects_an_otherwise_matching_run_with_another_config(tmp
         renderer._repair_guard(original,tmp_path,tmp_path,path,alternate,{}, {})
 
 
+@pytest.mark.parametrize("options",[
+    ["--mode","repair-cameras","--preflight-only","--repair-state","state.json","--repair-manifest","original.json"],
+    ["--mode","repair-cameras","--repair-state","state.json","--repair-manifest","original.json"],
+    ["--mode","repair-cameras","--repair-state","state.json","--repair-cache","cache"],
+    ["--mode","repair-cameras","--preflight-only"],
+    ["--mode","repair-cameras"],
+    ["--mode","repair-cameras","--repair-state","state.json","--film","01_reflection"],
+    ["--mode","repair-cameras","--repair-state","state.json","--film","01_reflection","02_kerr_comparison","03_phase_change"],
+    ["--mode","repair-cameras","--repair-state","state.json","--poster-frame","18"],
+    ["--mode","inspect","--preflight-only"],
+    ["--mode","render","--repair-manifest","original.json"],
+    ["--mode","posters","--repair-cache","cache"],
+    ["--mode","verify-scene","--repair-state","state.json"],
+])
+def test_unsupported_or_ambiguous_repair_requests_fail_before_output_or_input_io(tmp_path,options):
+    output = tmp_path/"must-not-be-created"
+    with pytest.raises(ValueError):
+        renderer.main(options+["--data-dir",str(tmp_path/"nonexistent-input"),"--output-dir",str(output)])
+    assert not output.exists()
+    assert not list(tmp_path.iterdir())
+
+
+def test_supported_prepare_finish_and_normal_requests_preserve_their_contract():
+    prepare = renderer.arguments(["--mode","repair-cameras","--preflight-only","--repair-manifest","original.json","--repair-cache","cache"])
+    assert prepare.preflight_only and prepare.repair_state is None
+    finish = renderer.arguments(["--mode","repair-cameras","--repair-state","state.json"])
+    assert not finish.preflight_only and finish.repair_state==Path("state.json")
+    normal = renderer.arguments(["--mode","posters","--film","01_reflection","--poster-frame","18"])
+    assert normal.film==["01_reflection"] and normal.poster_frame==18
+    assert renderer.arguments([]).film==list(renderer.FILMS)
+
+
 def test_stopped_streamline_never_reconnects_and_final_valid_point_is_kept():
     mask = np.array([[True,True,True,False,False],[True,True,False,False,False],[False,False,False,False,False]])
     prefixes = renderer.flow_prefix_indices(mask,stride=2)
@@ -158,3 +190,44 @@ def test_multifilm_layout_uses_native_pixels_without_stretching():
     assert renderer._component_layout("03_phase_change","phase",CONFIG)==(1920,600,(0,0))
     assert renderer._component_layout("03_phase_change","intensity_off",CONFIG)==(960,480,(0,600))
     assert renderer._component_layout("03_phase_change","intensity_on",CONFIG)==(960,480,(960,600))
+
+
+def test_full_render_entrance_export_preserves_native_png_bytes_and_provenance(tmp_path):
+    from PIL import Image
+    scratch = tmp_path/"cache"
+    output = tmp_path/"output"
+    source = scratch/"01_reflection"/"reflection"/"frame_0001.png"
+    source.parent.mkdir(parents=True)
+    output.mkdir()
+    # A small saved frame tests host packaging without a fabricated optical field.
+    Image.new("RGB",(8,5),(10,70,150)).save(source)
+    frame = {"frame":1,"file":source.name,"sha256":renderer.sha256(source),"width":8,"height":5,"samples":7}
+    films = [{"id":"01_reflection","frames":{"reflection":{"1":frame}}}]
+    provenance = {"renderer_source_sha256":"test-source","renderer_config_sha256":"test-config","numerical_manifest_sha256":"test-input"}
+    result = renderer._export_entrance_image(scratch,output,films,provenance)
+    target = output/"entrance_01.png"
+    assert target.read_bytes()==source.read_bytes()
+    assert result["entrance_image"]=={"file":"entrance_01.png","sha256":renderer.sha256(target),"source_film":"01_reflection","source_frame":1}
+    context = result["geometry_context"]
+    assert (context["width"],context["height"],context["samples"])==(8,5,7)
+    assert context["native_source_file"]==str(source)
+    assert all(context[key]==value for key,value in provenance.items())
+
+
+def test_render_without_reflection_does_not_export_or_claim_an_entrance(tmp_path):
+    output = tmp_path/"output"
+    output.mkdir()
+    assert renderer._export_entrance_image(tmp_path/"missing-cache",output,[{"id":"02_kerr_comparison"}],{})=={}
+    assert not list(output.iterdir())
+
+
+def test_entrance_export_rejects_a_changed_cached_frame_before_output(tmp_path):
+    source = tmp_path/"cache"/"01_reflection"/"reflection"/"frame_0001.png"
+    source.parent.mkdir(parents=True)
+    source.write_bytes(b"changed saved bytes")
+    output = tmp_path/"output"
+    output.mkdir()
+    film = {"id":"01_reflection","frames":{"reflection":{"1":{"frame":1,"file":source.name,"sha256":"0"*64}}}}
+    with pytest.raises(ValueError,match="hash differs"):
+        renderer._export_entrance_image(tmp_path/"cache",output,[film],{})
+    assert not list(output.iterdir())

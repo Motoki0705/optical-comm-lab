@@ -6,6 +6,12 @@ Issue [#25](https://github.com/Motoki0705/optical-comm-lab/issues/25) の描画C
 [spatial-kerr.md](spatial-kerr.md) と `artifacts/spatial_kerr/` が担当する。
 rendererはその場を読み取るだけで、伝搬計算、Kerr係数の選定、結果の補正を行わない。
 数値入力がない場合は停止し、仮の光や代替画像を作らない。
+完成した本編は各6秒・24 fps・1920×1080の
+[反射](../reports/animations/spatial_kerr/01_reflection.mp4)、
+[Kerr OFF/ON比較](../reports/animations/spatial_kerr/02_kerr_comparison.mp4)、
+[位相と明暗](../reports/animations/spatial_kerr/03_phase_change.mp4)。
+反射と変化を読める教育用のモデルとして採用し、強い仮係数と表示の発光・色による
+強調を含む。通信SMFの実パワーや材料n₂を再現した映像ではない。
 
 ## 入力と表示
 
@@ -69,19 +75,19 @@ x=±25 µmへ細い直線のガイドを置く。これはコアの位置を示�
 下段の強度2パネルは上段と同じ距離を見ているため、下段の世界距離ラベルを省き、
 固定画面のカラーバーと数値への重なりを避ける。距離の目盛りは上段に残す。
 
-## 三つの映像と初回の制作範囲
+## 保存した三つの映像
 
-| 本編の予定ファイル | 内容 |
+| 本編ファイル | 内容 |
 | --- | --- |
 | `01_reflection.mp4` | linearの立体分布と25本の流れ、観察断面、±x側のコア境界 |
 | `02_kerr_comparison.mp4` | **上がOFF、下がON**。同じカメラ・入射条件・固定表示尺度で2パネル比較 |
 | `03_phase_change.mp4` | 上に「波のずれ」の内部位相差、下に同じ距離を観察するOFF/ONの連続強度断面 |
 
-本編は各6秒・24 fps・1920×1080。初回は3つの代表静止画とnative sceneを作り、
-linearの冒頭最大3秒だけを `phenomenon_proof.mp4` に保存する。
-代表画と物理成果が固定されるまで本編の長時間レンダリングへ進めない。
-`render_manifest.json` はこの段階の本編mp4とSHAをnull、production completeをfalseとする。
-短いproofを完成した本編の代用にしない。
+本編は各144フレームをCycles96 samples＋denoiseで描いた。
+各filmの `.blend`、`poster_01/02/03.png`、`render_manifest.json`、フォントライセンスを
+同じフォルダーへ保存する。`entrance_01.png` は本番01の最初の1920×1080 PNGを
+そのままコピーした構造の静止画で、再描画やproofの拡大ではない。
+初期previewの短いproofは `.work/` の履歴へ分離し、本編の案内には使わない。
 
 ```bash
 # 物理入力と座標・尺度・マスクの通常確認。Blenderを起動しない。
@@ -99,7 +105,7 @@ linearの冒頭最大3秒だけを `phenomenon_proof.mp4` に保存する。
 # 入口のカメラ構図だけを1枚で確認する。既存previewを上書きしない。
 .venv/bin/python scripts/render_spatial_kerr.py --mode posters --film 01_reflection --poster-frame 1 --output-dir .work/spatial-kerr-entrance-review
 
-# 代表画・物理成果の固定後に、別途依頼された本編を作る。
+# 修正済みのカメラ経路と全componentのactive sceneを使い、本編を全量再生成する。
 .venv/bin/python scripts/render_spatial_kerr.py --mode render
 ```
 
@@ -111,7 +117,7 @@ wslpathでパスを変換し、引数配列で呼び出す。OptiXがなけれ�
 
 入力manifestの全ファイルをSHA256に照合したうえで、実行ごとに `.work/` の新しい
 scratchへ読み取り専用入力のコピーを固定する。元入力とコピーのハッシュを確認し、
-コードもsnapshotへ固定する。再開・過去フレームの再利用は実装していない。
+コードもsnapshotへ固定する。全量renderは新規cacheを使い、一般的なresumeは実装しない。
 設定、元入力、コード、フォント、装置、Blender build、GPU driver取得結果、
 各フレームのSHAを記録し、古いフレームを混ぜない。
 
@@ -133,17 +139,75 @@ Blenderのscene選択で切り替えられる。再現CLIはこれらを毎フ�
 最初の12フレームは構造を観察し、24フレームまでに接写へ寄る。その間、観察zは250 µmに固定する。
 以後は250〜2600 µmを距離に沿って観察する。字幕はnative driverで画面サイズを保つ。
 この導入と接写への移動も光パルスの移動ではない。
+導入の13〜24フレームは、位置とEuler角を独立に補間せず、各フレームの注視点を
+追う回転キーで視線を保つ。全componentの検査・描画では対象sceneをactiveにしてから
+frameを設定し、別sceneに残った終端frameの評価が混入しないようにする。
 
 代表画を保存したnativeファイルを再読込して、入力頂点と有効流線の位置差を
 1e-3 µm未満、RGBA texture差を1e-6未満に照合する。位相のmaskと入射ピーク基準は
 GPUなしのrenderer testsでも確認する。動画はFFprobeで寸法・fps・フレーム数・長さを確認し、
 FFmpegで全フレームをデコードする。これはrendererの通常確認であり、数値伝搬の
 検証・独立validator・完全なMaxwell解の保証ではない。今回のvalidatorは0回。
+全componentの144フレームで、実際のcamera位置・姿勢・画角・注視点の投影を照合し、
+比較panelの距離と姿勢が一致することも確認する。各render前後にOptiX設定と
+GPU指定・CPU無効を検査する。factory reset後はOptiXを再設定し、CPU fallbackを拒否する。
+FFmpeg/FFprobeの実行path、binary SHA、version表示は取得したrunについて保存する。
 
 Pillow、NumPy、Blender 5.2/OptiX、FFmpeg/FFprobe、IPAexGothicを使う。
 標準はインストール済みIPAexGothicを未改変でblendにpackし、ライセンスを同梱する。
 独自フォントでは `--font` と `--font-license` を指定する。
 外部のHDRI、他者のモデル、音声、AI生成画像は使用しない。
+
+## カメラ不具合の正式補修と生成来歴
+
+元本番source `a6b623c`（SHA `2f34c912…`）には、導入途中で視線が外れる
+[Issue31](https://github.com/Motoki0705/optical-comm-lab/issues/31) と、非先頭sceneが
+終端frameで評価される [Issue34](https://github.com/Motoki0705/optical-comm-lab/issues/34) があった。
+補修は01の13〜24、02のON全144、03下段のOFF/ON各144をBlenderで再描画した。
+02のOFF、03の位相、01の補修外は、元の同じframe番号のPNGをhash照合して保持する。
+全ポスターとnativeは修正後の状態から生成し、3動画を全frameから再符号化する。
+古い画像の生成元を新sourceへ付け替えず、manifestの元run・補修run・component別
+置換frame・新旧source/scene/frame SHAへ分けて記録する。
+保存した補修画像/nativeの実producerは `b98a0e1`（SHA `57cbad279085…`）、
+補修外の元画像は `a6b623c` である。その後の
+[Issue35](https://github.com/Motoki0705/optical-comm-lab/issues/35) はhost引数検査と説明のみを
+変更した。既存mediaをこの後続sourceの生成物として付け替えず、再描画もしない。
+
+専用CLIは既知の元source SHAとconfig SHA `f37d3116…` に限定する。
+元の完成manifest、source/input snapshot、全864 native＋432 composed frameのhash、
+Python/NumPy/既知GPU driver、Blender build/device、フォントを照合する。
+カメラ以外の場・表示geometry・材質のfingerprintを比較し、補修外のcamera、
+全位置/画角が不変であることを確認する。入力data、係数、材質は補修で変更しない。
+元cacheを残した環境で、同じ元runから補修を再実行する手順は次のとおり。
+
+```bash
+.venv/bin/python scripts/render_spatial_kerr.py --mode repair-cameras --preflight-only --repair-manifest /path/to/original-completed-render_manifest.json --output-dir /path/to/original-deliverables --repair-cache /path/to/original-cache
+# 表示されたrepair_stateの指定サンプルと通常検査を確認してから実際の補修へ進む。
+.venv/bin/python scripts/render_spatial_kerr.py --mode repair-cameras --repair-state /path/to/repair-cache/repair_state.json --output-dir /path/to/original-deliverables
+```
+
+preflightと完了段階でsource/config/input/environmentとsample hashを再照合する。
+別versionのpreflightを流用しない。元cacheがない場合は、修正済みsourceの
+`--mode render` で全量再生成する。これは広いresumeや任意frameの置換機能ではない。
+prepareとfinishの同時指定、repairの `--film` / `--poster-frame`、finishにprepare用の
+manifest/cacheを追加する指定、他modeのrepair専用指定は、入力読取りや出力更新前に拒否する。
+[Issue33](https://github.com/Motoki0705/optical-comm-lab/issues/33) のencoder識別は補修時に
+実際に取得したpath/version/SHAを保存し、記録がない元runへ遡って帰属させない。
+H.264は非可逆なので、保持したPNGが同じでも再符号化後の画素やGOPのbyteは変わり得る。
+
+通常の全量 `--mode render` で01を含む場合、hostが実rendercacheの
+`01_reflection/reflection/frame_0001.png` をbyteを変えず `entrance_01.png` へ自動コピーする。
+元frameの保存SHAを照合し、manifestの `entrance_image` にfile/SHA/元film/元frameを、
+`geometry_context` に実frameの解像度・samples・source/config/input SHAを記録する。
+01を含まないrenderでは入口生成を主張しない。この
+[Issue36](https://github.com/Motoki0705/optical-comm-lab/issues/36) のhost改善は未来の再生成用で、
+凍結済みmediaの生成元やbyteを変更しない。
+`contact_sheet_01/02/03.png` は実際の完成MP4のframe1/18/40/72/110/144を縮小配置した
+通常の目視確認用画像で、数値検証の代わりではない。再作成例:
+
+```bash
+ffmpeg -i reports/animations/spatial_kerr/01_reflection.mp4 -vf "select='eq(n,0)+eq(n,17)+eq(n,39)+eq(n,71)+eq(n,109)+eq(n,143)',scale=960:540,tile=3x2" -frames:v 1 reports/animations/spatial_kerr/contact_sheet_01.png
+```
 
 ## 観察範囲とガラス表面
 
