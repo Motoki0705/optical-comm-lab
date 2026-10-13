@@ -18,9 +18,11 @@ from pathlib import Path
 import platform
 import shlex
 import shutil
+import struct
 import subprocess
 import sys
 import time
+import zlib
 
 
 FILMS = {
@@ -32,6 +34,7 @@ WIDTH, HEIGHT, FPS = 1920, 1080, 24
 DURATION = 12.0
 TIME_WINDOW_PS = 240.0
 CARRIER_PERIOD_PS = 12.0
+DISPLAY_TIME_UPSAMPLING = 4
 PEAK_TOTAL_W = .050
 COMPONENT_REFERENCE_SQRT_W = math.sqrt(PEAK_TOTAL_W / 2)
 AMPLITUDE_SCALE = .68 / COMPONENT_REFERENCE_SQRT_W
@@ -47,6 +50,100 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def write_json_atomic(path: Path, value: dict | list) -> None:
+    temporary=path.with_name(path.name+".tmp")
+    temporary.write_text(json.dumps(value,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+    temporary.replace(path)
+
+
+def input_record_key(path: Path, root: Path) -> str:
+    """Keep repository inputs portable; retain an explicit external location."""
+    resolved=path.resolve()
+    return str(resolved.relative_to(root.resolve())) if resolved.is_relative_to(root.resolve()) else str(resolved)
+
+
+def selected_proof_case(cases: list[str]) -> str:
+    return "combined" if "combined" in cases else cases[-1]
+
+
+def gpu_report() -> dict:
+    try:
+        value=subprocess.check_output(["nvidia-smi","--query-gpu=uuid,name,driver_version","--format=csv,noheader"],text=True,timeout=10)
+        rows=sorted(row.strip() for row in value.splitlines() if row.strip())
+        return {"known":bool(rows),"query":"uuid,name,driver_version","rows":rows}
+    except (FileNotFoundError,subprocess.SubprocessError):
+        return {"known":False,"query":"uuid,name,driver_version","rows":[],"reason":"nvidia-smi unavailable; cross-run frame reuse disabled"}
+
+
+def render_signature(parameters: dict, environment: dict) -> str:
+    return hashlib.sha256(json.dumps({"parameters":parameters,"environment":environment},sort_keys=True).encode()).hexdigest()
+
+
+def require_resume_signature(previous: dict, signature: str, environment: dict) -> None:
+    if not environment.get("gpu_driver_report",{}).get("known"):
+        raise RuntimeError("Resume refused: GPU driver identity is unavailable")
+    if previous.get("signature")!=signature:
+        raise RuntimeError("Resume refused: source, data, render settings, Blender build, device, or driver changed")
+
+
+def inspect_png(path: Path, expected_size: tuple[int,int]=(WIDTH,HEIGHT)) -> dict:
+    """Decode the lossless native RGB/RGBA PNG stream and verify its chunks."""
+    blob=path.read_bytes()
+    if blob[:8]!=b"\x89PNG\r\n\x1a\n":
+        raise ValueError("Invalid PNG signature")
+    offset=8
+    header=None
+    payload=[]
+    ended=False
+    while offset<len(blob):
+        if offset+12>len(blob):
+            raise ValueError("Truncated PNG chunk")
+        size=struct.unpack_from(">I",blob,offset)[0]
+        kind=blob[offset+4:offset+8]
+        end=offset+12+size
+        if end>len(blob):
+            raise ValueError("Truncated PNG payload")
+        chunk=blob[offset+8:offset+8+size]
+        crc=struct.unpack_from(">I",blob,offset+8+size)[0]
+        if zlib.crc32(kind+chunk)&0xFFFFFFFF!=crc:
+            raise ValueError("PNG chunk CRC mismatch")
+        if kind==b"IHDR":
+            if header is not None or len(chunk)!=13:
+                raise ValueError("Invalid PNG header")
+            header=struct.unpack(">IIBBBBB",chunk)
+        elif kind==b"IDAT":
+            payload.append(chunk)
+        elif kind==b"IEND":
+            if size!=0 or end!=len(blob):
+                raise ValueError("Invalid PNG ending")
+            ended=True
+            break
+        offset=end
+    if not ended or header is None or not payload:
+        raise ValueError("Incomplete PNG")
+    width,height,depth,color,compression,filter_method,interlace=header
+    if (width,height)!=expected_size or depth!=8 or color not in [2,6] or compression or filter_method or interlace:
+        raise ValueError("Unexpected PNG dimensions or native RGB format")
+    row_size=1+width*(3 if color==2 else 4)
+    decoder=zlib.decompressobj()
+    try:
+        decoded=decoder.decompress(b"".join(payload),row_size*height+1)
+    except zlib.error as error:
+        raise ValueError("PNG raster decompression failed") from error
+    if not decoder.eof or decoder.unused_data or len(decoded)!=row_size*height or any(decoded[index]>4 for index in range(0,len(decoded),row_size)):
+        raise ValueError("PNG raster is truncated or has invalid filters")
+    return {"bytes":len(blob),"sha256":hashlib.sha256(blob).hexdigest(),"width":width,"height":height}
+
+
+def cached_frame_valid(path: Path, record: dict | None, expected_size: tuple[int,int]=(WIDTH,HEIGHT)) -> bool:
+    if not record:
+        return False
+    try:
+        return inspect_png(path,expected_size)==record
+    except (OSError,ValueError):
+        return False
+
+
 def arguments(argv: list[str]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--blender", help="Blender executable, including a Windows .exe under WSL")
@@ -60,10 +157,13 @@ def arguments(argv: list[str]) -> argparse.Namespace:
     p.add_argument("--duration", type=float, default=DURATION)
     p.add_argument("--fps", type=int, default=FPS)
     p.add_argument("--font", type=Path, default=Path("/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf"))
+    p.add_argument("--font-license",type=Path,help="License text for a custom caption font; default IPAexGothic uses its installed package license")
     p.add_argument("--ffmpeg", default=shutil.which("ffmpeg"))
     p.add_argument("--ffprobe", default=shutil.which("ffprobe"))
     p.add_argument("--resume", action="store_true", help="Reuse frames only when their source/config/data signature matches")
     p.add_argument("--inside-blender", action="store_true", help=argparse.SUPPRESS)
+    p.add_argument("--gpu-report",default="",help=argparse.SUPPRESS)
+    p.add_argument("--proof-motion-case",choices=list(FILMS),help=argparse.SUPPRESS)
     a = p.parse_args(argv)
     if a.samples < 16 or not 0 < a.adaptive_threshold <= .1:
         p.error("Use at least 16 samples and an adaptive threshold in (0, .1]")
@@ -98,11 +198,13 @@ def visual_encoding(count: int) -> dict:
         "real_ratio_intro_frames": [1, 37],
         "expanded_core_transition_frames": [37, 73],
         "magnified_view_scale_relative_to_intro": ILLUSTRATION_MAGNIFICATION,
+        "detailed_cladding_radius_relative_to_intro": 1.5,
         "retarded_time_window_ps": [-TIME_WINDOW_PS, TIME_WINDOW_PS],
         "axial_units_per_ps": AXIAL_UNITS_PER_PS,
         "axial_meaning": "Position along the exposed segment encodes retarded time within a pulse at the displayed propagation distance; the centimeter-like specimen length is illustrative and is not 80 km mapped literally to a single spatial instant.",
         "camera_framing": "The camera approaches the exposed core for a macro closeup. +/-240ps is the generated field geometry/data window, not an axis drawn across the image; the low-power outer tails may be outside the closeup framing. Camera paths are identical for the three cases.",
         "illustrated_carrier_period_ps": CARRIER_PERIOD_PS,
+        "display_time_upsampling": {"factor":DISPLAY_TIME_UPSAMPLING,"method":"Linear interpolation of real/imaginary complex-envelope components in retarded time, followed by analytic evaluation of the illustrated carrier on that finer grid. Original exported sample knots and physical data are unchanged. This is display smoothing, not propagation refinement.","phase_mask":"Conservative interpolation: phase color is present only where the bracketing original phase_valid samples are valid."},
         "carrier": "E_pol(t)=Re[A_pol(z,t) exp(-i 2 pi t / 12ps)]. The 1550 nm infrared carrier is invisible and far faster. Its period is enlarged for visibility; the envelope and envelope phase come from the numerical fields.",
         "field_components": "The field curve coordinates are (displayed retarded time, E_y, E_x). The same phase in Ax and Ay preserves linear polarization at 45 degrees; envelope phase is never used as a polarization rotation.",
         "field_amplitude_units": "sqrt(W), proportional to electric field for the supplied normalization",
@@ -111,7 +213,7 @@ def visual_encoding(count: int) -> dict:
         "envelope_geometry": "The translucent envelope radius encodes absolute sqrt(Px+Py) on one fixed scale. It is an amplitude glyph, not a changing physical mode-field radius or a transverse electromagnetic simulation.",
         "amplitude_scaling": "A single fixed mapping is shared by all cases and all distances. The 16 dB passive loss is retained; no per-frame or per-case normalization, gain compensation, or synthetic enhancement of the numerical field is applied.",
         "phase_color": {"input": "arg(Ax), circular phase modulo 2pi", "range_rad": [-math.pi, math.pi], "mapping": "cyclic teal at 0, warm orange toward +pi/2, blue toward -pi/2, magenta at +/-pi", "mask": "The supplied phase_valid mask hides phase colors below 1e-6 of each snapshot's peak. Absolute field and power arrays remain unchanged."},
-        "distance_mapping": {"start_km": 0., "end_km": 80., "start_frame": 61, "end_frame": count-36, "hold_start_seconds": 2.5, "hold_end_seconds": 1.5, "meaning": "An illustrative sweep through propagation distance, not a real-time transit video."},
+        "distance_mapping": {"start_km": 0., "end_km": 80., "start_frame": 61, "end_frame": count-36, "start_timestamp_seconds":2.5,"end_timestamp_seconds":(count-37)/FPS,"sweep_seconds":(count-97)/FPS,"formula":"z_km=80*clip((frame-61)/(frame_count-97),0,1)","hold_start_seconds": 2.5, "hold_end_seconds_between_rendered_endpoints": 1.5, "meaning": "An illustrative sweep through propagation distance, not a real-time transit video."},
         "display_interpolation": "Native Blender linear shape-key interpolation between the 81 measured solver export distances (0,1,...,80 km); atlas phase colors interpolate between the same rows. Every MP4 frame is actually rendered by Cycles; no optical-flow interpolation or duplication to accelerate rendering.",
         "renderer_scope": "Cycles traces visible studio illumination to render materials. It does not solve the nonlinear optical propagation; all data-driven field geometry is generated from the separate numerical artifacts.",
     }
@@ -134,8 +236,8 @@ def make_overlay(path: Path, case: str, frame: int, args: argparse.Namespace) ->
     if frame <= 37:
         text((42,HEIGHT-91), "ファイバ断面の実寸比：コア 8.2 µm / クラッド 125 µm", f=small)
     else:
-        text((42,HEIGHT-91), "コア内の電場を拡大表示 ｜ 振幅は共通の固定倍率、位相は色で表示", f=small)
-    text((42,HEIGHT-52), "相対時刻の電場（データ窓 ±240 ps）｜ 搬送波周期 12 ps は模式表示（実光は1550 nmの赤外線）", f=small, fill=(174,200,218,255))
+        text((42,HEIGHT-91), "光の電場を拡大表示 ｜ 振幅＝共通の固定倍率、色＝包絡線の位相", f=small)
+    text((42,HEIGHT-52), "横＝パルス内の相対時刻（データ窓 ±240 ps）｜ 搬送波周期 12 ps は模式表示（実光は1550 nmの赤外線）", f=small, fill=(174,200,218,255))
     image.save(path)
 
 
@@ -182,15 +284,30 @@ def run_host(args: argparse.Namespace) -> None:
         blender = str(default)
     if not blender:
         raise FileNotFoundError("Pass --blender /path/to/blender")
-    if args.mode in ["render","proof"] and (not args.ffmpeg or not args.ffprobe or not args.font.is_file()):
-        raise FileNotFoundError("FFmpeg, FFprobe, and the Japanese overlay font are required")
+    if args.mode in ["render","proof"]:
+        if not args.ffmpeg or not args.ffprobe or not args.font.is_file():
+            raise FileNotFoundError("FFmpeg, FFprobe, and the Japanese overlay font are required")
+        try:
+            from PIL import Image
+        except ImportError as error:
+            raise RuntimeError("Pillow is required for captions; run with .venv/bin/python or install Pillow before rendering") from error
+        default_font=Path("/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf")
+        if args.font_license is None:
+            if not default_font.is_file() or sha256(args.font)!=sha256(default_font):
+                raise ValueError("A custom font requires --font-license with its license text")
+            args.font_license=Path("/usr/share/doc/fonts-ipaexfont-gothic/copyright")
+        if not args.font_license.is_file():
+            raise FileNotFoundError(f"Caption font license is required before rendering: {args.font_license}")
+    driver_report=gpu_report()
+    if args.resume and not driver_report["known"]:
+        raise RuntimeError("Resume refused: GPU driver identity is unavailable")
     scratch.mkdir(parents=True,exist_ok=True)
     output.mkdir(parents=True,exist_ok=True)
     windows = str(blender).lower().endswith(".exe")
     invocations=[]
     metadata=[]
     for case in args.case:
-        invocation=[str(blender),"--background","--factory-startup","--python-exit-code","1","--python",native_path(script,windows),"--","--inside-blender","--mode",args.mode,"--case",case,"--data-dir",native_path(data,windows),"--output-dir",native_path(output,windows),"--scratch-dir",native_path(scratch,windows),"--samples",str(args.samples),"--adaptive-threshold",str(args.adaptive_threshold),"--duration",str(args.duration),"--fps",str(args.fps)]
+        invocation=[str(blender),"--background","--factory-startup","--python-exit-code","1","--python",native_path(script,windows),"--","--inside-blender","--mode",args.mode,"--case",case,"--proof-motion-case",selected_proof_case(args.case),"--gpu-report",json.dumps(driver_report,sort_keys=True),"--data-dir",native_path(data,windows),"--output-dir",native_path(output,windows),"--scratch-dir",native_path(scratch,windows),"--samples",str(args.samples),"--adaptive-threshold",str(args.adaptive_threshold),"--duration",str(args.duration),"--fps",str(args.fps)]
         if args.resume:
             invocation.append("--resume")
         log = scratch / case / f"{args.mode}.log"
@@ -204,7 +321,7 @@ def run_host(args: argparse.Namespace) -> None:
     if args.mode in ["stills","build"]:
         return
     if args.mode == "proof":
-        case = "combined" if "combined" in args.case else args.case[-1]
+        case = selected_proof_case(args.case)
         frames = metadata[args.case.index(case)]["motion_proof_frames"]
         if frames:
             result=encode_video(args,case,frames,scratch,output/"computed_field_motion_proof.mp4")
@@ -223,17 +340,16 @@ def run_host(args: argparse.Namespace) -> None:
         overlay=Image.open(scratch/case/"overlays"/f"frame_{poster_frame:04d}.png").convert("RGBA")
         Image.alpha_composite(poster,overlay).convert("RGB").save(output/info["poster"])
         films.append({"case":case,"title":info["title"],"file":info["stem"]+".mp4","blend":info["stem"]+".blend","poster":info["poster"],"duration_seconds":args.duration,"fps":args.fps,"frame_count":frame_count(args),"resolution":[WIDTH,HEIGHT],"scene":scene_meta})
-    license_source=Path("/usr/share/doc/fonts-ipaexfont-gothic/copyright")
-    if not license_source.is_file():
-        raise FileNotFoundError("IPAexGothic package license is required for the overlay provenance")
-    license_text="IPAexGothic is used without modification to rasterize post-production captions.\nNo font binary is embedded in the native Blender scene.\nSource: https://moji.or.jp/ipafont/\n\n"+license_source.read_text(encoding="utf-8")
+    license_source=args.font_license
+    license_text=f"Caption font: {args.font.name}, used without modification to rasterize post-production captions.\nNo font binary is embedded in the native Blender scene.\nLicense input: {license_source}\n\n"+license_source.read_text(encoding="utf-8")
     (output/"LICENSE-fonts.txt").write_text(license_text,encoding="utf-8")
     try:
         commit=subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip()
     except (FileNotFoundError,subprocess.CalledProcessError):
         commit=None
-    inputs={str(path.relative_to(root)):sha256(path) for path in [script,*sorted(data.glob("*.json")),*sorted(data.glob("*.npz"))]}
-    outputs={path.name:{"bytes":path.stat().st_size,"sha256":sha256(path)} for path in sorted(output.iterdir()) if path.suffix in [".mp4",".blend",".png",".txt"]}
+    inputs={input_record_key(path,root):sha256(path) for path in [script,*sorted(data.glob("*.json")),*sorted(data.glob("*.npz"))]}
+    delivered=[output/name for film in films for name in [film["file"],film["blend"],film["poster"]]]+[output/"LICENSE-fonts.txt"]
+    outputs={path.name:{"bytes":path.stat().st_size,"sha256":sha256(path)} for path in delivered}
     manifest={"schema":"optical-comm-kerr-physics-films/v1","issue":16,"created_utc":datetime.now(timezone.utc).isoformat(),"source_commit":commit,"inputs":inputs,"outputs":outputs,"films":films,"visual_encoding":visual_encoding(frame_count(args)),"rendering":{"engine":"Cycles","backend":"OptiX","samples":args.samples,"adaptive_threshold":args.adaptive_threshold,"denoiser":"OptiX","resolution":[WIDTH,HEIGHT],"persistent_data":True,"caustics_disabled_for_readability":True},"assets":{"external_artwork":[],"procedural_scene":"All scene geometry/materials authored by the renderer. No third-party HDRI, textures, model, music, or footage.","font":{"file":str(args.font),"sha256":sha256(args.font),"use":"Small transparent post-production overlay, not the scene protagonist.","license":"LICENSE-fonts.txt"}},"regeneration":{"working_directory":"repository root","command":shlex.join(["python3","scripts/render_kerr_films.py","--mode","render","--blender",str(blender),"--samples",str(args.samples),"--adaptive-threshold",str(args.adaptive_threshold),"--data-dir",str(args.data_dir),"--output-dir",str(args.output_dir),"--scratch-dir",str(args.scratch_dir)]),"blender_invocations":invocations,"encodings":encodings,"native_scene":"Mesh shape keys, packed phase atlases, material animation, camera animation and field coordinates are baked native Blender data. No Python handler, external scientific array, or texture is required to reload/render a saved .blend."},"host":{"platform":platform.platform(),"python":sys.version},"verification":{"independent_validator":{"requested":0,"attempted":0,"completed":0}}}
     (output/"manifest.json").write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     print(f"Rendered and checked {len(films)} data-driven films: {output}",flush=True)
@@ -260,17 +376,17 @@ def run_blender(args: argparse.Namespace) -> None:
     if zs.shape!=(81,) or np.max(abs(zs-np.arange(81)))>1e-10 or field.shape!=(81,len(ts),2) or not np.isfinite(field).all():
         raise ValueError("Unexpected or nonfinite actual field arrays")
     time_indices=np.flatnonzero(abs(ts)<=TIME_WINDOW_PS)
-    display_ts=ts[time_indices]
-    display_field=field[:,time_indices,:]
-    display_valid=valid[:,time_indices,0]
+    source_display_ts=ts[time_indices]
+    source_display_field=field[:,time_indices,:]
+    source_display_valid=valid[:,time_indices,0]
+    display_ts=np.linspace(source_display_ts[0],source_display_ts[-1],(len(source_display_ts)-1)*DISPLAY_TIME_UPSAMPLING+1)
+    display_field=np.empty((len(zs),len(display_ts),2),dtype=np.complex128)
+    display_valid=np.empty((len(zs),len(display_ts)),dtype=bool)
+    for row in range(len(zs)):
+        for pol in range(2):
+            display_field[row,:,pol]=np.interp(display_ts,source_display_ts,source_display_field[row,:,pol].real)+1j*np.interp(display_ts,source_display_ts,source_display_field[row,:,pol].imag)
+        display_valid[row]=np.interp(display_ts,source_display_ts,source_display_valid[row].astype(float))>=1.-1e-12
     count=frame_count(args)
-    signature=hashlib.sha256(json.dumps({"script":sha256(Path(__file__)),"data":sha256(data_path),"samples":args.samples,"threshold":args.adaptive_threshold,"duration":args.duration,"fps":args.fps,"blender":bpy.app.version_string},sort_keys=True).encode()).hexdigest()
-    signature_path=scratch/"frame_signature.json"
-    if args.resume:
-        if not signature_path.is_file() or json.loads(signature_path.read_text())["signature"]!=signature:
-            raise RuntimeError("Resume refused: rendered-frame source/config/data signature differs")
-    else:
-        signature_path.write_text(json.dumps({"signature":signature,"case":case}),encoding="utf-8")
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete(use_global=False)
     for unused in list(bpy.data.materials):
@@ -290,6 +406,28 @@ def run_blender(args: argparse.Namespace) -> None:
         devices.append({"name":device.name,"type":device.type,"id":device.id,"enabled":device.use})
     if not any(device["enabled"] for device in devices):
         raise RuntimeError("No OptiX GPU detected; CPU fallback is not silently allowed")
+    driver_report=json.loads(args.gpu_report) if args.gpu_report else gpu_report()
+    environment={"blender_version":bpy.app.version_string,"blender_build_hash":bpy.app.build_hash.decode(),"selected_devices":[device for device in devices if device["enabled"]],"gpu_driver_report":driver_report}
+    parameters={"script":sha256(Path(__file__)),"data":sha256(data_path),"samples":args.samples,"threshold":args.adaptive_threshold,"duration":args.duration,"fps":args.fps,"resolution":[WIDTH,HEIGHT]}
+    signature=render_signature(parameters,environment)
+    signature_path=scratch/"frame_signature.json"
+    ledger_path=scratch/"frame_ledger.json"
+    if args.resume:
+        if not signature_path.is_file():
+            raise RuntimeError("Resume refused: no recorded frame-generation signature")
+        require_resume_signature(json.loads(signature_path.read_text()),signature,environment)
+        try:
+            ledger=json.loads(ledger_path.read_text())
+        except (OSError,ValueError):
+            ledger={"signature":signature,"frames":{}}
+        if ledger.get("signature")!=signature:
+            ledger={"signature":signature,"frames":{}}
+    else:
+        ledger={"signature":signature,"frames":{}}
+        write_json_atomic(signature_path,{"signature":signature,"case":case,"parameters":parameters,"environment":environment})
+        write_json_atomic(ledger_path,ledger)
+    scene["renderer_source_sha256"]=parameters["script"]
+    scene["render_environment"]=json.dumps(environment,sort_keys=True)
     scene.cycles.device="GPU"
     scene.cycles.samples=args.samples
     scene.cycles.use_adaptive_sampling=True
@@ -618,29 +756,32 @@ def run_blender(args: argparse.Namespace) -> None:
     blend=out/(FILMS[case]["stem"]+".blend")
     bpy.ops.wm.save_as_mainfile(filepath=str(blend),compress=True)
     stills=[1,round(count*.55),count]
-    motion=list(range(97,145)) if args.mode=="proof" and case==("combined" if "combined" in FILMS else case) else []
+    motion=list(range(97,145)) if args.mode=="proof" and case==(args.proof_motion_case or selected_proof_case(args.case)) else []
     render_frames=list(range(1,count+1)) if args.mode=="render" else sorted(set(stills+motion)) if args.mode in ["stills","proof"] else []
     timings=[]
     for frame in render_frames:
         target=frames_dir/f"frame_{frame:04d}.png"
-        if args.resume and target.is_file():
-            timings.append({"frame":frame,"reused":True})
+        if args.resume and cached_frame_valid(target,ledger["frames"].get(str(frame))):
+            timings.append({"frame":frame,"reused":True,"PNG":ledger["frames"][str(frame)]})
             continue
         scene.frame_set(frame)
         scene.render.filepath=str(target)
         begin=time.perf_counter()
         bpy.ops.render.render(write_still=True)
         elapsed=time.perf_counter()-begin
-        timings.append({"frame":frame,"render_seconds":elapsed,"distance_km":distance_at_frame(frame,count)})
-        (scratch/"render_progress.json").write_text(json.dumps(timings,indent=2),encoding="utf-8")
+        record=inspect_png(target)
+        ledger["frames"][str(frame)]=record
+        write_json_atomic(ledger_path,ledger)
+        timings.append({"frame":frame,"render_seconds":elapsed,"distance_km":distance_at_frame(frame,count),"PNG":record})
+        write_json_atomic(scratch/"render_progress.json",timings)
         print("RENDER_FRAME="+json.dumps(timings[-1]),flush=True)
-        if frame in stills:
+        if frame in stills and args.mode in ["stills","proof"]:
             shutil.copy2(target,out/f"{case}_proof_{frame:04d}.png")
     energy=np.sum(abs(field)**2,axis=(1,2))
-    cropped_energy=np.sum(abs(display_field)**2,axis=(1,2))
+    cropped_energy=np.sum(abs(source_display_field)**2,axis=(1,2))
     omission=np.maximum(0,1-cropped_energy/energy)
     actual_times=[item["render_seconds"] for item in timings if "render_seconds" in item]
-    metadata={"schema":"optical-comm-kerr-film-scene/v1","case":case,"blender":bpy.app.version_string,"engine":"CYCLES","compute_device_type":"OPTIX","device":"GPU","devices":devices,"signature":signature,"source":{"file":data_path.name,"sha256":sha256(data_path)},"frame_count":count,"resolution":[WIDTH,HEIGHT],"visual_encoding":visual_encoding(count),"display_crop":{"requested_window_ps":[-TIME_WINDOW_PS,TIME_WINDOW_PS],"actual_sample_bounds_ps":[float(display_ts[0]),float(display_ts[-1])],"samples":len(display_ts),"max_fractional_energy_omission_over_distance":float(np.max(omission)),"fractional_energy_omission_by_z":omission.tolist()},"native_scene":{"file":blend.name,"packed_phase_atlas":atlas.name,"shape_key_distances_km":zs.tolist(),"external_render_assets":[],"python_handlers":False},"stills":stills,"motion_proof_frames":motion,"render_summary":{"new_frames":len(actual_times),"reused_frames":sum(item.get("reused",False) for item in timings),"mean_seconds":float(np.mean(actual_times)) if actual_times else None,"seconds":sum(actual_times)},"render_timings":timings}
+    metadata={"schema":"optical-comm-kerr-film-scene/v1","case":case,"blender":bpy.app.version_string,"environment":environment,"renderer_source_sha256":parameters["script"],"engine":"CYCLES","compute_device_type":"OPTIX","device":"GPU","devices":devices,"signature":signature,"source":{"file":data_path.name,"sha256":sha256(data_path)},"frame_count":count,"resolution":[WIDTH,HEIGHT],"visual_encoding":visual_encoding(count),"display_crop":{"requested_window_ps":[-TIME_WINDOW_PS,TIME_WINDOW_PS],"actual_sample_bounds_ps":[float(display_ts[0]),float(display_ts[-1])],"samples":len(display_ts),"max_fractional_energy_omission_over_distance":float(np.max(omission)),"fractional_energy_omission_by_z":omission.tolist()},"native_scene":{"file":blend.name,"packed_phase_atlas":atlas.name,"shape_key_distances_km":zs.tolist(),"external_render_assets":[],"python_handlers":False},"stills":stills,"motion_proof_frames":motion,"render_summary":{"new_frames":len(actual_times),"reused_frames":sum(item.get("reused",False) for item in timings),"mean_seconds":float(np.mean(actual_times)) if actual_times else None,"seconds":sum(actual_times)},"render_timings":timings}
     (scratch/"scene_metadata.json").write_text(json.dumps(metadata,ensure_ascii=False,indent=2),encoding="utf-8")
 
 
