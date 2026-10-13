@@ -36,3 +36,11 @@ Add a configuration only for a named, interpretable experimental purpose.
 `ExperimentConfig.from_dict` rejects unknown fields and candidate-specified
 seed/ridge values; the hierarchy and ridge path own those values. `--dry-run`
 prints the resolved settings, bit budget, and declared future-context delay.
+
+`kerr_films.json` fixes a separate deterministic isolated Gaussian pulse for
+distance-resolved explanatory films: 50 mW XY-total **peak** power, T0=20 ps,
+80 km of unamplified lossy fiber, and separate Kerr-only, dispersion-only and
+combined cases. It uses the same Manakov solver with a 0.25 km step and a 2 ns
+window at dt=0.244140625 ps. Its ordinary pulse qualification and display-data
+contract are in [kerr-physics.md](../docs/kerr-physics.md). These parameters are
+not an alternative training/test configuration for the 1600 km data stream.
