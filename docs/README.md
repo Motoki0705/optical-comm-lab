@@ -16,6 +16,12 @@ SSFM計算、数値検証、電場・位相・チャープ・スペクトルの�
 
 [spatial-kerr.md](spatial-kerr.md) は、円形コア内の空間場と横方向の流れから
 反射と Kerr 効果を描く追加モデルの条件・方法・保存結果を担当する。
-時間包絡線の映像との違い、教育用の作業仮定、正規化、再生成・監査コマンドを説明する。
+時間包絡線の映像との違い、選択された教育用条件、正規化、再生成・監査コマンドを説明する。
 全3 mmの空間収束を保証しない限定的な数値確認と、流線の補間による位置の差を明記し、
-別Issueで制作中の映像・説明資料と区別する。
+数値場の検証と描画・説明ページの確認を区別する。
+
+[spatial-kerr-rendering.md](spatial-kerr-rendering.md) は、円形コアの保存済み場・等強度面・
+流線を使う3本のBlender動画の座標、表示、カメラ、補修来歴、再生成を説明する。
+読者向けの入口は [映像中心の日本語解説](../reports/animations/spatial_kerr/index.html)、
+図とHTMLの再生成は [解説のREADME](../reports/animations/spatial_kerr/README.md)と
+[builder CLI](../scripts/build_spatial_kerr_report.py)を参照する。

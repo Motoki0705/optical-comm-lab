@@ -171,3 +171,24 @@ original camera bugs, with original/current provenance and all frame hashes.
 It is separate from normal full reproduction and does not implement general
 resume. Encoder binary paths/versions/hashes are saved for the run where they
 were queried. The superseded short preview is kept only in ignored history.
+
+[`build_spatial_kerr_report.py`](build_spatial_kerr_report.py) builds the
+[offline Japanese explanation](../reports/animations/spatial_kerr/index.html)
+from the saved circular-core fields and three completed films. It generates
+the four-case intensity comparison, endpoint intensity/phase figures, mobile
+variants, HTML, and provenance. NumPy, Matplotlib, a local Japanese font, and
+FFprobe are required.
+
+```bash
+.venv/bin/python scripts/build_spatial_kerr_report.py --physics-run artifacts/spatial_kerr --renders reports/animations/spatial_kerr
+.venv/bin/python scripts/build_spatial_kerr_report.py --figures-only --physics-run artifacts/spatial_kerr --output-dir .work/spatial-figures-reproduction
+```
+
+The full mode requires production movies and final media hashes; previews are
+rejected. `--figures-only` reads the saved numerical fields without requiring
+movies. See the [explanation README](../reports/animations/spatial_kerr/README.md)
+for output paths, fixed display scales, offline viewing, and local HTTP saving.
+The [explanation manifest](../reports/animations/spatial_kerr/explanation_manifest.json)
+retains ordinary browser checks for the delivered revision. Regeneration does
+not run those browser checks automatically; `--browser-record` accepts only
+a successful record for the same final HTML, movies, and render manifest.

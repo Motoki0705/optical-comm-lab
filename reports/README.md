@@ -1,5 +1,9 @@
 # レポートと図
 
+[反射する光とKerr効果の日本語解説](animations/spatial_kerr/index.html)は、
+入口の構造から3本の動画を順に見て、反射・分布・位相の変化を読むページ。
+4条件を同じ尺度で切り替える比較、印刷用の静的図、終端の強度と位相差を保存する。
+
 円形コアの空間場は、各6秒・24 fps・1080pの
 [反射](animations/spatial_kerr/01_reflection.mp4)、
 [Kerr OFF/ON比較](animations/spatial_kerr/02_kerr_comparison.mp4)、
@@ -11,6 +15,12 @@
 カメラ・距離注記が定常場を観察し、光パルスの移動時間は描かない。再現入口は
 [`render_spatial_kerr.py`](../scripts/render_spatial_kerr.py)、座標・表示・検証の説明は
 [描画ガイド](../docs/spatial-kerr-rendering.md)を参照する。
+
+[解説の再生成手順](animations/spatial_kerr/README.md)と
+[解説manifest](animations/spatial_kerr/explanation_manifest.json)に、図・HTMLの生成条件、
+入力と出力のハッシュ、完成メディアでのブラウザ通常確認を記録する。
+生成処理は [build_spatial_kerr_report.py](../scripts/build_spatial_kerr_report.py)が担当し、
+数値場と動画の保存済みデータから図と説明ページを作る。
 
 [日本語レポート](final_report.md)と[オフラインHTML](final_report.html)は、専門外の読者に向けて実際の結果を図表中心に説明する。HTMLはPNGを埋め込み、表示時にネット接続や日本語フォントの取得を要しない。ブラウザの印刷でPDF化できる。説明用の模式図と、保存済みデータから描く結果図を区別する。本文は結論・測定内容・結果の意味・限界を中心とし、候補選択・数値条件・実装依存の資源比較・再現記録は4つの折り畳み補足に保存する。HTMLとMarkdownの両方で開閉でき、印刷には必要な補足を開いてから進む。
 
