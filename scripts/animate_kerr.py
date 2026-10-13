@@ -514,7 +514,7 @@ def run_blender(args: argparse.Namespace) -> None:
     text("光パルスが通る光ファイバ", 88, 208, 23)
     fiber(356, 348)
     text("コア", 137, 438, 19, "cyan")
-    line("core label leader", [(150, 416), (154, 372)], "cyan", 1)
+    line("core label leader", [(150, 416), (154, 327)], "cyan", 1)
     text("強度の大きい中心を明るく表示", 338, 470, 18, "gold", "CENTER")
     text("断面・寸法・進行は誇張した模式表現", 88, 529, 16, "muted")
     rectangle("index formula card", 706, 168, 510, 386)
