@@ -38,4 +38,8 @@ SVGは文字を輪郭で保存し、PDFはフォントを埋め込む。方式�
 
 このディレクトリは読者向けの文章と図を保存する。生成処理は `scripts/`、再利用する数値処理は `src/optical_comm/`、測定・学習のcompact artifactは `artifacts/` に置く。中間ログや一時的な描画確認は `.work/` に分離する。
 
-[Kerr効果のBlenderアニメーション](animations/kerr/README.md)は、光強度による屈折率の変化、位相の蓄積、チャープとスペクトルを日本語で説明する30秒の動画。MP4、編集できる圧縮 `.blend`、ポスター、出典・再生成記録・フォントライセンスを一緒に保存する。単一偏波・無損失・無分散の模式例であり、1600 kmの測定結果には用いない。生成用CLIは `scripts/animate_kerr.py`。
+[光ファイバ内部の3本の物理映像と解説](animations/kerr_physics/index.html)は、80 kmを伝搬する同じガウスパルスから、自己位相変調、波長分散、両者の同時作用を比べる。計算した二偏波の電場をBlender/Cyclesで接写映像にし、各12秒・1080pのMP4、編集できる `.blend`、ポスターを保存した。解説は動画を中心に、見るところ、変化の理由、測定したRMS幅の比を示す。3条件に共通する損失と、描画上の拡大・色・パルス内の時間座標を明示する。HTMLと動画のフォルダ構成を保持すればオフラインで読める。
+
+[解説のREADME](animations/kerr_physics/README.md)と[マニフェスト](animations/kerr_physics/explanation_manifest.json)に、入力・出力のハッシュと再生成コマンドを保存する。説明用の単独パルス実験であり、1600 kmの学習結果やBERの追加評価ではない。生成CLIは `scripts/build_kerr_explanation.py`、物理計算は `scripts/simulate_kerr_films.py`、動画は `scripts/render_kerr_films.py`。詳細は[物理モデル](../docs/kerr-physics.md)と[描画手順](../docs/kerr-rendering.md)を参照する。
+
+旧版の[30秒の模式アニメーション](animations/kerr/README.md)は、当時のMP4、Blenderシーン、ポスター、来歴とフォントライセンスを保持している。単一偏波・無損失・無分散の解析例で、生成CLIは `scripts/animate_kerr.py`。今回の3本の動画の入力には使っていない。
