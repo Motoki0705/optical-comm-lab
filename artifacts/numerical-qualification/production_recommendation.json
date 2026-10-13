@@ -1,0 +1,72 @@
+{
+  "acceptance_target": {
+    "ber_counting_interval_confidence": 0.999,
+    "maximum_abs_effective_snr_change_db": 0.1
+  },
+  "accepted_initial": {
+    "guard256": true,
+    "n_symbols65536": true,
+    "sps4_step1": true
+  },
+  "checks": {
+    "all_boundary_paired_ber_consistent": true,
+    "all_boundary_pairs_accepted": true,
+    "all_refinement_paired_ber_consistent": true,
+    "all_refinement_pairs_accepted": true,
+    "boundary_pair_summaries": 40,
+    "full_receiver_controls_accepted": true,
+    "maximum_abs_boundary_snr_drift_db": 0.0022872401379707696,
+    "maximum_abs_refinement_snr_drift_db": 0.0003085031932190674,
+    "refinement_individual_pairs": 56,
+    "refinement_pair_summaries": 28,
+    "selected_frame_guard_largest_mean_symbol_pair_evm": 6.188596752702778e-08,
+    "selected_frame_guard_maximum_abs_snr_drift_db": 3.674699655675795e-08
+  },
+  "dbp_step_km": 1,
+  "decided_utc": "2026-10-12T11:14:57.615464+00:00",
+  "evaluation_class": "numerical qualification; not held-out model testing or independent validator",
+  "failed_candidates": {
+    "frame_guard": [],
+    "step_sampling": []
+  },
+  "input_result_sha256": {
+    "boundaries.json": "fac148dbad9e6fb45325ef6f77a7b8a53461fe933d024f0a878b24192dc8ed94",
+    "controls.json": "d4f40d29581b91913dbe11f0add5c7e49af84cc36c81c0ad92a3d4f32f4af4de",
+    "refinement.json": "75b80d8cfff7b5d30241a846eef8823d70cfd749971f7253776735e0e8918eed"
+  },
+  "limitations": [
+    "Two power anchors, 0 and +6 dBm, rather than exhaustive numerical qualification at every launch power.",
+    "One no-ASE and three noisy refinement probes per power; two noisy common-prefix boundary probes per power.",
+    "Counting and paired-bit intervals assume error independence; actual within-frame dependence may differ.",
+    "Finite periodic references and frame exclusions do not prove an infinite-domain continuum solution.",
+    "Short noisy records use cropped longest-period ASE; their new end discontinuity is a deliberate boundary perturbation.",
+    "Waveform differences are nonzero; the numerical acceptance claim concerns scored receiver metrics.",
+    "Neither 16 sps nor periods beyond 131,072 symbols were measured because the receiver-metric criteria passed.",
+    "This worker performs zero independent validator evaluations; the sole authorized validator remains with the coordinating agent."
+  ],
+  "n_symbols": 65536,
+  "recommended_link": {
+    "alpha_db_per_km": 0.2,
+    "ase_bandwidth_hz": 128000000000,
+    "ase_enabled": true,
+    "dispersion_ps_nm_km": 17,
+    "edfa_noise_figure_db": 5,
+    "gamma_per_w_km": 1.3,
+    "guard_symbols": 1024,
+    "n_spans": 20,
+    "rolloff": 0.1,
+    "rrc_span_symbols": 64,
+    "span_km": 80,
+    "sps": 4,
+    "step_km": 1,
+    "symbol_rate_hz": 32000000000,
+    "wavelength_m": 1.55e-06
+  },
+  "runtimes_seconds": {
+    "boundaries": 53.035389836994,
+    "controls": 1.2366685289889574,
+    "refinement": 400.24115761500434
+  },
+  "schema_version": 1,
+  "selection_reason": "Retain accepted initial step/sampling and full frame target. The 1024-symbol guard was predeclared and supplies measured margin against localized periodic boundary perturbations; 256 symbols also pass."
+}

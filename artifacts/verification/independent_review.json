@@ -1,0 +1,30 @@
+{
+  "requested": 1,
+  "attempted": 1,
+  "completed": 1,
+  "verdict": "CHANGES_REQUIRED",
+  "evaluated_commit": "f8e60469740e672036c2f6b71a2a8fea9355388d",
+  "frozen_files": 237,
+  "freeze_manifest_sha256": "fc7b94d70d05ed810db9f676a506b9fb784f3b02b5f465602ecd1fade70d6e98",
+  "summary_ja": "保存不足V1を採用して修正し、修正後の統合通常テスト65件が成功した。元の科学計算・測定値・モデルは変更していない。",
+  "findings": [
+    {
+      "id": "V1",
+      "severity": "P2",
+      "title_ja": "2-sps連続診断波形が保存されていない",
+      "disposition_ja": "採用・修正済み（Issue #10、親の通常検証）",
+      "reason_ja": "合意した保存要件の不足を確認。既存の第1テストフレームを同じseed/configで全長再構築し、7電力のXY連続2-sps波形・TX/RX・bits・位置・frame識別・valid/score maskをコンパクトに保存した。既存星座点はbitwise一致し、評価分母や学習済みモデルを変更していない。",
+      "evidence": "artifacts/final-1600km-20261012/waveform_diagnostics/manifest.json"
+    }
+  ],
+  "post_review_changes": [
+    "V1対応として恒久の診断波形export CLI、通常テスト、7個の連続波形NPZとmanifestを追加した。",
+    "原評価・採否・修正後の通常検証を保存し、レポートと再現手順を更新した。"
+  ],
+  "runtime_verification_ja": "親とvalidatorのsession_meta/turn_contextを双方で照合し、OpenAI/gpt-6-astra/maxで一致。role overrideなし。同一モデルの別コンテキスト評価であり、見落としの統計的独立性は保証しない。",
+  "original_result": "artifacts/verification/validator_result.md",
+  "followup_issue": "https://github.com/Motoki0705/optical-comm-lab/issues/10",
+  "independent_re_evaluation_performed": false,
+  "parent_followup_status": "adopted finding resolved with normal verification",
+  "outstanding_adopted_findings": []
+}

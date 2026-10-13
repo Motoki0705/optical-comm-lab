@@ -1,0 +1,87 @@
+name: リポジトリ保守
+description: scout点検で根拠と影響を確認した配置・利用経路・再現情報の問題
+title: "保守: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        docs/repository-maintenance.md の手順で、open/closed の既存 Issue と同じ原因でないことを確認してください。
+        同じ原因の再発は既存 Issue を更新・再開します。未確認の候補は点検記録に残し、追加調査を行います。
+        scout は読み取り専用です。親または権限を与えられた実装担当が起票してください。
+  - type: input
+    id: observed-snapshot
+    attributes:
+      label: 対象版と節目
+      description: commit、開発の節目、dirty snapshot のパス・hash または記録へのリンク
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - placement
+        - unused-source
+        - one-off-source
+        - duplicate-mechanism
+        - orphan-config
+        - artifact-provenance
+    validations:
+      required: true
+  - type: input
+    id: fingerprint
+    attributes:
+      label: Fingerprint
+      description: hygiene:<category>:<repository-relative path>（移動前のパスも重複確認）
+      placeholder: hygiene:orphan-config:configs/retired.json
+    validations:
+      required: true
+  - type: textarea
+    id: root-cause
+    attributes:
+      label: 原因と重複確認
+      description: root cause、open/closed Issue の調査範囲、関連 Issue と同じ原因でない理由
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 証拠と確認した利用経路
+      description: path:line、利用者・目的、検索範囲、imports/API/CLI/tests/docs/CI/config/dynamic loading/manifest の確認結果
+    validations:
+      required: true
+  - type: textarea
+    id: confidence
+    attributes:
+      label: 確度と未確認事項
+      description: 根拠で支持される結論、反証、調べていない外部利用などの限界。検索結果なしだけでは未使用と断定しない。
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: 具体的な影響
+      description: 保守・実行・研究結果の再現に及ぼす問題
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 限定した対応案
+      description: 対象範囲と提案する修正。自動削除は行わない。
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 受入条件
+      description: Issue を閉じるために観察・確認できる条件
+    validations:
+      required: true
+  - type: textarea
+    id: related-work
+    attributes:
+      label: 管理PR・関連Issue・点検記録
+      description: 管理 PR と、この問題を確認した点検コメントへのリンク
+    validations:
+      required: true

@@ -1,0 +1,30 @@
+{
+  "compatibility": {
+    "backend": "cupy",
+    "config_hash": "d59a9917328d98d5d8d13c018a0926c546570d72b83ea99b1469c2b424badf44",
+    "packages": {
+      "cupy-cuda12x": null,
+      "cupy-cuda13x": "14.2.0",
+      "numba": "0.68.0",
+      "numpy": "2.5.4",
+      "optical-comm-lab": "0.1.0",
+      "scipy": "1.18.1"
+    },
+    "python": "3.12.3",
+    "source_hash": "3873aa64fdd676d5f78ff844bdf9c81f5d2c9677b60903913c0abc821d1c3e82"
+  },
+  "files_sha256": {
+    "calibration.json": "6868e1791f7b1634a174a2e2a0f699bed74d1a111862c13d34fb2b52359dfdb8",
+    "constellations.npz": "bc845b477e34248a4c44680e9c99f9d86b5b1781b81d365edbc2aee94007e4a0",
+    "esn.npz": "6d0509b8a6f23ad169701c5c970978ccf3a5f31c77a51a6e57c5a22675342d00",
+    "generation.json": "db7156adfe5444cfae5518b31a01f431c5c9c246a601bc1d7c41431f214ebfdc",
+    "linear.npz": "bc81a9520c994784bf783723140c9b0ea90ee15bf656ba2da9cf03e690a586ed",
+    "metrics.csv": "37141ab0d955a42c806cfeced231daf90a384095b3a67ce22019d9a419e07f71",
+    "metrics.json": "58386fec4ac6a9a30f30122fefc1b476da7aa58201be72390982daf7d2ae71da",
+    "seeds.json": "1a35db9a6afd1f98c9ca50064be77ef4750049a0d9d5a0846eec06f29da85ac3",
+    "selection.json": "2712ae9979d491111cdd7134f6700f4ece6a709603f29cea829c11e83388cb40",
+    "test_frames.csv": "d21d40c123861229f1462b2dc1a3af8a28500bad3c9c50031aef269bc6a778ba",
+    "test_frames.json": "16526434c6d3b24f3d8eb132ceb20f6f54214ef6b16693dd826ca6a3e4ed46a1"
+  },
+  "launch_power_dbm": -6
+}

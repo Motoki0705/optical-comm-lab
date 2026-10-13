@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "kind": "study_design_schematics_not_experimental_results",
+  "generator": {
+    "path": "scripts/visualize_concepts.py",
+    "sha256": "f856c4a962cd91c809fd4653d6426cf8d8ac3a4e25261e757715c46a1b54c409"
+  },
+  "regeneration_command": ".venv/bin/python scripts/visualize_concepts.py",
+  "source_documents": [
+    {
+      "path": "docs/requirements.md",
+      "sha256": "984104ccb7f246bd164f16bdc99ca72fd062787081b52bcc3549cf06abc6a2e3"
+    },
+    {
+      "path": "docs/experiment-plan.md",
+      "sha256": "e4b913c5ad03290f3c5df4b04baf843a3cef66c5ba209a44dd5512e84a676199"
+    }
+  ],
+  "runtime": {
+    "python": "3.12.3",
+    "matplotlib": "3.11.2"
+  },
+  "font": {
+    "family": "Noto Sans CJK JP",
+    "regular_file": "NotoSansCJK-Regular.ttc",
+    "bold_file": "NotoSansCJK-Bold.ttc",
+    "regular_sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+    "bold_sha256": "faa5f3656a78b2e2d450d27fe8382c778bc2b6bb5ea29c986664a6a435056ceb",
+    "svg_text": "glyph outlines",
+    "pdf_text": "embedded TrueType subsets"
+  },
+  "comparison_palette": {
+    "EDC": "#6B7280",
+    "linear": "#2677B8",
+    "ESN": "#D97706",
+    "DBP": "#25846C"
+  },
+  "dpi": 160,
+  "figures": [
+    {
+      "name": "link_overview",
+      "title_ja": "長距離光通信のシミュレーション",
+      "description_ja": "1600 km の模擬通信路と分散・Kerr 効果・増幅器の ASE 雑音を説明する設計図。実測波形・性能の主張を含まない。",
+      "caption_ja": "図1　シミュレーションの流れ。光ファイバと増幅器で生じる３つの影響の補償を試み、復元ビットの誤り率で性能を測る。",
+      "size_inches": [
+        13.6,
+        7.6
+      ],
+      "layout_check": "all text inside canvas and assigned boxes",
+      "outputs": [
+        {
+          "path": "reports/figures/link_overview.svg",
+          "format": "svg",
+          "sha256": "ebfe8202c5bd3f9e12b5143e1ec678410e84b3c5e27aac36d9b2e6cd9a55f775",
+          "bytes": 186762
+        },
+        {
+          "path": "reports/figures/link_overview.png",
+          "format": "png",
+          "sha256": "d764e673cf953418d90e93c00ab87950210940c438ef0838d08b96ce28cb18ef",
+          "bytes": 265270
+        },
+        {
+          "path": "reports/figures/link_overview.pdf",
+          "format": "pdf",
+          "sha256": "045de63edff82921630749bc845f4348a714aa9ca5d9abd851aaef7460534581",
+          "bytes": 85586
+        }
+      ]
+    },
+    {
+      "name": "learning_workflow",
+      "title_ja": "学習・設定選択・最終テストの分離",
+      "description_ja": "送信電力ごとの学習、独立したメッセージと雑音、学習用だけの校正・正規化、固定リザバーと学習する出力、４方式の公平なテスト比較を説明する設計図。",
+      "caption_ja": "図2　学習と評価の分け方。設定を選んだ後はモデルを固定し、独立したテスト信号で４方式を比較する。テストの正解は採点だけに使う。",
+      "size_inches": [
+        13.6,
+        8.5
+      ],
+      "layout_check": "all text inside canvas and assigned boxes",
+      "outputs": [
+        {
+          "path": "reports/figures/learning_workflow.svg",
+          "format": "svg",
+          "sha256": "b491e807d3184ac27e9ecee7b89e405e9d0246d1552265ba0b9109fac92e989b",
+          "bytes": 213256
+        },
+        {
+          "path": "reports/figures/learning_workflow.png",
+          "format": "png",
+          "sha256": "c2357b5ec43cc75d7e0ef01b6c0b7ed99d5bfdbc44675a3264fc0948deeb6b6c",
+          "bytes": 310552
+        },
+        {
+          "path": "reports/figures/learning_workflow.pdf",
+          "format": "pdf",
+          "sha256": "f5571ae43bffe266a6c17379c0da19404bfa09f00cf539acfc6454bd028491e1",
+          "bytes": 90504
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "summary_ja": "修正後の統合通常テスト65件が成功。物理解析極限、AWGN理論、CPU/GPU一致、データ分離、モデル保存・再読込、数値資格確認、保存run監査・改変検出に加え、連続2-sps診断波形の位置対応・マスク・保存再現を検証した。元の科学source・設定・各電力のモデルと計測結果94ファイルに変更なし。",
+  "tests_command": ".venv/bin/python -m pytest -q",
+  "tests_result": "65 passed in 6.55s",
+  "log": "artifacts/verification/integration-tests.txt",
+  "github_ci": {
+    "url": "https://github.com/Motoki0705/optical-comm-lab/actions/runs/38252500111",
+    "head_commit": "7d37e1c2bf4bd4de598e0ecce840b55ba413f735",
+    "status": "success"
+  },
+  "audit_cli_tests": "12 targeted corruption/provenance/clone tests included",
+  "clone_audit": {
+    "commit": "7f9188756ebcd115bd9fabb1d3f2e1c1f9aa2150",
+    "tracked_files": 237,
+    "semantic_checks_equal": true,
+    "scientific_files_unchanged": true,
+    "new_channel_frames": 0,
+    "new_predictions": 0,
+    "retraining": false
+  },
+  "post_review_v1": {
+    "issue": "https://github.com/Motoki0705/optical-comm-lab/issues/10",
+    "diagnostic_manifest": "artifacts/final-1600km-20261012/waveform_diagnostics/manifest.json",
+    "npz_files": 7,
+    "symbols_per_polarization_per_excerpt": 512,
+    "samples_per_polarization_per_excerpt": 1024,
+    "protected_science_paths_checked": 94,
+    "protected_paths_changed": [],
+    "additional_evaluation_bits": 0,
+    "retraining_or_selection_or_prediction": false,
+    "independently_re_evaluated": false
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "bit_seed": 12671895013314501730,
+    "channel_generation_seconds": 1.0935319449927192,
+    "frame_index": 0,
+    "noise_seed": 16985032914711999981,
+    "split": "train"
+  },
+  {
+    "bit_seed": 10911018069904476394,
+    "channel_generation_seconds": 0.4774541670049075,
+    "frame_index": 1,
+    "noise_seed": 15466333724334778046,
+    "split": "train"
+  },
+  {
+    "bit_seed": 13754188775465105223,
+    "channel_generation_seconds": 0.4717575599788688,
+    "frame_index": 0,
+    "noise_seed": 69269371335530736,
+    "split": "validation"
+  },
+  {
+    "bit_seed": 6188187900347058405,
+    "channel_generation_seconds": 0.4673586279968731,
+    "frame_index": 0,
+    "noise_seed": 15481997537725755298,
+    "split": "test"
+  },
+  {
+    "bit_seed": 5929926507948165937,
+    "channel_generation_seconds": 0.5639109239855316,
+    "frame_index": 1,
+    "noise_seed": 11938571306006879760,
+    "split": "test"
+  },
+  {
+    "bit_seed": 4620885908509528681,
+    "channel_generation_seconds": 0.46279219700954854,
+    "frame_index": 2,
+    "noise_seed": 5898692766274478728,
+    "split": "test"
+  }
+]

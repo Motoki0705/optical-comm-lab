@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "optical-comm-lab"
+version = "0.1.0"
+description = "Reproducible software reservoir equalization of coherent optical links"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=2.2,<3",
+  "scipy>=1.15,<2",
+  "matplotlib>=3.10,<4",
+  "numba>=0.61,<1",
+]
+
+[project.optional-dependencies]
+gpu = ["cupy-cuda13x>=14.2,<15"]
+
+[dependency-groups]
+dev = ["pytest>=8.3,<10"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/optical_comm"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

@@ -1,0 +1,56 @@
+[
+  {
+    "bit_seed": 18048413435501260006,
+    "frame_index": 0,
+    "noise_seed": 15262002011917157426,
+    "split": "train"
+  },
+  {
+    "bit_seed": 14769705442391115976,
+    "frame_index": 1,
+    "noise_seed": 7220528956713129802,
+    "split": "train"
+  },
+  {
+    "bit_seed": 11601469187299947757,
+    "frame_index": 0,
+    "noise_seed": 15272944793780457474,
+    "split": "validation"
+  },
+  {
+    "bit_seed": 11549534260185897039,
+    "frame_index": 1,
+    "noise_seed": 66016525078985944,
+    "split": "validation"
+  },
+  {
+    "bit_seed": 8348879130662450509,
+    "frame_index": 0,
+    "noise_seed": 915580375570375911,
+    "split": "test"
+  },
+  {
+    "bit_seed": 7324267521610713488,
+    "frame_index": 1,
+    "noise_seed": 6513598028384532023,
+    "split": "test"
+  },
+  {
+    "bit_seed": 7297287225367884427,
+    "frame_index": 2,
+    "noise_seed": 10821605957674311090,
+    "split": "test"
+  },
+  {
+    "bit_seed": 4136515469439141155,
+    "frame_index": 3,
+    "noise_seed": 11578995460632117117,
+    "split": "test"
+  },
+  {
+    "bit_seed": 11029543052391587639,
+    "frame_index": 4,
+    "noise_seed": 3261207872522640172,
+    "split": "test"
+  }
+]
