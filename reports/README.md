@@ -37,3 +37,5 @@ Matplotlibと日本語フォントが必要。`Noto Sans CJK JP`、`IPAexGothic`
 SVGは文字を輪郭で保存し、PDFはフォントを埋め込む。方式の色はEDC `#6B7280`、線形補償 `#2677B8`、ESN `#D97706`、DBP `#25846C`。色に加えて名称・マーカーでも方式を識別する。変更後は生成PNGを目視確認する。
 
 このディレクトリは読者向けの文章と図を保存する。生成処理は `scripts/`、再利用する数値処理は `src/optical_comm/`、測定・学習のcompact artifactは `artifacts/` に置く。中間ログや一時的な描画確認は `.work/` に分離する。
+
+[Kerr効果のBlenderアニメーション](animations/kerr/README.md)は、光強度による屈折率の変化、位相の蓄積、チャープとスペクトルを日本語で説明する30秒の動画。MP4、編集できる圧縮 `.blend`、ポスター、出典・再生成記録・フォントライセンスを一緒に保存する。単一偏波・無損失・無分散の模式例であり、1600 kmの測定結果には用いない。生成用CLIは `scripts/animate_kerr.py`。

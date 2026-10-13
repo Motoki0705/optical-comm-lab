@@ -77,3 +77,21 @@ Reusable calibration, windowing, training, scoring, and artifact logic belong
 in `src/optical_comm/`; a new CLI should call those modules rather than copy
 numerical methods. Saved figures and report text belong in `reports/`, and
 compact run data belong in `artifacts/`.
+
+`animate_kerr.py` builds a native, editable Blender scene and a 30-second
+Japanese MP4 explaining Kerr self-phase modulation. It renders an analytic
+scalar teaching example, separate from the measured DP/Manakov link results.
+Run it with ordinary Python plus Blender and FFmpeg; the project environment
+and research runs are not needed. The two packed fonts and their licenses,
+commands, parameters, checks, and output hashes are documented with the
+[saved animation](../reports/animations/kerr/README.md).
+
+```bash
+python3 scripts/animate_kerr.py --blender blender --preview
+python3 scripts/animate_kerr.py --blender blender
+```
+
+Use `--blender` with a Windows `.exe` path from WSL if necessary. `--font` and
+`--latin-font` select Japanese and math fonts. Chapter stills and the two-second
+preview go to `.work/kerr-render/`; the full MP4, compressed `.blend`, poster,
+and manifest go to `reports/animations/kerr/`.

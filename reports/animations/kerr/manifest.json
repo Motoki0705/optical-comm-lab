@@ -1,0 +1,332 @@
+{
+  "schema": "optical-comm-kerr-animation/v1",
+  "issue": 12,
+  "created_utc": "2026-10-13T03:53:34.036229+00:00",
+  "source_commit": "4f1344373a4803af5f22b5907296867da0c1703f",
+  "scope": "Analytic scalar, lossless, dispersion-free teaching illustration. No training, measurement, link propagation or BER result is used.",
+  "scene": {
+    "blender_version": "5.2.1 LTS",
+    "blender_build_hash": "9e2066aef7ef",
+    "python": "3.13.13 (main, May  8 2026, 12:37:03) [MSC v.1944 64 bit (AMD64)]",
+    "numpy": "2.3.4",
+    "render_engine": "BLENDER_EEVEE",
+    "eevee_render_samples": 32,
+    "resolution": [
+      1280,
+      720
+    ],
+    "fps": 24,
+    "frame_range": [
+      1,
+      720
+    ],
+    "duration_seconds": 30.0,
+    "poster_frame": 94,
+    "chapters": [
+      {
+        "first_frame": 1,
+        "last_frame": 144,
+        "time_seconds": [
+          0.0,
+          6.0
+        ],
+        "label": "屈折率",
+        "title": "強い光ほど、屈折率が変わる"
+      },
+      {
+        "first_frame": 145,
+        "last_frame": 288,
+        "time_seconds": [
+          6.0,
+          12.0
+        ],
+        "label": "位相",
+        "title": "強度の山が、位相の山になる"
+      },
+      {
+        "first_frame": 289,
+        "last_frame": 432,
+        "time_seconds": [
+          12.0,
+          18.0
+        ],
+        "label": "波形",
+        "title": "包絡線は保たれ、波の位置が変わる"
+      },
+      {
+        "first_frame": 433,
+        "last_frame": 576,
+        "time_seconds": [
+          18.0,
+          24.0
+        ],
+        "label": "周波数",
+        "title": "位相の傾きが、周波数をずらす"
+      },
+      {
+        "first_frame": 577,
+        "last_frame": 720,
+        "time_seconds": [
+          24.0,
+          30.0
+        ],
+        "label": "まとめ",
+        "title": "Kerr効果は、強度がつくる位相の変化"
+      }
+    ],
+    "model": {
+      "index": "n(t)=n0+n2 I(t); n2>0 for silica; fixed scalar effective mode relates gamma*P to k0*n2*I",
+      "power": "P(t)/P0=exp(-tau^2), tau=t/T0; P0,T0 are normalization units, not measured link parameters",
+      "field": "A_out(t)=A_in(t)*exp(i*phi_NL(t)), A_in/A0=exp(-tau^2/2)",
+      "nonlinear_phase": "phi_NL(t)=gamma*L*P(t)=3*u*exp(-tau^2), u=L/L0",
+      "final_peak_phase_rad": 3.0,
+      "frequency_shift": "delta_omega*T0=-d(phi_NL)/d(tau)=6*u*tau*exp(-tau^2)",
+      "physical_phase_convention": "E=Re{A(t)*exp[i(kz-omega0*t)]}",
+      "illustrated_real_field": "E/E0=exp(-tau^2/2)*cos(8*tau-phi_NL); optical carrier period intentionally enlarged, not an actual wavelength or group velocity",
+      "spectrum": "FFT of A with 16384 samples on tau in [-12,12), zero-padded to 131072 for display sampling; omega axis normalized by T0; density divided by input peak, never each curve's own maximum",
+      "spectrum_animation": "17 exact FFT phase snapshots, interpolated for illustration; no interpolation of research results",
+      "repo_distinction": "Actual repo propagation is lossy, dispersive DP Manakov with (8/9)*gamma*(Px+Py) and EDFA ASE. This animation is not an output of that simulation."
+    },
+    "formula_checks": {
+      "scope": "Ordinary analytic/numerical verification of the teaching equations, not a communications evaluation.",
+      "max_power_envelope_error": 4.440892098500626e-16,
+      "relative_time_energy_error": 2.220446049250313e-16,
+      "relative_parseval_energy_error": 6.263656260330208e-12,
+      "max_chirp_finite_difference_error": 4.188067630916947e-06,
+      "rms_spectrum_width_ratio": 2.815706524173908,
+      "analytic_rms_width_ratio": 2.815706524173908,
+      "leading_edge_red_trailing_edge_blue": true,
+      "passed": true
+    },
+    "scene_objects": 393
+  },
+  "sources": [
+    {
+      "title": "Stolen & Lin (1978), Self-phase-modulation in silica optical fibers",
+      "url": "https://doi.org/10.1103/PhysRevA.17.1448",
+      "use": "Experimental silica SPM and spectral broadening; positive silica Kerr response."
+    },
+    {
+      "title": "Arroyo Meza et al. (2013), Physical Review E 88, 053202",
+      "url": "https://doi.org/10.1103/PhysRevE.88.053202",
+      "use": "Standard intensity-dependent refractive-index notation n = n0 + n2 I."
+    },
+    {
+      "title": "Hamaide & Emplit (1989), Spectrotemporal measurement of picosecond pulses",
+      "url": "https://doi.org/10.1364/OL.14.000689",
+      "use": "Experimental time-resolved frequency modulation. Not a pure-SPM calibration: their propagation also includes dispersion/Raman."
+    }
+  ],
+  "inputs": {
+    "scripts/animate_kerr.py": "ee6a63a415fb425f91009956a9ccf1aea2d7ed74ebd3944c78e06997db5ec48f",
+    "docs/requirements.md": "984104ccb7f246bd164f16bdc99ca72fd062787081b52bcc3549cf06abc6a2e3",
+    "docs/experiment-plan.md": "e4b913c5ad03290f3c5df4b04baf843a3cef66c5ba209a44dd5512e84a676199",
+    "docs/channel-methods.md": "0085740c40c9dd3e944f6de75ab1636c147dfe0c7af49fe74656592b7bea7358"
+  },
+  "fonts": [
+    {
+      "filename": "ipaexg.ttf",
+      "sha256": "3b9955a5e437ffb24c41548e79296fa724822da21ee75dc1b94f6ccdb8f400dd",
+      "packed_in_blend": true
+    },
+    {
+      "filename": "DejaVuSans.ttf",
+      "sha256": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
+      "packed_in_blend": true
+    }
+  ],
+  "font_license": {
+    "file": "LICENSE-fonts.txt",
+    "sha256": "e21dde968ebc3a363ec4767688a77ca33331610e628d2edb86681d8417ce2c4d"
+  },
+  "host": {
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "ffmpeg": "ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers"
+  },
+  "regeneration": {
+    "working_directory": "repository root",
+    "command": "python3 scripts/animate_kerr.py --blender '/mnt/c/Program Files/Blender Foundation/Blender 5.2/blender.exe' --font /usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf --output-dir reports/animations/kerr --latin-font /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf --scratch-dir .work/kerr-render --ffmpeg /usr/bin/ffmpeg --ffprobe /usr/bin/ffprobe",
+    "blender_invocation": [
+      "/mnt/c/Program Files/Blender Foundation/Blender 5.2/blender.exe",
+      "--background",
+      "--factory-startup",
+      "--python-exit-code",
+      "1",
+      "--python",
+      "\\\\wsl.localhost\\Ubuntu\\home\\kamimura\\projects\\optical-comm-lab\\scripts\\animate_kerr.py",
+      "--",
+      "--inside-blender",
+      "--font",
+      "\\\\wsl.localhost\\Ubuntu\\usr\\share\\fonts\\opentype\\ipaexfont-gothic\\ipaexg.ttf",
+      "--latin-font",
+      "\\\\wsl.localhost\\Ubuntu\\usr\\share\\fonts\\truetype\\dejavu\\DejaVuSans.ttf",
+      "--output-dir",
+      "\\\\wsl.localhost\\Ubuntu\\home\\kamimura\\projects\\optical-comm-lab\\reports\\animations\\kerr",
+      "--scratch-dir",
+      "\\\\wsl.localhost\\Ubuntu\\home\\kamimura\\projects\\optical-comm-lab\\.work\\kerr-render"
+    ],
+    "ffmpeg_invocation": [
+      "/usr/bin/ffmpeg",
+      "-y",
+      "-hide_banner",
+      "-loglevel",
+      "warning",
+      "-framerate",
+      "24",
+      "-start_number",
+      "1",
+      "-i",
+      "/home/kamimura/projects/optical-comm-lab/.work/kerr-render/frames/frame_%04d.png",
+      "-frames:v",
+      "720",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "medium",
+      "-crf",
+      "20",
+      "-pix_fmt",
+      "yuv420p",
+      "-movflags",
+      "+faststart",
+      "-an",
+      "-metadata",
+      "title=光ファイバのKerr効果",
+      "/home/kamimura/projects/optical-comm-lab/reports/animations/kerr/kerr_effect.mp4"
+    ],
+    "preview": "Append --preview; renders six chapter stills and a 2-second MP4 in .work only.",
+    "editable_scene": "All text, geometry, drivers and keyframes are native Blender data; packed font; no render handlers or external assets.",
+    "visual_reproducibility": "Exact parameters and commands are recorded. GPU/Blender/FFmpeg differences can change pixels/encoded bytes; hashes identify these delivered outputs, not a cross-platform bitwise guarantee."
+  },
+  "verification": {
+    "ffprobe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "High",
+          "codec_type": "video",
+          "codec_tag_string": "avc1",
+          "codec_tag": "0x31637661",
+          "width": 1280,
+          "height": 720,
+          "coded_width": 1280,
+          "coded_height": 720,
+          "closed_captions": 0,
+          "film_grain": 0,
+          "has_b_frames": 2,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "16:9",
+          "pix_fmt": "yuv420p",
+          "level": 31,
+          "color_range": "tv",
+          "color_transfer": "iec61966-2-1",
+          "color_primaries": "bt709",
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "refs": 4,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "id": "0x1",
+          "r_frame_rate": "24/1",
+          "avg_frame_rate": "24/1",
+          "time_base": "1/12288",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 368640,
+          "duration": "30.000000",
+          "bit_rate": "197684",
+          "bits_per_raw_sample": "8",
+          "nb_frames": "720",
+          "nb_read_frames": "720",
+          "extradata_size": 49,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0
+          },
+          "tags": {
+            "language": "und",
+            "handler_name": "VideoHandler",
+            "vendor_id": "[0][0][0][0]",
+            "encoder": "Lavc60.31.102 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "/home/kamimura/projects/optical-comm-lab/reports/animations/kerr/kerr_effect.mp4",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "30.000000",
+        "size": "750854",
+        "bit_rate": "200227",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "isom",
+          "minor_version": "512",
+          "compatible_brands": "isomiso2avc1mp41",
+          "title": "光ファイバのKerr効果",
+          "encoder": "Lavf60.16.100"
+        }
+      }
+    },
+    "ordinary_checks": {
+      "scope": "Ordinary analytic/numerical verification of the teaching equations, not a communications evaluation.",
+      "max_power_envelope_error": 4.440892098500626e-16,
+      "relative_time_energy_error": 2.220446049250313e-16,
+      "relative_parseval_energy_error": 6.263656260330208e-12,
+      "max_chirp_finite_difference_error": 4.188067630916947e-06,
+      "rms_spectrum_width_ratio": 2.815706524173908,
+      "analytic_rms_width_ratio": 2.815706524173908,
+      "leading_edge_red_trailing_edge_blue": true,
+      "passed": true
+    },
+    "independent_validator": {
+      "requested": 0,
+      "attempted": 0,
+      "completed": 0
+    }
+  },
+  "outputs": {
+    "kerr_effect.mp4": {
+      "bytes": 750854,
+      "sha256": "7f0565363216bc56d74b2aeb3d86c01ae3562bee80604dee1aefc178d22028b8"
+    },
+    "kerr_effect.blend": {
+      "bytes": 4870959,
+      "sha256": "7f44d2648d521caffa399ce7b3afb89982aa33764cb2c6424e75b25aa151a6c9"
+    },
+    "poster.png": {
+      "bytes": 626484,
+      "sha256": "2b200ab44c95fba0cab300bfe6d62fe9279303b60645d0af1baac511d3ab9b8a"
+    },
+    "README.md": {
+      "bytes": 4778,
+      "sha256": "06aa2769756744a386595d6d01d94546b6b6a0e33342e16387fc78d4486480fc"
+    },
+    "LICENSE-fonts.txt": {
+      "bytes": 23580,
+      "sha256": "e21dde968ebc3a363ec4767688a77ca33331610e628d2edb86681d8417ce2c4d"
+    }
+  }
+}
