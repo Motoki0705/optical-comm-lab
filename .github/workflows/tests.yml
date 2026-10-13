@@ -19,7 +19,7 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - name: Install package and CPU test dependencies
-        run: python -m pip install -e . 'pytest>=8.3,<10'
+        run: python -m pip install -e '.[spatial]' 'pytest>=8.3,<10'
       - name: Analytic limits, data isolation, and regression tests
         env:
           MPLBACKEND: Agg

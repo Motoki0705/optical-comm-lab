@@ -5,3 +5,12 @@ Run `uv sync --group dev` and `uv run python -m pytest`. Enable the optional GPU
 `test_channel.py` compares analytic loss, Kerr and dispersion limits; checks RRC power and alignment; verifies ASE PSD, complex/quadrature/polarization variance, independent seeds, and fixed physical bandwidth across sps; checks full waveform AWGN against independently derived BER; and uses a separately finer forward/inverse solver to avoid relying only on cancellation of identical discretizations. `test_metrics.py` checks uniform Gray mapping, counted bits/masks, exact AWGN limits, and nonzero uncertainty after zero errors.
 
 Add substantive limits or regressions that check externally observable scientific behavior. Do not treat these small numerical-verification problems as proof of full-link convergence. Long sampling/step/frame/guard studies belong in recorded experiment artifacts, with acceptance criteria in [experiment-plan.md](../docs/experiment-plan.md).
+
+`test_spatial_kerr.py` verifies the spatial CW solver using independent complex
+2D Gaussian and Kerr/loss limits, Bessel LP01 boundary/phase, analytic free
+Gaussian streamlines, low-intensity/domain termination, and physical mesh XYZ
+coordinates/winding. It also audits small deterministic saved cases and
+detects corruption. GPU parity skips without CUDA; mesh/export tests skip if
+the optional `spatial` extra is absent. These tests do not establish full
+3 mm circular-grid or Maxwell convergence. Measured long GPU refinements and
+limitations belong in `artifacts/spatial_kerr/metrics.json`.

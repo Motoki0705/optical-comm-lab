@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "all_file_hashes_match": true,
+  "source_hashes_checked": true,
+  "cases": {
+    "linear": {
+      "section_axes": true,
+      "complex128": true,
+      "all_flow_masks_valid": true,
+      "mesh_indices_valid": true
+    },
+    "weak_reference": {
+      "section_axes": true,
+      "complex128": true,
+      "all_flow_masks_valid": true,
+      "mesh_indices_valid": true
+    },
+    "intermediate_kerr": {
+      "section_axes": true,
+      "complex128": true,
+      "all_flow_masks_valid": true,
+      "mesh_indices_valid": true
+    },
+    "educational_kerr": {
+      "section_axes": true,
+      "complex128": true,
+      "all_flow_masks_valid": true,
+      "mesh_indices_valid": true
+    }
+  },
+  "total_bytes": 109097562,
+  "max_file_bytes": 16206169
+}

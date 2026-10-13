@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "ordinary_tests": {
+    "passed": 11,
+    "file": "tests.txt",
+    "upstream_warnings": "scikit-image 0.26 NumPy 2.5 shape deprecations; no failures"
+  },
+  "saved_data_audit": {
+    "schema_version": 1,
+    "all_file_hashes_match": true,
+    "source_hashes_checked": true,
+    "cases": {
+      "linear": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "weak_reference": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "intermediate_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "educational_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      }
+    },
+    "total_bytes": 109097562,
+    "max_file_bytes": 16206169
+  },
+  "cli_reproduction_scope": "10 um/coarse NumPy problem, all four cases, not a repeated 3 mm GPU qualification",
+  "relative_difference_definition": {
+    "compare_results_A_B": "core norm difference divided by norm of B",
+    "difference_vs_linear": "A=linear, B=listed case; listed-case intensity norm is denominator"
+  },
+  "supplement_hashes": {
+    "README.md": "cacc6c1b7a3d097854dc65cfd84d660829f492545cb61cda1125cd6a4e9db95d",
+    "tests.txt": "ab79846fb20c6f93d326e81912f2d01c6f232762cec3e65adc5a6f4b7d669dd5",
+    "cli_reproducibility.json": "4940340caacc3b9eba2c716189f86d53ebd4cc23e4855222ec58e1d44e11ba40"
+  },
+  "frozen_manifest_sha256": "29fd4232d06b433981d226056aca1f9514f892c8ef43d032d0e1317c626ce5ee",
+  "independent_validator_count": 0,
+  "source_content_saved_commit": "aca53be",
+  "source_content_commit_note": "Commit created after the run; contents equal recorded execution-source hashes",
+  "plots_visually_inspected": [
+    "longitudinal_comparison.png",
+    "core_observables.png",
+    "kerr_difference.png",
+    "power_flow_projection.png"
+  ]
+}

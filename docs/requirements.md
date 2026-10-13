@@ -27,3 +27,47 @@ Confirmed cadence:
 > 開発の節目ごとに実施（推奨：変更に追従でき、不要な定期実行を避けられる）
 
 The workflow runs at development checkpoints (start of work, structural changes, and before PR review), rather than on a calendar. A read-only scout gathers evidence; an authorized parent or implementation worker creates or updates GitHub Issues after deduplication. This maintenance investigation is distinct from the single independent validator evaluation. The simulation, training, visualization, and final report requirements remain active.
+
+## Blender Kerr animation follow-up (verbatim)
+
+> blenderを用いて、kerr効果についてのアニメーションを作成してください。また、PRはマージしてください。今後の運用としてPRは機能ごとに出す形にしてください。また、issueもタスク、機能、問題単位で分けてください。解決済みはcloseすること。AGENTS.mdに記述して
+
+Quality and physical-model request:
+
+> 品質が低すぎます。ブレンダーで物理的なシミュレーションを作成しそれを高品質な描写で撮影してください。それらをもとに説明を組んでください。アニメーションは複数用意してください。
+
+User's visual preference:
+
+> 実物に近いファイバの接写＋内部の光の可視化（推奨）
+
+Latest spatial-propagation request:
+
+> 光の光線が反射しつつ、どのような変化が起きるかを表現してください。今の表現は物理シミュレーションをする必要がないレベルです。claude code opus にアドバイスをもらってください。
+
+The latest request requires a spatial field model with a fiber boundary; the
+existing 80 km temporal-envelope films do not establish reflecting spatial rays.
+The new method and its scope are recorded in [spatial-kerr.md](spatial-kerr.md).
+The completed 1600 km research and 80 km pulse calculation remain separate
+studies. Claude Code Opus was consulted for design advice under
+[Issue #23](https://github.com/Motoki0705/optical-comm-lab/issues/23); implementing
+and checking the circular spatial model is tracked in
+[Issue #24](https://github.com/Motoki0705/optical-comm-lab/issues/24).
+
+The current working proposal uses a circular multimode core, continuous light,
+and a clearly labeled hypothetical strong Kerr coefficient, together with a
+linear control and a weak reference. The user has not yet selected between
+educational visibility and realism at communications powers; this proposal is
+not recorded as their accepted choice. Any later clarification must be applied
+if it changes that scope.
+
+Completion requires computed transverse fields and flow rather than manually
+placed reflecting paths, ordinary numerical checks, multiple high-quality
+Blender animations with an explanation based on their saved calculations, and
+reproducible artifacts whose normalization and display scales are disclosed.
+Flow lines represent the local field flow, not individual photon trajectories.
+Exploratory slab runs do not qualify the circular model. Merge authorization is
+present in the user's request; each coherent feature or problem has its own
+Issue and PR, resolved Issues are closed, and partial work remains open as
+specified in the root `AGENTS.md`. No independent-validator count was specified
+for this follow-up, so its count is zero; the original research's single
+evaluation is not reused.

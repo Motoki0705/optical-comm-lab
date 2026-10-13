@@ -124,3 +124,24 @@ Use `--blender` with a Windows `.exe` path from WSL if necessary. `--font` and
 `--latin-font` select Japanese and math fonts. Chapter stills and the two-second
 preview go to `.work/kerr-render/`; the full MP4, compressed `.blend`, poster,
 and manifest go to `reports/animations/kerr/`.
+
+`simulate_spatial_kerr.py` is the thin entry point for the circular-core CW
+field API. Install the optional mesh dependency with
+`uv sync --extra spatial --extra gpu --group dev` on the CUDA 13 machine; the
+normal CPU tests do not require CUDA. A backend override is explicit and saved
+in provenance. The configured production problem is expensive on CPU.
+
+```bash
+.venv/bin/python scripts/simulate_spatial_kerr.py --config configs/spatial_kerr.json --output artifacts/spatial_kerr --scratch .work/spatial-kerr-production-bulk
+.venv/bin/python scripts/simulate_spatial_kerr.py --config configs/spatial_kerr.json --output .work/spatial-reproduction --scratch .work/spatial-reproduction-bulk
+.venv/bin/python scripts/simulate_spatial_kerr.py --output artifacts/spatial_kerr --verify-only
+```
+
+Output and bulk scratch must be empty; previous evidence is never overwritten.
+In-repository bulk data must be inside ignored `.work`. `--skip-qualification`
+is an explicitly marked exploratory export and does not claim qualification.
+The CLI saves all four registered conditions, compact complex sections, all
+seeded/masked power-flow lines, and fixed iso-intensity meshes for the primary
+two cases. Mesh extraction uses the optional scikit-image public API and
+physical spacing; Blender does not solve Kerr physics. The NPZ coordinate
+contract is in the run manifest and `artifacts/spatial_kerr/README.md`.

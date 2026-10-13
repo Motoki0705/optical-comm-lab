@@ -1,0 +1,297 @@
+{
+  "schema_version": 1,
+  "status": "complete_with_limits",
+  "created_utc": "2026-10-13T11:21:55.370922+00:00",
+  "source_hashes": {
+    "src/optical_comm/visualization/spatial.py": "1f65be9d50fbb9c2878cedefee48b83e836954aca63c55989ecc3d41dfa2e617",
+    "src/optical_comm/visualization/spatial_artifacts.py": "68f4ad0cc658f29e00fa5340fa5c7082f77efd009ef8b24a8ea559bcf40f63d3",
+    "scripts/simulate_spatial_kerr.py": "fc8526ba44d18d12d2a8267650c97efc2fc232e67da766921d9873fe54d16531",
+    "pyproject.toml": "cf93ea327f686967b33f2617247eb7daff59a4224645dd0b8b1c3d6541284eea",
+    "uv.lock": "2831d3931026c6b2bf483d1c01b888549200d1b854484b3b7c5e6bc4808124d4"
+  },
+  "input_config": {
+    "path": "configs/spatial_kerr.json",
+    "sha256": "44fdce2d7bd39421fba5ef5459b4855666adf1c7ef82719b185c9e9f1c213944"
+  },
+  "execution": {
+    "name": "cupy",
+    "device": "NVIDIA GeForce RTX 5060 Ti",
+    "precision": "complex128/float64",
+    "cupy": "14.2.0",
+    "cuda_runtime": 13020,
+    "device_total_bytes": 17102864384,
+    "backend": "cupy",
+    "versions": {
+      "python": "3.12.3",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1",
+      "skimage": "0.26.0",
+      "cupy": "14.2.0"
+    }
+  },
+  "coordinate_contract": {
+    "length_unit": "um",
+    "vertices": "XYZ=(transverse x,transverse y,propagation z)",
+    "axis_orders": {
+      "central_psi": "(z,x)",
+      "cross_psi": "(snapshot,y,x)",
+      "position_um": "(seed,z,XYZ)",
+      "scratch_volume": "(z,y,x)"
+    }
+  },
+  "case_contract": {
+    "linear": {
+      "kappa": 0.0,
+      "sections_file": "linear_sections.npz",
+      "flows_file": "linear_flows.npz",
+      "mesh_files": [
+        "linear_iso_0p1.npz",
+        "linear_iso_0p3.npz",
+        "linear_iso_0p6.npz"
+      ]
+    },
+    "weak_reference": {
+      "kappa": 1.6e-11,
+      "sections_file": "weak_reference_sections.npz",
+      "flows_file": "weak_reference_flows.npz",
+      "mesh_files": []
+    },
+    "intermediate_kerr": {
+      "kappa": 0.0001,
+      "sections_file": "intermediate_kerr_sections.npz",
+      "flows_file": "intermediate_kerr_flows.npz",
+      "mesh_files": []
+    },
+    "educational_kerr": {
+      "kappa": 0.0003,
+      "sections_file": "educational_kerr_sections.npz",
+      "flows_file": "educational_kerr_flows.npz",
+      "mesh_files": [
+        "educational_kerr_iso_0p1.npz",
+        "educational_kerr_iso_0p3.npz",
+        "educational_kerr_iso_0p6.npz"
+      ]
+    }
+  },
+  "sampling": {
+    "linear": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6564687289009474e-08,
+      "scratch_bytes": 576480000
+    },
+    "weak_reference": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6564687270768074e-08,
+      "scratch_bytes": 576480000
+    },
+    "intermediate_kerr": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6416833074591045e-08,
+      "scratch_bytes": 576480000
+    },
+    "educational_kerr": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.5877879835492785e-08,
+      "scratch_bytes": 576480000
+    }
+  },
+  "computational_config": {
+    "wavelength_um": 1.55,
+    "ncore": 1.45,
+    "nclad": 1.445,
+    "core_radius_um": 25.0,
+    "waist_um": 12.0,
+    "tilt_deg": 3.0,
+    "azimuth_deg": 0.0,
+    "zmax_um": 3000.0,
+    "half_window_um": 125.0,
+    "dx_um": 0.25,
+    "dz_um": 0.0625,
+    "absorber_start_um": 100.0,
+    "absorber_max_per_um": 0.1,
+    "core_center_x_um": 0.0,
+    "core_center_y_um": 0.0,
+    "input_center_x_um": 0.0,
+    "input_center_y_um": 0.0
+  },
+  "seed_contract": "Deterministic 5x5 product equal-input-power quantiles; no random variables or seed selection",
+  "files": {
+    "config.json": {
+      "sha256": "44fdce2d7bd39421fba5ef5459b4855666adf1c7ef82719b185c9e9f1c213944",
+      "bytes": 1543,
+      "kind": "metadata",
+      "case": null
+    },
+    "core_observables.png": {
+      "sha256": "9b1f24594bcaa0f85c0e419c7799823c3cafa15a25f32f48b8800e20d9fe6561",
+      "bytes": 228855,
+      "kind": "figure",
+      "case": null
+    },
+    "educational_kerr_flows.npz": {
+      "sha256": "a7709bd6cbd102c3cee80ae0f24de72ce5b2ec48e66180f2e904fb6d4038e61d",
+      "bytes": 6036928,
+      "kind": "flows",
+      "case": "educational_kerr"
+    },
+    "educational_kerr_iso_0p1.npz": {
+      "sha256": "a0869ff0040f809652d027b727e16b363e7d8e7a874b60df8803dcfd29ec8ad6",
+      "bytes": 16201155,
+      "kind": "mesh",
+      "case": "educational_kerr"
+    },
+    "educational_kerr_iso_0p3.npz": {
+      "sha256": "b23421cdd26bb7735fd7339b64608280bf18b384fd310865866f1063e653b6a2",
+      "bytes": 5572162,
+      "kind": "mesh",
+      "case": "educational_kerr"
+    },
+    "educational_kerr_iso_0p6.npz": {
+      "sha256": "5341a4bf08c39bf507d66fdefad651542e4486c9f16d5d9fcd0f35577158e8c6",
+      "bytes": 1619535,
+      "kind": "mesh",
+      "case": "educational_kerr"
+    },
+    "educational_kerr_sections.npz": {
+      "sha256": "d14c593ac6cccda05a39a808508862202d4af169b27c73714eb613bd4183e054",
+      "bytes": 9291791,
+      "kind": "sections",
+      "case": "educational_kerr"
+    },
+    "intermediate_kerr_flows.npz": {
+      "sha256": "0d53c5211279a3fd8cf272a5227abbf49d9613e086dfa5b423d38e7cce495041",
+      "bytes": 5936284,
+      "kind": "flows",
+      "case": "intermediate_kerr"
+    },
+    "intermediate_kerr_sections.npz": {
+      "sha256": "cb614a0b4b7cb6203ca4312f618251d86e6ddc7696559292326c58e1727c2233",
+      "bytes": 9292599,
+      "kind": "sections",
+      "case": "intermediate_kerr"
+    },
+    "kerr_difference.png": {
+      "sha256": "692a9a5bc78400d587ce01cb774fc11a697051c18e7c7c8eabf57e664ac9caca",
+      "bytes": 170593,
+      "kind": "figure",
+      "case": null
+    },
+    "linear_flows.npz": {
+      "sha256": "70ceca6e514e04be2c0a4219afc0cc6cedab4438901d91ff76368c38cd857c6b",
+      "bytes": 6033556,
+      "kind": "flows",
+      "case": "linear"
+    },
+    "linear_iso_0p1.npz": {
+      "sha256": "b5b3eca68dd56aa9c9925c3f993716ae51f8018dbbe402e0710d4f4b90165852",
+      "bytes": 16206169,
+      "kind": "mesh",
+      "case": "linear"
+    },
+    "linear_iso_0p3.npz": {
+      "sha256": "921a5632017bbd00e7a32528075d866a20cc5da6742d87b03e23745ae15909b9",
+      "bytes": 5533902,
+      "kind": "mesh",
+      "case": "linear"
+    },
+    "linear_iso_0p6.npz": {
+      "sha256": "61af1b8639a23ab02195fbe6dd39176f8617a2003a93d99016d9f856138c12f1",
+      "bytes": 1627919,
+      "kind": "mesh",
+      "case": "linear"
+    },
+    "linear_sections.npz": {
+      "sha256": "d1c2da898c032d6f51e9b7760e696e7f99302b8fe61dd74815449a6f2ced3dfe",
+      "bytes": 9292196,
+      "kind": "sections",
+      "case": "linear"
+    },
+    "longitudinal_comparison.png": {
+      "sha256": "6bdc98abde3a4380a5b8cb01ad71411c3b99e58a0f835d989a03360cc38cc342",
+      "bytes": 272265,
+      "kind": "figure",
+      "case": null
+    },
+    "metrics.json": {
+      "sha256": "bb2a9ab3ca9b0be1d97f5a865440e4ada45f432da9c381fa050e2242decdec58",
+      "bytes": 49248,
+      "kind": "metadata",
+      "case": null
+    },
+    "power_flow_projection.png": {
+      "sha256": "c494ab131a6b1c42207a4d0ce2e978f319121d2331540011966c2dcfbd492a40",
+      "bytes": 405037,
+      "kind": "figure",
+      "case": null
+    },
+    "weak_reference_flows.npz": {
+      "sha256": "0ded3635de9463b7bc16383cd2b00667c6845301683d393593f02fcad20fb538",
+      "bytes": 6033614,
+      "kind": "flows",
+      "case": "weak_reference"
+    },
+    "weak_reference_sections.npz": {
+      "sha256": "aa8546d654ff601f79436b2d864b12b8d6981777c2c44a4391121f2dee6a9c21",
+      "bytes": 9292211,
+      "kind": "sections",
+      "case": "weak_reference"
+    },
+    "verification.json": {
+      "sha256": "4d0df8a1e7281b36b9f36ef33a6331e4af5eef79de33c521f0d01958a9004a38",
+      "bytes": 780,
+      "kind": "metadata",
+      "case": null
+    }
+  },
+  "regeneration_command": ".venv/bin/python scripts/simulate_spatial_kerr.py --config configs/spatial_kerr.json --output .work/spatial-reproduction --scratch .work/spatial-reproduction-bulk",
+  "limitations": [
+    "Infinite cladding plus an artificial radial absorber, not a glass-air interface at radius 62.5 um",
+    "All four fixed coefficients retained; weak-reference absolute accuracy is not guaranteed",
+    "No physical watt scale, material damage/collapse guarantee, temporal pulses, polarization, backward-z or full Maxwell solution",
+    "Limited numerical qualification, not complete 3 mm spatial/full-wave convergence",
+    "Numerical diagnostics use the full grid; saved section/mesh/current ROI is fixed and decimated",
+    "J/I defines power-flow streamlines, not photons; all seeds and masked terminations retained",
+    "Meshes are fixed iso-intensity surfaces, not paths or per-slice normalized brightness"
+  ],
+  "independent_validator_count": 0
+}

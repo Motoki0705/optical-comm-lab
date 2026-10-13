@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "purpose": "Circular-core scalar paraxial CW educational Kerr comparison; normalized intensity, not calibrated SMF/material watts",
+  "model": {
+    "wavelength_um": 1.55, "ncore": 1.450, "nclad": 1.445,
+    "core_radius_um": 25.0, "waist_um": 12.0, "tilt_deg": 3.0,
+    "zmax_um": 3000.0, "half_window_um": 125.0,
+    "dx_um": 0.25, "dz_um": 0.0625,
+    "absorber_start_um": 100.0, "absorber_max_per_um": 0.1
+  },
+  "backend": "cupy",
+  "cases": {"linear": 0.0, "weak_reference": 1.6e-11, "intermediate_kerr": 0.0001, "educational_kerr": 0.0003},
+  "sampling": {
+    "diagnostic_dz_um": 5.0, "volume_dz_um": 2.5,
+    "roi_half_width_um": 50.0, "saved_dx_um": 0.5,
+    "cross_z_um": [0, 375, 750, 1125, 1500, 1875, 2250, 2625, 3000]
+  },
+  "flow": {"seeds_per_axis": 5, "intensity_threshold": 0.0001, "step_um": 0.5, "comparison_step_um": 0.25, "interpolation": "linear"},
+  "isosurface_levels": [0.1, 0.3, 0.6],
+  "qualification": {"short_z_um": 800.0, "finer_dx_um": 0.125, "finer_dx_dz_um": 0.03125, "enlarged_half_window_um": 150.0, "enlarged_absorber_start_um": 125.0},
+  "scope": [
+    "Infinite cladding plus an artificial radial absorber, not a glass-air interface at radius 62.5 um",
+    "All four fixed coefficients retained; weak-reference absolute accuracy is not guaranteed",
+    "No physical watt scale, material damage/collapse guarantee, temporal pulses, polarization, backward-z or full Maxwell solution",
+    "Limited numerical qualification, not complete 3 mm spatial/full-wave convergence"
+  ]
+}
