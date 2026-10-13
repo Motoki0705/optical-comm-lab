@@ -39,6 +39,41 @@ def test_boundary_guides_use_the_real_circle_in_the_reflection_plane():
     np.testing.assert_array_equal(renderer.physical_to_world(rails)[:,:,1],[[.25,.25],[-.25,-.25]])
 
 
+def test_intro_camera_forward_ray_keeps_the_registered_core_target():
+    for frame in range(12,26):
+        t = (frame-12)/13
+        offset = (1-t)*np.asarray(CONFIG["camera"]["intro_offset_world"])+t*np.asarray(CONFIG["camera"]["offset_world"])
+        basis = renderer.intro_camera_basis(frame,CONFIG)
+        np.testing.assert_allclose(basis.T@basis,np.eye(3),atol=1e-14)
+        np.testing.assert_allclose((basis.T@(-offset))[:2],0,atol=1e-14)
+        assert (basis.T@(-offset))[2]<0 and np.linalg.det(basis)>0
+    np.testing.assert_allclose(renderer.camera_target_at_frame(1,144,CONFIG,"01_reflection"),[4.8,0,0])
+    np.testing.assert_allclose(renderer.camera_target_at_frame(25,144,CONFIG,"01_reflection"),[2.5,0,0])
+    # Both comparison components must observe the same physical distance.
+    np.testing.assert_allclose(renderer.camera_target_at_frame(90,144,CONFIG,"02_kerr_comparison"),[17.125874125874,0,0])
+
+
+def test_camera_repair_rejects_unrelated_or_changed_original_provenance(tmp_path):
+    original = {"stage":"render","production_movies_complete":True,"provenance":{"renderer_source_sha256":"wrong"}}
+    with pytest.raises(ValueError,match="source revision"):
+        renderer._repair_guard(original,tmp_path,tmp_path,tmp_path/"missing-config",CONFIG,{}, {})
+    original["provenance"].update(renderer_source_sha256=renderer.INTRO_BUG_SOURCE_SHA256,renderer_config_sha256=renderer.CAMERA_REPAIR_CONFIG_SHA256)
+    config_path = ROOT/"configs/spatial_kerr_render.json"
+    original["effective_config"] = {**CONFIG,"samples":32}
+    with pytest.raises(ValueError,match="configuration differs"):
+        renderer._repair_guard(original,tmp_path,tmp_path,config_path,CONFIG,{}, {})
+    assert not list(tmp_path.iterdir())
+
+
+def test_camera_repair_rejects_an_otherwise_matching_run_with_another_config(tmp_path):
+    alternate = {**CONFIG,"studio":{**CONFIG["studio"],"world_strength":.8}}
+    path = tmp_path/"alternate.json"
+    path.write_text(json.dumps(alternate))
+    original = {"stage":"render","production_movies_complete":True,"effective_config":alternate,"provenance":{"renderer_source_sha256":renderer.INTRO_BUG_SOURCE_SHA256,"renderer_config_sha256":renderer.sha256(path)}}
+    with pytest.raises(ValueError,match="configuration hash"):
+        renderer._repair_guard(original,tmp_path,tmp_path,path,alternate,{}, {})
+
+
 def test_stopped_streamline_never_reconnects_and_final_valid_point_is_kept():
     mask = np.array([[True,True,True,False,False],[True,True,False,False,False],[False,False,False,False,False]])
     prefixes = renderer.flow_prefix_indices(mask,stride=2)

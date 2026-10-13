@@ -138,6 +138,43 @@ def core_boundary_rails_um(config: dict) -> np.ndarray:
     return np.asarray([[[sign*radius,0,0],[sign*radius,0,length]] for sign in (1,-1)],dtype=float)
 
 
+def camera_target_at_frame(frame: int, frame_count: int, config: dict, film_id: str) -> np.ndarray:
+    """Camera focus is separate from the saved-flow observation cursor in the intro."""
+    camera = config["camera"]
+    intro,hold = camera["intro_frames"],camera["intro_hold_frames"]
+    if film_id=="01_reflection" and frame<=intro:
+        t = max(0.,(frame-hold)/(intro+1-hold))
+        z = (1-t)*camera["intro_target_z_um"]+t*camera["target_z_um"][0]
+    else:
+        z = distance_at_frame(frame,frame_count,config,film_id)
+    return np.asarray([z/config["physical_display"]["um_per_world_unit"],0.,0.])
+
+
+def intro_camera_basis(frame: int, config: dict) -> np.ndarray:
+    """Keep each integer-frame view on the target while smoothly changing roll."""
+    camera = config["camera"]
+    t = (frame-camera["intro_hold_frames"])/(camera["intro_frames"]+1-camera["intro_hold_frames"])
+    if not 0<=t<=1:
+        raise ValueError("Intro camera basis is only defined between the held and closeup poses")
+    start = np.asarray(camera["intro_offset_world"],dtype=float)
+    end = np.asarray(camera["offset_world"],dtype=float)
+    start_back = start/np.linalg.norm(start)
+    start_right = np.cross([0.,0.,1.],start_back)
+    start_right /= np.linalg.norm(start_right)
+    start_up = np.cross(start_back,start_right)
+    end_back = end/np.linalg.norm(end)
+    end_right = np.asarray([1.,0.,0.])-end_back*end_back[0]
+    end_right /= np.linalg.norm(end_right)
+    end_up = np.cross(end_back,end_right)
+    back = (1-t)*start+t*end
+    back /= np.linalg.norm(back)
+    hint = (1-t)*start_up+t*end_up
+    right = np.cross(hint,back)
+    right /= np.linalg.norm(right)
+    up = np.cross(back,right)
+    return np.column_stack((right,up,back))
+
+
 def _axis(values: np.ndarray, name: str, minimum_count: int = 2) -> None:
     if values.ndim != 1 or len(values) < minimum_count or not np.isfinite(values).all() or not (np.diff(values) > 0).all():
         raise ValueError(f"{name} must be finite and strictly increasing")
@@ -277,13 +314,17 @@ def validate_config(config: dict) -> None:
 
 def arguments(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=["inspect", "build", "posters", "proof", "render", "verify-scene"], default="posters")
+    parser.add_argument("--mode", choices=["inspect", "build", "posters", "proof", "render", "verify-scene", "repair-cameras"], default="posters")
     parser.add_argument("--config", type=Path, default=ROOT / "configs/spatial_kerr_render.json")
     parser.add_argument("--data-dir", type=Path, default=ROOT / "artifacts/spatial_kerr")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports/animations/spatial_kerr")
     parser.add_argument("--scratch-dir", type=Path, default=ROOT / ".work/spatial-kerr-render")
     parser.add_argument("--film", choices=list(FILMS), nargs="+", default=list(FILMS))
     parser.add_argument("--poster-frame", type=int, help="Render a selected camera frame for still review; does not alter the stored field or film schedule")
+    parser.add_argument("--repair-manifest", type=Path, help="Completed original render manifest; required for repair-cameras")
+    parser.add_argument("--repair-cache", type=Path, help="Original full-render cache, if moved from its recorded path")
+    parser.add_argument("--preflight-only", action="store_true", help="Prepare and render the fixed camera-repair review samples, without replacing delivered films")
+    parser.add_argument("--repair-state", type=Path, help="Verified preflight state from this exact repair source/config/environment")
     parser.add_argument("--blender", help="Blender executable; Windows .exe under WSL is supported")
     parser.add_argument("--font", type=Path, default=Path("/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf"))
     parser.add_argument("--font-license", type=Path, default=Path("/usr/share/doc/fonts-ipaexfont-gothic/copyright"))
@@ -1015,6 +1056,15 @@ def _build_component(film_id, component, config, cases, bundle, font_path, scrat
     for frame in ([intro+1,scene.frame_end] if intro else [1,scene.frame_end]):
         camera.location = Vector((distance_at_frame(frame,scene.frame_end,config,film_id)/scale,0,0))+offset
         camera.keyframe_insert("location",frame=frame)
+    if intro:
+        # Independent Euler/position interpolation misses the target as the
+        # view narrows. Bake only the affected integer-frame rotations from
+        # an explicit target-facing basis; approved endpoint poses remain.
+        previous = intro_rotation
+        for frame in range(config["camera"]["intro_hold_frames"]+1,intro+1):
+            camera.rotation_euler = Matrix(intro_camera_basis(frame,config).tolist()).to_euler("XYZ",previous)
+            camera.keyframe_insert("rotation_euler",frame=frame)
+            previous = camera.rotation_euler.copy()
     _set_linear_action(camera)
     _set_linear_action(cd)
     camera.rotation_euler = close_rotation
@@ -1025,7 +1075,7 @@ def _build_component(film_id, component, config, cases, bundle, font_path, scrat
     _distance_and_boundary_labels(scene,config,camera,font)
     if component=="reflection":
         record["observation_cursor"] = _cursor(scene,config,case,scene.frame_end)
-    record["camera"] = {"projection":cd.type,"ortho_width_world":close_width if cd.type=="ORTHO" else None,"offset_world":config["camera"]["offset_world"],"intro_frames":intro,"intro_target_z_um":config["camera"].get("intro_target_z_um") if intro else None,"intro_offset_world":config["camera"].get("intro_offset_world") if intro else None,"intro_width_world":config["camera"].get("intro_width_world") if intro else None,"intro_scope":"Entrance face and first approximately 1 mm of stripped circular fiber, then camera-only move into computed reflection. Presentation surface sheen/coating changes do not animate the field." if intro else None,"lens_mm_virtual":cd.lens,"sensor_fit":"HORIZONTAL","screen_right_world":list(right),"screen_up_world":list(up),"longitudinal_foreshortening":float(math.sqrt(1-back.x**2)),"depth_of_field":False,"target_z_um":config["camera"]["target_z_um"],"frame_mapping":"Hold initial distance through film-01 context frames, then linear distance observation; other films linear throughout","time_scope":"Observation scheduling only; no physical time units"}
+    record["camera"] = {"projection":cd.type,"ortho_width_world":close_width if cd.type=="ORTHO" else None,"offset_world":config["camera"]["offset_world"],"intro_frames":intro,"intro_target_z_um":config["camera"].get("intro_target_z_um") if intro else None,"intro_offset_world":config["camera"].get("intro_offset_world") if intro else None,"intro_width_world":config["camera"].get("intro_width_world") if intro else None,"intro_scope":"Entrance face and first approximately 1 mm of stripped circular fiber, then camera-only move into computed reflection. Presentation surface sheen/coating changes do not animate the field." if intro else None,"intro_rotation_interpolation":"Target-facing rotation keys at every integer frame 13-24; endpoint poses and camera positions/scales unchanged" if intro else None,"lens_mm_virtual":cd.lens,"sensor_fit":"HORIZONTAL","screen_right_world":list(right),"screen_up_world":list(up),"longitudinal_foreshortening":float(math.sqrt(1-back.x**2)),"depth_of_field":False,"target_z_um":config["camera"]["target_z_um"],"frame_mapping":"Hold initial distance through film-01 context frames, then linear distance observation; other films linear throughout","time_scope":"Observation scheduling only; no physical time units"}
     return scene,record
 
 
@@ -1051,16 +1101,69 @@ def _poster_frame(config: dict, film_id: str | None = None) -> int:
 
 def _render_frame(scene, frame: int, path: Path, samples: int, percentage: int) -> dict:
     import time
+    bpy.context.window.scene = scene
     scene.frame_set(frame)
+    _verify_runtime_device(scene)
+    _camera_row(scene,frame,config=json.loads(bpy.data.texts['Fixed render configuration'].as_string()))
     scene.cycles.samples = samples
     scene.render.resolution_percentage = percentage
     scene.render.filepath = str(path)
     started = time.perf_counter()
     bpy.ops.render.render(scene=scene.name,write_still=True)
-    return {"frame":frame,"file":path.name,"sha256":sha256(path),"render_seconds":time.perf_counter()-started,"width":round(scene.render.resolution_x*percentage/100),"height":round(scene.render.resolution_y*percentage/100),"samples":samples}
+    _verify_runtime_device(scene)
+    camera = _camera_row(scene,frame,config=json.loads(bpy.data.texts['Fixed render configuration'].as_string()))
+    return {"frame":frame,"file":path.name,"sha256":sha256(path),"render_seconds":time.perf_counter()-started,"width":round(scene.render.resolution_x*percentage/100),"height":round(scene.render.resolution_y*percentage/100),"samples":samples,"camera_target_world":camera["target_world"],"camera_observation_z_um":distance_at_frame(frame,scene.frame_end,json.loads(bpy.data.texts['Fixed render configuration'].as_string()),scene['film_id']),"active_scene_and_camera_verified":True,"runtime_device":"GPU/OPTIX"}
 
 
-def _native_verify(cases, bundle, config) -> list[dict]:
+def _verify_runtime_device(scene):
+    prefs = bpy.context.preferences.addons["cycles"].preferences
+    if scene.cycles.device!="GPU" or prefs.compute_device_type!="OPTIX" or not any(d.type=="OPTIX" and d.use for d in prefs.devices) or any(d.type!="OPTIX" and d.use for d in prefs.devices):
+        raise RuntimeError("Cycles runtime device preferences changed; CPU/device fallback is forbidden")
+
+
+def _camera_row(scene, frame, config, *, allow_old_intro_failure=False):
+    from bpy_extras.object_utils import world_to_camera_view
+    from mathutils import Vector
+    camera = scene.camera
+    target = camera_target_at_frame(frame,scene.frame_end,config,scene["film_id"])
+    projected = world_to_camera_view(scene,camera,Vector(target.tolist()))
+    error = max(abs(projected.x-.5),abs(projected.y-.5))
+    known = allow_old_intro_failure and scene["film_id"]=="01_reflection" and 13<=frame<=24
+    intro = scene["film_id"]=="01_reflection" and frame<=config["camera"]["intro_frames"]
+    if intro:
+        t = max(0.,(frame-config["camera"]["intro_hold_frames"])/(config["camera"]["intro_frames"]+1-config["camera"]["intro_hold_frames"]))
+        offset = (1-t)*np.asarray(config["camera"]["intro_offset_world"])+t*np.asarray(config["camera"]["offset_world"])
+        basis = intro_camera_basis(max(frame,config["camera"]["intro_hold_frames"]),config)
+    else:
+        offset = np.asarray(config["camera"]["offset_world"])
+        back = offset/np.linalg.norm(offset)
+        right = np.array([1.,0.,0.])-back*back[0]
+        right /= np.linalg.norm(right)
+        basis = np.column_stack((right,np.cross(back,right),back))
+    close_width = config["camera"]["ortho_height_world"]*scene.render.resolution_x/scene.render.resolution_y
+    width = (1-t)*config["camera"]["intro_width_world"]+t*close_width if intro else close_width
+    actual_basis = np.asarray(camera.matrix_world.to_3x3())
+    if scene.frame_current!=frame or bpy.context.scene!=scene or np.max(abs(np.asarray(camera.location)-(target+offset)))>1e-4 or abs(camera.data.ortho_scale-width)>1e-5:
+        raise RuntimeError("Active component camera position/frame/scale differs from the declared observation")
+    if not known and (error>1e-3 or projected.z<=0 or np.max(abs(actual_basis-basis))>1e-5):
+        raise RuntimeError(f"Camera target or pose leaves the registered frame: {scene.name}, frame {frame}, projection {list(projected)}")
+    return {"frame":frame,"matrix_world":[value for row in camera.matrix_world for value in row],"location_world":list(camera.location),"ortho_scale":camera.data.ortho_scale,"target_world":target.tolist(),"target_projection":list(projected),"center_error":error}
+
+
+def _camera_trace(scene, config, *, allow_old_intro_failure=False):
+    original = scene.frame_current
+    bpy.context.window.scene = scene
+    rows = []
+    try:
+        for frame in range(1,scene.frame_end+1):
+            scene.frame_set(frame)
+            rows.append(_camera_row(scene,frame,config,allow_old_intro_failure=allow_old_intro_failure))
+    finally:
+        scene.frame_set(original)
+    return rows
+
+
+def _native_verify(cases, bundle, config, *, allow_old_intro_failure=False) -> list[dict]:
     """Repeatable saved-scene fidelity checks; not a physical-model validator."""
     scale = config["physical_display"]["um_per_world_unit"]
     records = []
@@ -1125,6 +1228,9 @@ def _native_verify(cases, bundle, config) -> list[dict]:
             records.append({"image":image.name,"max_rgba_error":error,"packed":True})
         if not any(font.packed_file is not None for font in bpy.data.fonts if font.name!="Bfont"):
             raise RuntimeError("Japanese font is not packed in the native scene")
+        trace = _camera_trace(scene,config,allow_old_intro_failure=allow_old_intro_failure)
+        checked = [row for row in trace if not (allow_old_intro_failure and scene["film_id"]=="01_reflection" and 13<=row["frame"]<=24)]
+        records.append({"camera_scene":scene.name,"projection_checked_frames":len(checked),"allowed_old_failure_frames":[13,24] if len(checked)!=len(trace) else None,"max_screen_center_error":max(row["center_error"] for row in checked),"targets_in_view":True})
         if component=="reflection" and config["observation_cursor"]["enabled"]:
             original_frame = scene.frame_current
             flow = cases["linear"]["flows"]
@@ -1146,6 +1252,151 @@ def _native_verify(cases, bundle, config) -> list[dict]:
     return records
 
 
+def _scene_field_fingerprint(scene):
+    """Camera-independent numerical/display geometry and common materials."""
+    scene.frame_set(1)
+    rows = {}
+    for obj in scene.objects:
+        if not obj.name.startswith(("ISO |","FLOW |","DISPLAY |","SECTION |","ANNOTATION |","OBSERVATION |")):
+            continue
+        digest = hashlib.sha256()
+        if obj.type=="MESH":
+            co = np.empty(len(obj.data.vertices)*3,dtype=np.float32)
+            indices = np.empty(len(obj.data.loops),dtype=np.int32)
+            obj.data.vertices.foreach_get("co",co)
+            obj.data.loops.foreach_get("vertex_index",indices)
+            digest.update(co.tobytes());digest.update(indices.tobytes())
+            smooth = np.empty(len(obj.data.polygons),dtype=np.bool_)
+            obj.data.polygons.foreach_get("use_smooth",smooth)
+            digest.update(smooth.tobytes())
+        elif obj.type=="CURVE":
+            for spline in obj.data.splines:
+                co = np.empty(len(spline.points)*4,dtype=np.float32)
+                spline.points.foreach_get("co",co)
+                digest.update(co.tobytes())
+            digest.update(repr((obj.data.bevel_depth,obj.data.bevel_resolution,obj.data.use_fill_caps)).encode())
+        materials = []
+        for material in obj.data.materials if hasattr(obj.data,"materials") else []:
+            nodes = []
+            for node in material.node_tree.nodes:
+                inputs = []
+                for socket in node.inputs:
+                    if hasattr(socket,"default_value"):
+                        value = socket.default_value
+                        try: value = list(value)
+                        except TypeError: pass
+                        inputs.append((socket.name,value))
+                nodes.append((node.bl_idname,node.name,inputs))
+            materials.append(nodes)
+        rows[obj.name] = {"geometry_sha256":digest.hexdigest(),"materials":materials,"local_transform":list(obj.location)+list(obj.rotation_euler)+list(obj.scale),"hidden_at_frame1":obj.hide_render}
+    return hashlib.sha256(json.dumps(rows,sort_keys=True,default=str).encode()).hexdigest()
+
+
+def _inside_repair(request, bundle, result):
+    config = request["config"]
+    scratch = Path(request["paths"]["scratch"])
+    repair = request["repair"]
+    result["environment"] = _devices()
+    if result["environment"]!=repair["original_environment"]:
+        raise RuntimeError("Blender build/device environment differs from the original native run")
+    if request["repair"]["phase"]=="finish":
+        for film_id,components in CAMERA_REPAIR_COMPONENTS.items():
+            bpy.ops.wm.open_mainfile(filepath=str(Path(request["paths"]["output"])/(film_id+".blend")))
+            result["native_verification"][film_id] = _native_verify(bundle["cases"],bundle,config)
+            result["repair_frames"] = result.get("repair_frames",{})
+            for component,frames in components.items():
+                scene = bpy.data.scenes[film_id+" | "+component]
+                directory = scratch/film_id/component
+                result["repair_frames"].setdefault(film_id,{})[component] = {}
+                for frame in frames:
+                    path = directory/f"frame_{frame:04d}.png"
+                    if not path.exists():
+                        record = _render_frame(scene,frame,path,config["samples"],100)
+                        print("REPAIR_COMPONENT_FRAME="+json.dumps({"film":film_id,"component":component,**record}),flush=True)
+                    else:
+                        record = repair["preflight_records"][film_id][component][str(frame)]
+                        if sha256(path)!=record["sha256"]:
+                            raise RuntimeError("Preflight frame hash differs; no cross-run frame reuse")
+                    result["repair_frames"][film_id][component][str(frame)] = record
+            dump_json(scratch/"native_repair_result.json",result)
+        return
+    old_traces,old_fields = {},{}
+    for film_id in FILMS:
+        bpy.ops.wm.open_mainfile(filepath=repair["original_scenes"][film_id])
+        _native_verify(bundle["cases"],bundle,config,allow_old_intro_failure=True)
+        old_traces[film_id],old_fields[film_id] = {},{}
+        for scene in bpy.data.scenes:
+            if scene.get("film_id")==film_id:
+                component = scene["component"]
+                bpy.context.window.scene = scene
+                old_traces[film_id][component] = _camera_trace(scene,config,allow_old_intro_failure=True)
+                old_fields[film_id][component] = _scene_field_fingerprint(scene)
+    output = Path(request["paths"]["output"])
+    for film_id in FILMS:
+        bpy.ops.wm.read_factory_settings(use_empty=True)
+        if _devices()!=repair["original_environment"]:
+            raise RuntimeError("Factory reset changed the required OptiX rendering environment")
+        start = bpy.context.scene
+        assets = scratch/film_id/"assets"
+        assets.mkdir(parents=True,exist_ok=True)
+        components,scenes = [],{}
+        for component in FILMS[film_id]["components"]:
+            scene,info = _build_component(film_id,component,config,bundle["cases"],bundle,Path(request["paths"]["font"]),assets)
+            scenes[component] = scene;components.append(info)
+        bpy.data.scenes.remove(start)
+        for name,value in [("Numerical input manifest",bundle["manifest"]),("Fixed render configuration",config),("Source provenance",request["provenance"])]:
+            bpy.data.texts.new(name).write(json.dumps(value,ensure_ascii=False,indent=2))
+        poster_frame = _poster_frame(config,film_id)
+        for scene in scenes.values():
+            bpy.context.window.scene = scene
+            scene.frame_set(poster_frame)
+            scene.cycles.samples = config["samples"]
+            scene.render.filepath = "//"+FILMS[film_id]["poster"]
+        bpy.context.window.scene = scenes[FILMS[film_id]["components"][0]]
+        bpy.context.preferences.filepaths.save_version = 0
+        bpy.ops.file.pack_all()
+        path = output/(film_id+".blend")
+        bpy.ops.wm.save_as_mainfile(filepath=str(path),compress=True)
+        if path.stat().st_size>=100000000:
+            raise RuntimeError("Native delivery exceeds the 100 MB limit")
+        bpy.ops.wm.open_mainfile(filepath=str(path))
+        result["native_verification"][film_id] = _native_verify(bundle["cases"],bundle,config)
+        record = {"id":film_id,"scene":path.name,"scene_sha256":sha256(path),"components":components,"poster_components":{},"camera_checks":{},"preflight_frames":{}}
+        new_traces = {}
+        for component in FILMS[film_id]["components"]:
+            scene = bpy.data.scenes[film_id+" | "+component]
+            bpy.context.window.scene = scene
+            trace = _camera_trace(scene,config)
+            new_traces[component] = trace
+            if _scene_field_fingerprint(scene)!=old_fields[film_id][component]:
+                raise RuntimeError("A non-camera field/display geometry or material changed during camera repair")
+            old = old_traces[film_id][component]
+            changed = INTRO_REPAIR_FRAMES if film_id=="01_reflection" else ()
+            for previous,current in zip(old,trace):
+                if previous["location_world"]!=current["location_world"] or previous["ortho_scale"]!=current["ortho_scale"]:
+                    raise RuntimeError("Camera repair changed a position or scale")
+                if current["frame"] not in changed and previous["matrix_world"]!=current["matrix_world"]:
+                    raise RuntimeError("Camera outside the permitted intro-rotation interval changed")
+            record["camera_checks"][component] = {"frames":144,"max_screen_center_error":max(row["center_error"] for row in trace),"positions_scales_and_unaffected_rotations_identical":True,"field_and_material_fingerprint_sha256":old_fields[film_id][component]}
+            path = scratch/film_id/("poster_"+component+".png")
+            record["poster_components"][component] = _render_frame(scene,poster_frame,path,config["poster_samples"],100)
+            if component in CAMERA_REPAIR_COMPONENTS[film_id]:
+                directory = scratch/film_id/component
+                directory.mkdir(exist_ok=True)
+                record["preflight_frames"][component] = {}
+                for frame in CAMERA_REPAIR_SAMPLES[component]:
+                    path = directory/f"frame_{frame:04d}.png"
+                    record["preflight_frames"][component][str(frame)] = _render_frame(scene,frame,path,config["samples"],100)
+        dump_json(scratch/film_id/"camera_traces.json",new_traces)
+        first = new_traces[FILMS[film_id]["components"][0]]
+        for trace in new_traces.values():
+            if any(a["matrix_world"]!=b["matrix_world"] or a["target_world"]!=b["target_world"] for a,b in zip(first,trace)):
+                raise RuntimeError("Comparison components do not observe the same distance and pose")
+        record["all_panel_distances_and_poses_match"] = True
+        result["films"].append(record)
+        dump_json(scratch/"native_repair_result.json",result)
+
+
 def inside_blender(request_path: Path) -> None:
     global bpy
     import bpy
@@ -1157,6 +1408,10 @@ def inside_blender(request_path: Path) -> None:
     bundle = verify_inputs(data_dir,config)
     cases = bundle["cases"]
     result = {"environment":{},"films":[],"mode":request["mode"],"native_verification":{}}
+    if request["mode"]=="repair-cameras":
+        _inside_repair(request,bundle,result)
+        dump_json(scratch/"native_repair_result.json",result)
+        return
     if request["mode"]=="verify-scene":
         for film_id in request["films"]:
             bpy.ops.wm.open_mainfile(filepath=str(output/(film_id+".blend")))
@@ -1177,6 +1432,7 @@ def inside_blender(request_path: Path) -> None:
         bpy.data.scenes.remove(start_scene)
         poster_frame = request.get("poster_frame") or _poster_frame(config,film_id)
         for scene in scenes.values():
+            bpy.context.window.scene = scene
             scene.frame_set(poster_frame)
             scene.cycles.samples = config["samples"]
             scene.render.resolution_percentage = 100
@@ -1262,6 +1518,83 @@ def _gpu_report() -> dict:
         return {"known":False,"reason":"GPU driver query failed; no frame reuse is supported"}
 
 
+def _media_tools(args, purpose: str) -> dict:
+    tools = {}
+    for name in ("ffmpeg","ffprobe"):
+        value = getattr(args,name)
+        if not value:
+            raise FileNotFoundError(f"{name} is required for {purpose}")
+        path = Path(shutil.which(value) or value).resolve()
+        version = subprocess.check_output([str(path),"-version"],text=True,stderr=subprocess.STDOUT)
+        tools[name] = {"invoked_path":value,"resolved_path":str(path),"sha256":sha256(path),"version_output":version.strip()}
+    return {"queried_utc":datetime.now(timezone.utc).isoformat(),"scope":purpose,"tools":tools}
+
+
+INTRO_BUG_SOURCE_SHA256 = "2f34c91242dc0de30a722a6ffea2bba24c8588858fac05e117b400f5bc2c6332"
+CAMERA_REPAIR_CONFIG_SHA256 = "f37d311621a7065caca8ca4229cbe3aecf9f75db391ff6a7ff6979252e487607"
+INTRO_BUG_SOURCE_REVISION = "a6b623c"
+INTRO_REPAIR_FRAMES = tuple(range(13,25))
+CAMERA_REPAIR_COMPONENTS = {
+    "01_reflection":{"reflection":INTRO_REPAIR_FRAMES},
+    "02_kerr_comparison":{"comparison_on":tuple(range(1,145))},
+    "03_phase_change":{"intensity_off":tuple(range(1,145)),"intensity_on":tuple(range(1,145))},
+}
+CAMERA_REPAIR_SAMPLES = {"reflection":(13,18,24,25),"comparison_on":(1,90,144),"intensity_off":(1,90,144),"intensity_on":(1,90,144)}
+
+
+def _repair_guard(manifest: dict, original_cache: Path, output: Path, config_path: Path, config: dict, bundle: dict, host: dict) -> dict:
+    """Only the known Issue-31 completed render may supply unchanged frames."""
+    if manifest.get("stage")!="render" or not manifest.get("production_movies_complete") or manifest.get("repairs"):
+        raise ValueError("repair-cameras requires an unmodified completed original full run")
+    provenance = manifest["provenance"]
+    if provenance["renderer_source_sha256"]!=INTRO_BUG_SOURCE_SHA256:
+        raise ValueError("Only the recorded Issue-31 source revision can be repaired")
+    if provenance["renderer_config_sha256"]!=CAMERA_REPAIR_CONFIG_SHA256 or sha256(config_path)!=CAMERA_REPAIR_CONFIG_SHA256:
+        raise ValueError("Only the recorded camera-repair configuration hash can be repaired")
+    if manifest["effective_config"]!=config or provenance["renderer_config_sha256"]!=sha256(config_path):
+        raise ValueError("Repair configuration differs from the original run")
+    if provenance["input_files"]!=bundle["records"] or provenance["numerical_manifest_sha256"]!=bundle["records"]["manifest.json"]["sha256"]:
+        raise ValueError("Repair numerical input differs from the original run")
+    if not provenance["host"]["gpu_driver"].get("known") or provenance["host"]!=host:
+        raise ValueError("Original/current Python, NumPy or known GPU-driver identity differs")
+    if sha256(original_cache/"render_spatial_kerr_snapshot.py")!=INTRO_BUG_SOURCE_SHA256:
+        raise ValueError("Original renderer snapshot hash differs")
+    original_request = json.loads((original_cache/"request.json").read_text())
+    if original_request["mode"]!="render" or original_request["config"]!=config or original_request["provenance"]!=provenance:
+        raise ValueError("Original full-render request differs from its manifest")
+    for name,record in bundle["records"].items():
+        if sha256(original_cache/"input_snapshot"/name)!=record["sha256"]:
+            raise ValueError("Original input snapshot hash differs: "+name)
+    films = {row["id"]:row for row in manifest["films"]}
+    if set(films)!=set(FILMS):
+        raise ValueError("All three original films must be complete before repair")
+    checked = {}
+    count = round(config["duration_seconds"]*config["fps"])
+    native = json.loads((original_cache/"native_result.json").read_text())
+    if native["environment"]!=manifest["render_environment"]:
+        raise ValueError("Original native rendering environment differs")
+    for film_id,film in films.items():
+        if film["status"]!="rendered" or film["frames"]!=count or set(film["frame_sha256"])!={str(i) for i in range(1,count+1)}:
+            raise ValueError("Original film frame inventory is incomplete")
+        for kind in ("scene","poster","mp4"):
+            path = output/film[kind]
+            if not path.is_file() or sha256(path)!=film["sha256"][kind]:
+                raise ValueError(f"Original {film_id} {kind} differs from its manifest")
+        for frame,value in film["frame_sha256"].items():
+            path = original_cache/film_id/"composed_frames"/f"frame_{int(frame):04d}.png"
+            if sha256(path)!=value:
+                raise ValueError(f"Original full-frame hash differs: {film_id} {frame}")
+        original_film = next(row for row in native["films"] if row["id"]==film_id)
+        for component,frames in original_film["frames"].items():
+            if set(frames)!={str(i) for i in range(1,count+1)}:
+                raise ValueError("Original native component inventory is incomplete")
+            for frame,record in frames.items():
+                if sha256(original_cache/film_id/component/f"frame_{int(frame):04d}.png")!=record["sha256"]:
+                    raise ValueError(f"Original native component hash differs: {film_id} {component} {frame}")
+        checked[film_id] = {"composed_frames":count,"native_component_frames":sum(len(v) for v in original_film["frames"].values()),"scene_poster_movie_hashes_match":True}
+    return {"checked_original_frame_hashes":checked,"original_source_sha256":INTRO_BUG_SOURCE_SHA256,"original_source_revision":INTRO_BUG_SOURCE_REVISION,"configuration_input_host_and_original_snapshot_match":True}
+
+
 def _compose(film_id: str, component_paths: dict[str,Path], output: Path, config: dict) -> None:
     from PIL import Image
     canvas = Image.new("RGB",(config["width"],config["height"]))
@@ -1278,8 +1611,8 @@ def _compose(film_id: str, component_paths: dict[str,Path], output: Path, config
 def _encode(frame_dir: Path, path: Path, count: int, dimensions: tuple[int,int], config: dict, args) -> dict:
     if not args.ffmpeg or not args.ffprobe:
         raise FileNotFoundError("FFmpeg and FFprobe are required for video output")
-    # Every frame is a fresh native render; no optical-flow interpolation,
-    # frame repetition, or stale-cache reuse is performed.
+    # Each input is a native frame. The fixed camera-repair mode may retain
+    # hash-verified corresponding original frames outside its declared scope.
     subprocess.run([args.ffmpeg,"-y","-v","error","-framerate",str(config["fps"]),"-i",str(frame_dir/"frame_%04d.png"),"-frames:v",str(count),"-c:v","libx264","-preset",config["encoding"]["preset"],"-crf",str(config["encoding"]["crf"]),"-pix_fmt","yuv420p","-movflags","+faststart",str(path)],check=True)
     raw = subprocess.check_output([args.ffprobe,"-v","error","-select_streams","v:0","-show_entries","stream=width,height,r_frame_rate,nb_frames,duration","-of","json",str(path)],text=True)
     probe = json.loads(raw)["streams"][0]
@@ -1287,6 +1620,133 @@ def _encode(frame_dir: Path, path: Path, count: int, dimensions: tuple[int,int],
         raise ValueError("Encoded video does not match its declared frames, duration, or dimensions")
     subprocess.run([args.ffmpeg,"-v","error","-i",str(path),"-f","null","-"],check=True)
     return {"file":path.name,"sha256":sha256(path),"bytes":path.stat().st_size,"probe":probe,"all_frames_decode":True}
+
+
+def _run_repair_blender(request, scratch: Path, blender: str, script: Path, name: str):
+    path = scratch/(name+"_request.json")
+    dump_json(path,request)
+    with (scratch/(name+".log")).open("w",encoding="utf-8") as log:
+        subprocess.run([blender,"--background","--factory-startup","--python-exit-code","1","--python",_windows_path(script,blender),"--","--inside-blender","--request",_windows_path(path,blender)],stdout=log,stderr=subprocess.STDOUT,check=True)
+    return json.loads((scratch/"native_repair_result.json").read_text())
+
+
+def _repair_host(args, config_path, config, bundle):
+    output = args.output_dir.resolve()
+    source = Path(__file__).resolve()
+    host = {"python":platform.python_version(),"numpy":np.__version__,"gpu_driver":_gpu_report()}
+    media = _media_tools(args,"Queried for camera-repair verification/encoding only; original full-run encoder versions were not recorded")
+    blender = _blender_path(args.blender)
+    if args.repair_state:
+        state_path = args.repair_state.resolve()
+        state = json.loads(state_path.read_text())
+        scratch = state_path.parent
+        if state["repair_source_sha256"]!=sha256(source) or state["host"]!=host or state["media_tools"]["tools"]!=media["tools"]:
+            raise ValueError("Preflight source/environment changed; prepare a new camera repair")
+        original = json.loads((scratch/"original_completed_manifest.json").read_text())
+        original_cache = Path(state["original_cache"])
+    else:
+        if not args.preflight_only or not args.repair_manifest:
+            raise ValueError("First run repair-cameras --preflight-only --repair-manifest; then finish with --repair-state")
+        original = json.loads(args.repair_manifest.resolve().read_text())
+        original_cache = (args.repair_cache or Path(original["scratch_run"])).resolve()
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        scratch = args.scratch_dir.resolve()/(stamp+"-camera-repair-"+uuid.uuid4().hex[:8])
+        scratch.mkdir(parents=True,exist_ok=False)
+        dump_json(scratch/"original_completed_manifest.json",original)
+        state = None
+    guard = _repair_guard(original,original_cache,output,config_path,config,bundle,host)
+    if sha256(args.font)!=original["provenance"]["font"]["sha256"] or sha256(args.font_license)!=original["provenance"]["font"]["license_sha256"]:
+        raise ValueError("Repair Japanese font/license differs from the original")
+    if state is None:
+        frozen = scratch/"render_spatial_kerr_snapshot.py"
+        shutil.copyfile(source,frozen)
+        snapshot = scratch/"input_snapshot"
+        snapshot.mkdir()
+        for name,record in bundle["records"].items():
+            shutil.copyfile(args.data_dir.resolve()/name,snapshot/name)
+            if sha256(snapshot/name)!=record["sha256"]:
+                raise RuntimeError("Input changed while freezing repair snapshot")
+        original_files = scratch/"original_deliverables"
+        original_files.mkdir()
+        for film in original["films"]:
+            for kind in ("scene","poster","mp4"):
+                shutil.copyfile(output/film[kind],original_files/film[kind])
+        staging = scratch/"delivery"
+        staging.mkdir()
+        provenance = {"renderer_source_sha256":sha256(source),"renderer_config_sha256":sha256(config_path),"numerical_manifest_sha256":bundle["records"]["manifest.json"]["sha256"],"input_files":bundle["records"],"font":original["provenance"]["font"],"host":host,"media_tools":media,"scope":"Formal fixed camera repair for Issues 31/34; numerical data and display materials unchanged","original_renderer_source_sha256":INTRO_BUG_SOURCE_SHA256,"original_source_revision":INTRO_BUG_SOURCE_REVISION}
+        request = {"mode":"repair-cameras","config":config,"provenance":provenance,"paths":{name:_windows_path(path,blender) for name,path in {"scratch":scratch,"output":staging,"data_dir":snapshot,"font":args.font}.items()},"repair":{"phase":"prepare","original_environment":original["render_environment"],"original_scenes":{film["id"]:_windows_path(original_files/film["scene"],blender) for film in original["films"]}}}
+        print("CAMERA_REPAIR_RUN="+str(scratch),flush=True)
+        native = _run_repair_blender(request,scratch,blender,frozen,"preflight")
+        hashes = {}
+        for film in native["films"]:
+            paths = {component:scratch/film["id"]/value["file"] for component,value in film["poster_components"].items()}
+            path = staging/FILMS[film["id"]]["poster"]
+            _compose(film["id"],paths,path,config)
+            hashes[path.name] = sha256(path)
+            hashes[film["scene"]] = sha256(staging/film["scene"])
+        state = {"schema_version":1,"repair_source_sha256":sha256(source),"config_sha256":sha256(config_path),"original_cache":str(original_cache),"host":host,"media_tools":media,"guard":guard,"provenance":provenance,"request":request,"native":native,"staged_file_hashes":hashes}
+        dump_json(scratch/"repair_state.json",state)
+        print(json.dumps({"repair_state":str(scratch/"repair_state.json"),"stage":"preflight_ready","samples":{film["id"]:{component:[str(scratch/film["id"]/component/f"frame_{frame:04d}.png") for frame in CAMERA_REPAIR_SAMPLES[component]] for component in film["preflight_frames"]} for film in native["films"]}},ensure_ascii=False),flush=True)
+        return
+    if state["config_sha256"]!=sha256(config_path):
+        raise ValueError("Preflight configuration hash changed")
+    staging = scratch/"delivery"
+    for name,value in state["staged_file_hashes"].items():
+        if sha256(staging/name)!=value:
+            raise ValueError("A prepared native/poster changed after preflight")
+    preflight = {film["id"]:film["preflight_frames"] for film in state["native"]["films"]}
+    request = json.loads(json.dumps(state["request"]))
+    request["repair"].update(phase="finish",preflight_records=preflight)
+    for film in state["native"]["films"]:
+        for component,frames in film["preflight_frames"].items():
+            for frame,record in frames.items():
+                if sha256(scratch/film["id"]/component/f"frame_{int(frame):04d}.png")!=record["sha256"]:
+                    raise ValueError("A prepared sample frame changed after preflight")
+    native = _run_repair_blender(request,scratch,blender,scratch/"render_spatial_kerr_snapshot.py","finish")
+    finished = json.loads(json.dumps(original))
+    replacements = {}
+    old_native = json.loads((original_cache/"native_result.json").read_text())
+    for film in finished["films"]:
+        film_id = film["id"]
+        directory = scratch/film_id/"composed_frames"
+        directory.mkdir(exist_ok=False)
+        hashes = {};replacements[film_id] = {}
+        for frame in range(1,145):
+            path = directory/f"frame_{frame:04d}.png"
+            modified = {component for component,frames in CAMERA_REPAIR_COMPONENTS[film_id].items() if frame in frames}
+            if not modified:
+                shutil.copyfile(original_cache/film_id/"composed_frames"/path.name,path)
+                if sha256(path)!=film["frame_sha256"][str(frame)]:
+                    raise RuntimeError("An unchanged corresponding original frame was not preserved")
+            else:
+                paths = {component:(scratch if component in modified else original_cache)/film_id/component/path.name for component in FILMS[film_id]["components"]}
+                _compose(film_id,paths,path,config)
+            hashes[str(frame)] = sha256(path)
+        for component,frames in CAMERA_REPAIR_COMPONENTS[film_id].items():
+            old = next(row for row in old_native["films"] if row["id"]==film_id)["frames"][component]
+            new = native["repair_frames"][film_id][component]
+            replacements[film_id][component] = {str(frame):{"old_native_frame_sha256":old[str(frame)]["sha256"],"new_native_frame_sha256":new[str(frame)]["sha256"]} for frame in frames}
+        video = _encode(directory,staging/film["mp4"],144,(1920,1080),config,args)
+        film.update(frame_sha256=hashes,video_verification=video)
+        film["sha256"] = {kind:sha256(staging/film[kind]) for kind in ("scene","poster","mp4")}
+        fresh = next(row for row in state["native"]["films"] if row["id"]==film_id)
+        film["components"] = fresh["components"]
+        film["poster_component_records"] = fresh["poster_components"]
+        film["camera_repair_checks"] = fresh["camera_checks"]
+        film["scene_and_poster_generation_source_sha256"] = state["repair_source_sha256"]
+        film["component_frame_generation"] = {component:{"original_renderer_source_sha256":INTRO_BUG_SOURCE_SHA256,"repair_renderer_source_sha256":state["repair_source_sha256"],"replaced_frames":list(CAMERA_REPAIR_COMPONENTS[film_id].get(component,()))} for component in FILMS[film_id]["components"]}
+    for name,record in bundle["records"].items():
+        if sha256(args.data_dir.resolve()/name)!=record["sha256"]:
+            raise RuntimeError("Original input changed during camera repair")
+    record = {"id":"camera-registration-issues-31-34","created_utc":datetime.now(timezone.utc).isoformat(),"original_source_revision":INTRO_BUG_SOURCE_REVISION,"original_source_sha256":INTRO_BUG_SOURCE_SHA256,"repair_source_sha256":state["repair_source_sha256"],"configuration_input_environment_unchanged":True,"original_manifest_sha256":sha256(scratch/"original_completed_manifest.json"),"original_deliverables":{film["id"]:film["sha256"] for film in original["films"]},"replacement_native_frame_hashes":replacements,"guard":guard,"native_verification":native["native_verification"],"media_tools":media,"original_encoder_identity":"Not recorded by the original full-run source; current identities apply only to repair verification/encoding","scratch_run":str(scratch),"preflight_state":str(scratch/"repair_state.json"),"reproduction_command":".venv/bin/python scripts/render_spatial_kerr.py --mode render","scope":"Only camera rotations on 01 frames13-24 and corrected active-scene evaluation for 02 ON / 03 lower panels. Each affected native frame was rerendered. Matching original frame IDs elsewhere are preserved by verified hashes; all three videos are reencoded.","original_pixel_generation_provenance_retained":True}
+    finished["repairs"] = [record]
+    finished["canonical_reproduction_source_sha256"] = state["repair_source_sha256"]
+    finished["ordinary_native_verification"] = native["native_verification"]
+    for film in finished["films"]:
+        for kind in ("scene","poster","mp4"):
+            shutil.copyfile(staging/film[kind],output/film[kind])
+    dump_json(output/"render_manifest.json",finished)
+    print(json.dumps({"output":str(output),"stage":"camera_repair_complete","manifest":str(output/"render_manifest.json"),"production_movies_complete":finished["production_movies_complete"]},ensure_ascii=False))
 
 
 def host_main(args: argparse.Namespace) -> None:
@@ -1297,6 +1757,9 @@ def host_main(args: argparse.Namespace) -> None:
         raise ValueError("Requested still-review frame is outside the recorded film schedule")
     data_dir = args.data_dir.resolve()
     bundle = verify_inputs(data_dir,config)
+    if args.mode=="repair-cameras":
+        _repair_host(args,config_path,config,bundle)
+        return
     if args.mode=="inspect":
         print(json.dumps({"source_manifest_sha256":bundle["records"]["manifest.json"]["sha256"],"all_input_hashes_match":True,"cases":bundle["summary"],"flow_approximation_limits":bundle["flow_accuracy"],"numerical_limits":bundle["manifest"].get("limitations",[])},ensure_ascii=False,indent=2))
         return
@@ -1324,6 +1787,8 @@ def host_main(args: argparse.Namespace) -> None:
     source_location = str(data_dir.relative_to(ROOT)) if data_dir.is_relative_to(ROOT) else str(data_dir)
     provenance = {"renderer_source_sha256":sha256(script),"renderer_config_sha256":sha256(config_path),"numerical_manifest_sha256":bundle["records"]["manifest.json"]["sha256"],"numerical_source_hashes":bundle["manifest"].get("source_hashes",{}),"numerical_input_config":bundle["manifest"].get("input_config",{}),"input_location":source_location,"input_files":bundle["records"],"font":{"path":str(args.font.resolve()),"sha256":sha256(args.font),"license_sha256":sha256(args.font_license)},"host":{"python":platform.python_version(),"numpy":np.__version__,"gpu_driver":_gpu_report()},"cache_policy":"Fresh isolated cache per run; no resume or cross-run frame reuse"}
     provenance["render_request"] = {"mode":args.mode,"films":args.film,"poster_frame_override":args.poster_frame}
+    if args.mode in ("render","proof"):
+        provenance["media_tools"] = _media_tools(args,"Identities queried for this render/proof encoding and verification")
     request = {"mode":args.mode,"films":args.film,"poster_frame":args.poster_frame,"config":config,"provenance":provenance,"paths":{name:_windows_path(path,blender) for name,path in {"data_dir":snapshot,"output":output,"scratch":scratch,"font":args.font}.items()}}
     request_path = scratch/"request.json"
     dump_json(request_path,request)
