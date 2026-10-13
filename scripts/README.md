@@ -145,3 +145,21 @@ seeded/masked power-flow lines, and fixed iso-intensity meshes for the primary
 two cases. Mesh extraction uses the optional scikit-image public API and
 physical spacing; Blender does not solve Kerr physics. The NPZ coordinate
 contract is in the run manifest and `artifacts/spatial_kerr/README.md`.
+
+`render_spatial_kerr.py` reads those completed numerical artifacts without
+propagating a new field. It draws fixed 0.1/0.3/0.6 iso-intensity surfaces,
+all 25 saved power-flow seeds, and joint-masked principal Kerr phase slices.
+Start with input inspection and representative posters/at most a three-second
+phenomenon proof; six-second final films are a separate rendering operation.
+
+```bash
+.venv/bin/python scripts/render_spatial_kerr.py --mode inspect
+.venv/bin/python scripts/render_spatial_kerr.py --mode posters
+.venv/bin/python scripts/render_spatial_kerr.py --mode proof
+.venv/bin/python scripts/render_spatial_kerr.py --mode verify-scene
+```
+
+Use `--data-dir` for external numerical artifacts and `--output-dir` for an
+isolated media reproduction. The saved scenes pack their Japanese font and
+float textures. See the [spatial rendering guide](../docs/spatial-kerr-rendering.md)
+for coordinate units, camera observation, fixed scales, and scientific limits.

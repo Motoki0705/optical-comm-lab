@@ -1,5 +1,12 @@
 # レポートと図
 
+円形コアの空間場の描画は `animations/spatial_kerr/` に、代表画、各filmの
+Blenderシーン、短い `phenomenon_proof.mp4` と `render_manifest.json` を保存する。
+Kerrの仮係数を比較する教育用CWモデルで、元の1600 kmの通信学習評価とは別条件。
+初回の短いproofは完成した6秒の本編ではない。描画の再現入口は
+[`render_spatial_kerr.py`](../scripts/render_spatial_kerr.py)、座標・表示・検証の説明は
+[描画ガイド](../docs/spatial-kerr-rendering.md)を参照する。
+
 [日本語レポート](final_report.md)と[オフラインHTML](final_report.html)は、専門外の読者に向けて実際の結果を図表中心に説明する。HTMLはPNGを埋め込み、表示時にネット接続や日本語フォントの取得を要しない。ブラウザの印刷でPDF化できる。説明用の模式図と、保存済みデータから描く結果図を区別する。本文は結論・測定内容・結果の意味・限界を中心とし、候補選択・数値条件・実装依存の資源比較・再現記録は4つの折り畳み補足に保存する。HTMLとMarkdownの両方で開閉でき、印刷には必要な補足を開いてから進む。
 
 | 図 | 内容・保存元 |
