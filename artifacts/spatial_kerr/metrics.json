@@ -1,0 +1,1567 @@
+{
+  "schema_version": 1,
+  "cases": {
+    "linear": {
+      "kappa": 0.0,
+      "summary": {
+        "kappa": 0.0,
+        "zmax_um": 3000.0,
+        "dx_um": 0.25,
+        "dz_um": 0.0625,
+        "half_window_um": 125.0,
+        "backend": {
+          "name": "cupy",
+          "device": "NVIDIA GeForce RTX 5060 Ti",
+          "precision": "complex128/float64",
+          "cupy": "14.2.0",
+          "cuda_runtime": 13020,
+          "device_total_bytes": 17102864384
+        },
+        "runtime_seconds": 149.34082200203557,
+        "memory": {
+          "pool_used_high_bytes": 129006080,
+          "pool_reserved_high_bytes": 217000448
+        },
+        "final": {
+          "remaining_power": 0.9943610350664632,
+          "absorbed_power": 0.005638964941900834,
+          "core_power": 0.9252114623295341,
+          "peak": 0.7475512957612648,
+          "core_centroid_x_um": 0.25180599019898436,
+          "core_centroid_y_um": -2.0479915620995642e-13,
+          "core_rms_x_um": 12.019190533559646,
+          "core_rms_y_um": 11.032246390136402,
+          "core_radial_rms_um": 16.314760234054543,
+          "global_centroid_x_um": -0.09065071994108356,
+          "global_centroid_y_um": -2.7908522554881948e-12,
+          "global_rms_x_um": 14.784257066198418,
+          "global_rms_y_um": 11.860227325837432,
+          "global_radial_rms_um": 18.953607815399653,
+          "loss_rate_per_um": 4.622646410471801e-06
+        },
+        "peak_max_saved": 1.7510789386812533,
+        "min_core_power": 0.8391722816254754,
+        "energy_balance_max_abs": 8.36397617831608e-12,
+        "continuum_loss_balance_abs": 7.039306915146426e-10,
+        "input_integral_um2": 226.1946710584651,
+        "core_sampled_area_um2": 1964.25,
+        "core_area_relative_error": 0.0003843102984173452,
+        "bulk_townes_norm_ratio": 0.0
+      },
+      "difference_vs_linear": {
+        "region": "core",
+        "final_complex_relative_l2": 0.0,
+        "final_intensity_relative_l2": 0.0,
+        "core_power_max_abs": 0.0,
+        "core_centroid_x_um_max_abs": 0.0,
+        "core_centroid_y_um_max_abs": 0.0,
+        "core_radial_rms_um_max_abs": 0.0,
+        "core_masked_wrapped_phase_rms_rad": 1.3450199139352832e-17
+      }
+    },
+    "weak_reference": {
+      "kappa": 1.6e-11,
+      "summary": {
+        "kappa": 1.6e-11,
+        "zmax_um": 3000.0,
+        "dx_um": 0.25,
+        "dz_um": 0.0625,
+        "half_window_um": 125.0,
+        "backend": {
+          "name": "cupy",
+          "device": "NVIDIA GeForce RTX 5060 Ti",
+          "precision": "complex128/float64",
+          "cupy": "14.2.0",
+          "cuda_runtime": 13020,
+          "device_total_bytes": 17102864384
+        },
+        "runtime_seconds": 144.33192593802232,
+        "memory": {
+          "pool_used_high_bytes": 129006080,
+          "pool_reserved_high_bytes": 217000448
+        },
+        "final": {
+          "remaining_power": 0.9943610353249888,
+          "absorbed_power": 0.005638964683379489,
+          "core_power": 0.9252114636136185,
+          "peak": 0.7475513026944675,
+          "core_centroid_x_um": 0.2518060559360307,
+          "core_centroid_y_um": -2.0805855893779976e-13,
+          "core_rms_x_um": 12.019190530930569,
+          "core_rms_y_um": 11.032246391810693,
+          "core_radial_rms_um": 16.314760233249864,
+          "global_centroid_x_um": -0.09065063889643195,
+          "global_centroid_y_um": -2.78964115529662e-12,
+          "global_rms_x_um": 14.784256980000444,
+          "global_rms_y_um": 11.860227311449323,
+          "global_radial_rms_um": 18.953607739159853,
+          "loss_rate_per_um": 4.622646223785543e-06
+        },
+        "peak_max_saved": 1.7510789587088782,
+        "min_core_power": 0.8391722822897418,
+        "energy_balance_max_abs": 8.368195025809655e-12,
+        "continuum_loss_balance_abs": 7.039346883175313e-10,
+        "input_integral_um2": 226.1946710584651,
+        "core_sampled_area_um2": 1964.25,
+        "core_area_relative_error": 0.0003843102984173452,
+        "bulk_townes_norm_ratio": 1.4740452930411966e-08
+      },
+      "difference_vs_linear": {
+        "region": "core",
+        "final_complex_relative_l2": 6.403391817810156e-08,
+        "final_intensity_relative_l2": 1.2294575013761397e-08,
+        "core_power_max_abs": 1.4214194266060076e-09,
+        "core_centroid_x_um_max_abs": 7.633600507261917e-08,
+        "core_centroid_y_um_max_abs": 1.6917284289935743e-14,
+        "core_radial_rms_um_max_abs": 3.474189291807761e-08,
+        "core_masked_wrapped_phase_rms_rad": 6.33929028132461e-08
+      }
+    },
+    "intermediate_kerr": {
+      "kappa": 0.0001,
+      "summary": {
+        "kappa": 0.0001,
+        "zmax_um": 3000.0,
+        "dx_um": 0.25,
+        "dz_um": 0.0625,
+        "half_window_um": 125.0,
+        "backend": {
+          "name": "cupy",
+          "device": "NVIDIA GeForce RTX 5060 Ti",
+          "precision": "complex128/float64",
+          "cupy": "14.2.0",
+          "cuda_runtime": 13020,
+          "device_total_bytes": 17102864384
+        },
+        "runtime_seconds": 145.20355145499343,
+        "memory": {
+          "pool_used_high_bytes": 129006080,
+          "pool_reserved_high_bytes": 217000448
+        },
+        "final": {
+          "remaining_power": 0.9958425913441709,
+          "absorbed_power": 0.004157408664179761,
+          "core_power": 0.9329988756736755,
+          "peak": 0.7911377496907956,
+          "core_centroid_x_um": 0.7245884753551428,
+          "core_centroid_y_um": 6.56136179065199e-13,
+          "core_rms_x_um": 11.974981609969271,
+          "core_rms_y_um": 11.064259318446984,
+          "core_radial_rms_um": 16.30392648489753,
+          "global_centroid_x_um": 0.47963191813513495,
+          "global_centroid_y_um": -1.3087368273404527e-12,
+          "global_rms_x_um": 14.238326628983659,
+          "global_rms_y_um": 11.795873794669804,
+          "global_radial_rms_um": 18.489796747758017,
+          "loss_rate_per_um": 3.5542682989749277e-06
+        },
+        "peak_max_saved": 1.8870086933272372,
+        "min_core_power": 0.8433204058671289,
+        "energy_balance_max_abs": 8.350653502020577e-12,
+        "continuum_loss_balance_abs": 1.1269607469444054e-10,
+        "input_integral_um2": 226.1946710584651,
+        "core_sampled_area_um2": 1964.25,
+        "core_area_relative_error": 0.0003843102984173452,
+        "bulk_townes_norm_ratio": 0.0921278308150748
+      },
+      "difference_vs_linear": {
+        "region": "core",
+        "final_complex_relative_l2": 0.40445604139769176,
+        "final_intensity_relative_l2": 0.08072368094121257,
+        "core_power_max_abs": 0.00888541734087922,
+        "core_centroid_x_um_max_abs": 0.533783882878234,
+        "core_centroid_y_um_max_abs": 1.5802642811488687e-12,
+        "core_radial_rms_um_max_abs": 0.22314813930263178,
+        "core_masked_wrapped_phase_rms_rad": 0.40418172775604083
+      }
+    },
+    "educational_kerr": {
+      "kappa": 0.0003,
+      "summary": {
+        "kappa": 0.0003,
+        "zmax_um": 3000.0,
+        "dx_um": 0.25,
+        "dz_um": 0.0625,
+        "half_window_um": 125.0,
+        "backend": {
+          "name": "cupy",
+          "device": "NVIDIA GeForce RTX 5060 Ti",
+          "precision": "complex128/float64",
+          "cupy": "14.2.0",
+          "cuda_runtime": 13020,
+          "device_total_bytes": 17102864384
+        },
+        "runtime_seconds": 145.88460093800677,
+        "memory": {
+          "pool_used_high_bytes": 129006080,
+          "pool_reserved_high_bytes": 217000448
+        },
+        "final": {
+          "remaining_power": 0.9979741438071518,
+          "absorbed_power": 0.002025856201110565,
+          "core_power": 0.9467147988913118,
+          "peak": 0.8794439147502113,
+          "core_centroid_x_um": 2.1640553140860517,
+          "core_centroid_y_um": 2.170298840870015e-12,
+          "core_rms_x_um": 11.673872292645472,
+          "core_rms_y_um": 11.236159651339234,
+          "core_radial_rms_um": 16.202795376581765,
+          "global_centroid_x_um": 2.1066498474331565,
+          "global_centroid_y_um": 1.1277391137446662e-12,
+          "global_rms_x_um": 13.107189105223634,
+          "global_rms_y_um": 11.805575973502277,
+          "global_radial_rms_um": 17.640012196884314,
+          "loss_rate_per_um": 2.0391693685760457e-06
+        },
+        "peak_max_saved": 2.2458453762732287,
+        "min_core_power": 0.851133503552116,
+        "energy_balance_max_abs": 8.262279749260415e-12,
+        "continuum_loss_balance_abs": 4.4331427417887426e-10,
+        "input_integral_um2": 226.1946710584651,
+        "core_sampled_area_um2": 1964.25,
+        "core_area_relative_error": 0.0003843102984173452,
+        "bulk_townes_norm_ratio": 0.2763834924452243
+      },
+      "difference_vs_linear": {
+        "region": "core",
+        "final_complex_relative_l2": 1.18152501241221,
+        "final_intensity_relative_l2": 0.266149872016581,
+        "core_power_max_abs": 0.026182329025816853,
+        "core_centroid_x_um_max_abs": 2.02421630051838,
+        "core_centroid_y_um_max_abs": 5.393092851862287e-12,
+        "core_radial_rms_um_max_abs": 0.7795152705895063,
+        "core_masked_wrapped_phase_rms_rad": 1.2766080720292499
+      }
+    }
+  },
+  "qualification": {
+    "controls": {
+      "free_2d_gaussian": {
+        "complex_relative_l2": 1.1284381860612637e-12,
+        "energy_balance_max_abs": 5.182521078950231e-13
+      },
+      "uniform_kerr_alpha_0": {
+        "complex_relative_l2": 2.257975839930867e-12,
+        "energy_balance_max_abs": 2.8655966488599915e-12
+      },
+      "uniform_kerr_alpha_0.0002": {
+        "complex_relative_l2": 1.7673274825525492e-12,
+        "energy_balance_max_abs": 2.1294077612310502e-12
+      },
+      "lp01_bessel": {
+        "u": 2.2215524050187176,
+        "w": 11.988535328363646,
+        "v": 12.1926319721243,
+        "beta_mode_squared_per_um2": 34.540854001599286,
+        "envelope_phase_rate_per_um": -0.0006717179276206258,
+        "boundary_residual": 1.7763568394002505e-15,
+        "z_um": 800.0,
+        "complex_relative_l2": 0.0004648824033643538,
+        "intensity_relative_l2": 0.0006119252943947848,
+        "energy_balance_max_abs": 2.4948931809376518e-12
+      }
+    },
+    "dz": {
+      "coarse_to_base": {
+        "region": "core",
+        "final_complex_relative_l2": 2.4419000654445405e-05,
+        "final_intensity_relative_l2": 1.0126036294995829e-05,
+        "core_power_max_abs": 1.009216078817765e-06,
+        "core_centroid_x_um_max_abs": 1.783413207334661e-05,
+        "core_centroid_y_um_max_abs": 6.289935727583741e-12,
+        "core_radial_rms_um_max_abs": 1.3282968509997772e-05
+      },
+      "base_to_fine": {
+        "region": "core",
+        "final_complex_relative_l2": 5.92521981642014e-06,
+        "final_intensity_relative_l2": 2.4489587657410166e-06,
+        "core_power_max_abs": 2.4674202736552076e-07,
+        "core_centroid_x_um_max_abs": 4.394568312804381e-06,
+        "core_centroid_y_um_max_abs": 1.2659728737631281e-11,
+        "core_radial_rms_um_max_abs": 3.257857517979801e-06
+      },
+      "complex_error_ratio": 4.121197425751998
+    },
+    "finer_dx": {
+      "zmax_um": 800.0,
+      "comparison": {
+        "region": "core",
+        "final_complex_relative_l2": 0.0026524610657060878,
+        "final_intensity_relative_l2": 0.0009790490603484533,
+        "core_power_max_abs": 3.360102704508261e-05,
+        "core_centroid_x_um_max_abs": 0.004321959052754565,
+        "core_centroid_y_um_max_abs": 1.5478334592489963e-12,
+        "core_radial_rms_um_max_abs": 0.0012561325023714431
+      },
+      "summary": {
+        "kappa": 0.0003,
+        "zmax_um": 800.0,
+        "dx_um": 0.125,
+        "dz_um": 0.03125,
+        "half_window_um": 125.0,
+        "backend": {
+          "name": "cupy",
+          "device": "NVIDIA GeForce RTX 5060 Ti",
+          "precision": "complex128/float64",
+          "cupy": "14.2.0",
+          "cuda_runtime": 13020,
+          "device_total_bytes": 17102864384
+        },
+        "runtime_seconds": 308.9067518259981,
+        "memory": {
+          "pool_used_high_bytes": 532005888,
+          "pool_reserved_high_bytes": 921000448
+        },
+        "final": {
+          "remaining_power": 0.9999987739986808,
+          "absorbed_power": 1.2260040418381352e-06,
+          "core_power": 0.9841635348049175,
+          "peak": 1.2137877225526599,
+          "core_centroid_x_um": 11.649621055375729,
+          "core_centroid_y_um": -3.1880376887805403e-12,
+          "core_rms_x_um": 7.7914189496016055,
+          "core_rms_y_um": 4.982956080452883,
+          "core_radial_rms_um": 9.24857073000652,
+          "global_centroid_x_um": 11.911519745039426,
+          "global_centroid_y_um": -3.254818733771675e-12,
+          "global_rms_x_um": 8.158802561836328,
+          "global_rms_y_um": 5.076816580990576,
+          "global_radial_rms_um": 9.609376974603915,
+          "loss_rate_per_um": 5.701782980944334e-09
+        },
+        "peak_max_saved": 2.2376369436443935,
+        "min_core_power": 0.8511037259299039,
+        "energy_balance_max_abs": 2.722488900985809e-12,
+        "continuum_loss_balance_abs": 4.9038550997693164e-11,
+        "input_integral_um2": 226.19467105846508,
+        "core_sampled_area_um2": 1963.6875,
+        "core_area_relative_error": 9.783140085195541e-05,
+        "bulk_townes_norm_ratio": 0.2763834924452243
+      }
+    },
+    "half_cell_shift": {
+      "zmax_um": 800.0,
+      "shift_xy_um": [
+        0.125,
+        0.125
+      ],
+      "comparison": {
+        "region": "core",
+        "final_complex_relative_l2": 0.021802901410707294,
+        "final_intensity_relative_l2": 0.012373214094710252,
+        "core_power_max_abs": 0.00037550515659257044,
+        "core_centroid_x_um_max_abs": 0.08056834639335442,
+        "core_centroid_y_um_max_abs": 4.4432345090077977e-10,
+        "core_radial_rms_um_max_abs": 0.01896268937882173
+      },
+      "alignment": "Translate shifted field by +half-cell using the spectral phase factor; subtract known physical shift from core centroids; no fitted phase/amplitude"
+    },
+    "azimuth_45deg": {
+      "zmax_um": 800.0,
+      "comparison": {
+        "region": "core",
+        "final_complex_relative_l2": 0.001616960895107527,
+        "final_intensity_relative_l2": 0.0011268872523242013,
+        "core_power_max_abs": 3.115870826930767e-05,
+        "core_centroid_x_um_max_abs": 0.006353624989900553,
+        "core_centroid_y_um_max_abs": 2.747466512566759e-12,
+        "core_radial_rms_um_max_abs": 0.002212561812011238
+      },
+      "alignment": "Cubic interpolation after physical coordinate rotation; no phase/amplitude fit"
+    },
+    "window": {
+      "linear": {
+        "comparison": {
+          "region": "core",
+          "final_complex_relative_l2": 0.00013346072772664098,
+          "final_intensity_relative_l2": 0.00015489894489931682,
+          "core_power_max_abs": 1.021717956350976e-05,
+          "core_centroid_x_um_max_abs": 0.00027518673189624865,
+          "core_centroid_y_um_max_abs": 1.3945522398002828e-11,
+          "core_radial_rms_um_max_abs": 0.00014427936637417815
+        },
+        "summary": {
+          "kappa": 0.0,
+          "zmax_um": 3000.0,
+          "dx_um": 0.25,
+          "dz_um": 0.0625,
+          "half_window_um": 150.0,
+          "backend": {
+            "name": "cupy",
+            "device": "NVIDIA GeForce RTX 5060 Ti",
+            "precision": "complex128/float64",
+            "cupy": "14.2.0",
+            "cuda_runtime": 13020,
+            "device_total_bytes": 17102864384
+          },
+          "runtime_seconds": 222.53476518398384,
+          "memory": {
+            "pool_used_high_bytes": 265765888,
+            "pool_reserved_high_bytes": 921000448
+          },
+          "final": {
+            "remaining_power": 0.9971395677100423,
+            "absorbed_power": 0.002860432295242953,
+            "core_power": 0.9252027748814491,
+            "peak": 0.7474917984239801,
+            "core_centroid_x_um": 0.2515308034670881,
+            "core_centroid_y_um": 4.81309698133682e-13,
+            "core_rms_x_um": 12.018955773352785,
+            "core_rms_y_um": 11.032288786428477,
+            "core_radial_rms_um": 16.31461595468817,
+            "global_centroid_x_um": 0.1787884796094718,
+            "global_centroid_y_um": -1.0020140171428286e-12,
+            "global_rms_x_um": 16.070385816541652,
+            "global_rms_y_um": 11.985739034961869,
+            "global_radial_rms_um": 20.047823834688685,
+            "loss_rate_per_um": 3.7321847241660474e-06
+          },
+          "peak_max_saved": 1.7510786872914643,
+          "min_core_power": 0.8391722743562768,
+          "energy_balance_max_abs": 5.28532773103052e-12,
+          "continuum_loss_balance_abs": 8.382652350036324e-10,
+          "input_integral_um2": 226.1946710584651,
+          "core_sampled_area_um2": 1964.25,
+          "core_area_relative_error": 0.0003843102984173452,
+          "bulk_townes_norm_ratio": 0.0
+        }
+      },
+      "educational_kerr": {
+        "comparison": {
+          "region": "core",
+          "final_complex_relative_l2": 5.790015872938095e-05,
+          "final_intensity_relative_l2": 8.129562176989706e-05,
+          "core_power_max_abs": 5.950376663732548e-06,
+          "core_centroid_x_um_max_abs": 0.00010848886882230957,
+          "core_centroid_y_um_max_abs": 1.8046037605463588e-11,
+          "core_radial_rms_um_max_abs": 5.596841117139206e-05
+        },
+        "summary": {
+          "kappa": 0.0003,
+          "zmax_um": 3000.0,
+          "dx_um": 0.25,
+          "dz_um": 0.0625,
+          "half_window_um": 150.0,
+          "backend": {
+            "name": "cupy",
+            "device": "NVIDIA GeForce RTX 5060 Ti",
+            "precision": "complex128/float64",
+            "cupy": "14.2.0",
+            "cuda_runtime": 13020,
+            "device_total_bytes": 17102864384
+          },
+          "runtime_seconds": 223.37595983798383,
+          "memory": {
+            "pool_used_high_bytes": 265765888,
+            "pool_reserved_high_bytes": 921000448
+          },
+          "final": {
+            "remaining_power": 0.9991832349018187,
+            "absorbed_power": 0.0008167651034383596,
+            "core_power": 0.9467122676965447,
+            "peak": 0.8795413608612758,
+            "core_centroid_x_um": 2.164078391993457,
+            "core_centroid_y_um": 3.1973238051999423e-13,
+            "core_rms_x_um": 11.673852120515269,
+            "core_rms_y_um": 11.23616093295963,
+            "core_radial_rms_um": 16.202781731635685,
+            "global_centroid_x_um": 2.2290227563391793,
+            "global_centroid_y_um": -5.79577477614393e-13,
+            "global_rms_x_um": 13.726706205710835,
+            "global_rms_y_um": 11.86215426514339,
+            "global_radial_rms_um": 18.14202764489019,
+            "loss_rate_per_um": 1.5075612961639345e-06
+          },
+          "peak_max_saved": 2.245841638199209,
+          "min_core_power": 0.8511334992633148,
+          "energy_balance_max_abs": 5.257128066205041e-12,
+          "continuum_loss_balance_abs": 1.4220220556637742e-09,
+          "input_integral_um2": 226.1946710584651,
+          "core_sampled_area_um2": 1964.25,
+          "core_area_relative_error": 0.0003843102984173452,
+          "bulk_townes_norm_ratio": 0.2763834924452243
+        }
+      }
+    },
+    "runtime_seconds": 1267.4973351840163,
+    "status": "bounded qualification; full 3 mm finer-dx/full-Maxwell convergence not established",
+    "limitations": [
+      "dx=0.125 um compared only through 800 um including first reflection",
+      "Half-cell and rotation checks limited to 800 um",
+      "LP01 control is independently analytic but its point-sampled grid error remains",
+      "Weak-reference absolute changes below grid/model error are not certified"
+    ]
+  },
+  "flows": {
+    "cases": {
+      "linear": {
+        "seed_count": 25,
+        "completed": 25,
+        "terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "minimum_accepted_intensity": 0.002380663790912941,
+        "max_abs_velocity_component": 0.4127587056349813,
+        "threshold": 0.0001,
+        "step_um": 0.5,
+        "interpolation": "linear"
+      },
+      "weak_reference": {
+        "seed_count": 25,
+        "completed": 25,
+        "terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "minimum_accepted_intensity": 0.0023799486354413525,
+        "max_abs_velocity_component": 0.41275758505279764,
+        "threshold": 0.0001,
+        "step_um": 0.5,
+        "interpolation": "linear"
+      },
+      "intermediate_kerr": {
+        "seed_count": 25,
+        "completed": 24,
+        "terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          {
+            "reason": "low intensity or nonfinite current",
+            "event_z_um": 1685.0,
+            "event_xy_um": [
+              6.136161773849697,
+              10.539412503485917
+            ],
+            "event_intensity": 8.025194011871812e-05,
+            "last_accepted_z_um": 1684.5,
+            "stage": "RK4"
+          }
+        ],
+        "minimum_accepted_intensity": 0.00012888324604991982,
+        "max_abs_velocity_component": 0.4389579686477094,
+        "threshold": 0.0001,
+        "step_um": 0.5,
+        "interpolation": "linear"
+      },
+      "educational_kerr": {
+        "seed_count": 25,
+        "completed": 25,
+        "terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "minimum_accepted_intensity": 0.0021230379447686083,
+        "max_abs_velocity_component": 0.4460378575045514,
+        "threshold": 0.0001,
+        "step_um": 0.5,
+        "interpolation": "linear"
+      }
+    },
+    "comparisons": {
+      "linear": {
+        "integration_step": [
+          {
+            "seed": 0,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00010555993326613287,
+            "termination_matches": true
+          },
+          {
+            "seed": 1,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00042165275167622057,
+            "termination_matches": true
+          },
+          {
+            "seed": 2,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.008317778075483454,
+            "termination_matches": true
+          },
+          {
+            "seed": 3,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0006846303088572246,
+            "termination_matches": true
+          },
+          {
+            "seed": 4,
+            "common_end_um": 3000.0,
+            "max_distance_um": 1.155573542636854e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 5,
+            "common_end_um": 3000.0,
+            "max_distance_um": 9.436293346237855e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 6,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0007407542041815336,
+            "termination_matches": true
+          },
+          {
+            "seed": 7,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0001679994281625896,
+            "termination_matches": true
+          },
+          {
+            "seed": 8,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0018109782142397969,
+            "termination_matches": true
+          },
+          {
+            "seed": 9,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0004786305155490186,
+            "termination_matches": true
+          },
+          {
+            "seed": 10,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.000144869762393686,
+            "termination_matches": true
+          },
+          {
+            "seed": 11,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0006891223056358878,
+            "termination_matches": true
+          },
+          {
+            "seed": 12,
+            "common_end_um": 3000.0,
+            "max_distance_um": 9.574862962180134e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 13,
+            "common_end_um": 3000.0,
+            "max_distance_um": 7.222517145361749e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 14,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.01907296129123416,
+            "termination_matches": true
+          },
+          {
+            "seed": 15,
+            "common_end_um": 3000.0,
+            "max_distance_um": 7.508155120189014e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 16,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0005942137935538146,
+            "termination_matches": true
+          },
+          {
+            "seed": 17,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00011509986510566141,
+            "termination_matches": true
+          },
+          {
+            "seed": 18,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.002140620270948584,
+            "termination_matches": true
+          },
+          {
+            "seed": 19,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00022338603871115365,
+            "termination_matches": true
+          },
+          {
+            "seed": 20,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00026606405335580376,
+            "termination_matches": true
+          },
+          {
+            "seed": 21,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0002322385732564083,
+            "termination_matches": true
+          },
+          {
+            "seed": 22,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.002001340531891808,
+            "termination_matches": true
+          },
+          {
+            "seed": 23,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0009243457050651302,
+            "termination_matches": true
+          },
+          {
+            "seed": 24,
+            "common_end_um": 3000.0,
+            "max_distance_um": 1.1709623398998697e-05,
+            "termination_matches": true
+          }
+        ],
+        "interpolation": [
+          {
+            "seed": 0,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.31699542684662,
+            "termination_matches": true
+          },
+          {
+            "seed": 1,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.10560923962959685,
+            "termination_matches": true
+          },
+          {
+            "seed": 2,
+            "common_end_um": 3000.0,
+            "max_distance_um": 1.8831774038184765,
+            "termination_matches": true
+          },
+          {
+            "seed": 3,
+            "common_end_um": 3000.0,
+            "max_distance_um": 1.0773663449196316,
+            "termination_matches": true
+          },
+          {
+            "seed": 4,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.03256923453874315,
+            "termination_matches": true
+          },
+          {
+            "seed": 5,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.038602577474003155,
+            "termination_matches": true
+          },
+          {
+            "seed": 6,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.04851380025842252,
+            "termination_matches": true
+          },
+          {
+            "seed": 7,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.03694403133893167,
+            "termination_matches": true
+          },
+          {
+            "seed": 8,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.058740384035288744,
+            "termination_matches": true
+          },
+          {
+            "seed": 9,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.06624650760251295,
+            "termination_matches": true
+          },
+          {
+            "seed": 10,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.06652910191986358,
+            "termination_matches": true
+          },
+          {
+            "seed": 11,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.034157490465576215,
+            "termination_matches": true
+          },
+          {
+            "seed": 12,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.02997039983453202,
+            "termination_matches": true
+          },
+          {
+            "seed": 13,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.01772354393556389,
+            "termination_matches": true
+          },
+          {
+            "seed": 14,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.3378830353258622,
+            "termination_matches": true
+          },
+          {
+            "seed": 15,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.05299092093433028,
+            "termination_matches": true
+          },
+          {
+            "seed": 16,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.04110626370410152,
+            "termination_matches": true
+          },
+          {
+            "seed": 17,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0660711492963494,
+            "termination_matches": true
+          },
+          {
+            "seed": 18,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.25677146575715604,
+            "termination_matches": true
+          },
+          {
+            "seed": 19,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.06029717222462871,
+            "termination_matches": true
+          },
+          {
+            "seed": 20,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.2408277140351495,
+            "termination_matches": true
+          },
+          {
+            "seed": 21,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.12118411266406427,
+            "termination_matches": true
+          },
+          {
+            "seed": 22,
+            "common_end_um": 3000.0,
+            "max_distance_um": 2.030459236328431,
+            "termination_matches": true
+          },
+          {
+            "seed": 23,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.672781617900243,
+            "termination_matches": true
+          },
+          {
+            "seed": 24,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.03711195366302152,
+            "termination_matches": true
+          }
+        ],
+        "comparison_terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "cubic_terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "educational_kerr": {
+        "integration_step": [
+          {
+            "seed": 0,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00011554608535808468,
+            "termination_matches": true
+          },
+          {
+            "seed": 1,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00044535134972100283,
+            "termination_matches": true
+          },
+          {
+            "seed": 2,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00026360503795532116,
+            "termination_matches": true
+          },
+          {
+            "seed": 3,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0004170596230808877,
+            "termination_matches": true
+          },
+          {
+            "seed": 4,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0002189340748129758,
+            "termination_matches": true
+          },
+          {
+            "seed": 5,
+            "common_end_um": 3000.0,
+            "max_distance_um": 6.567338008648194e-06,
+            "termination_matches": true
+          },
+          {
+            "seed": 6,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00019803942907207735,
+            "termination_matches": true
+          },
+          {
+            "seed": 7,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00015149232426726132,
+            "termination_matches": true
+          },
+          {
+            "seed": 8,
+            "common_end_um": 3000.0,
+            "max_distance_um": 5.437377930294913e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 9,
+            "common_end_um": 3000.0,
+            "max_distance_um": 5.0823720409342354e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 10,
+            "common_end_um": 3000.0,
+            "max_distance_um": 3.224116587505398e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 11,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0006131256556113009,
+            "termination_matches": true
+          },
+          {
+            "seed": 12,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.035545823616635004,
+            "termination_matches": true
+          },
+          {
+            "seed": 13,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.021672712005711747,
+            "termination_matches": true
+          },
+          {
+            "seed": 14,
+            "common_end_um": 3000.0,
+            "max_distance_um": 7.740742096977174e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 15,
+            "common_end_um": 3000.0,
+            "max_distance_um": 7.95083131389221e-06,
+            "termination_matches": true
+          },
+          {
+            "seed": 16,
+            "common_end_um": 3000.0,
+            "max_distance_um": 6.841728527844454e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 17,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0005354926740466612,
+            "termination_matches": true
+          },
+          {
+            "seed": 18,
+            "common_end_um": 3000.0,
+            "max_distance_um": 9.76513772278899e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 19,
+            "common_end_um": 3000.0,
+            "max_distance_um": 5.1778007257334766e-05,
+            "termination_matches": true
+          },
+          {
+            "seed": 20,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00018157757815815307,
+            "termination_matches": true
+          },
+          {
+            "seed": 21,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00047378177035032004,
+            "termination_matches": true
+          },
+          {
+            "seed": 22,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0001231840429058906,
+            "termination_matches": true
+          },
+          {
+            "seed": 23,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00026671851980272104,
+            "termination_matches": true
+          },
+          {
+            "seed": 24,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.00011564023481843547,
+            "termination_matches": true
+          }
+        ],
+        "interpolation": [
+          {
+            "seed": 0,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.10711692074504982,
+            "termination_matches": true
+          },
+          {
+            "seed": 1,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.635067528848768,
+            "termination_matches": true
+          },
+          {
+            "seed": 2,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.17488893662281693,
+            "termination_matches": true
+          },
+          {
+            "seed": 3,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.26176315036673276,
+            "termination_matches": true
+          },
+          {
+            "seed": 4,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.3039868255775439,
+            "termination_matches": true
+          },
+          {
+            "seed": 5,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.01742420646991491,
+            "termination_matches": true
+          },
+          {
+            "seed": 6,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.024250744273784396,
+            "termination_matches": true
+          },
+          {
+            "seed": 7,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.14716743733876653,
+            "termination_matches": true
+          },
+          {
+            "seed": 8,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.050168742957303836,
+            "termination_matches": true
+          },
+          {
+            "seed": 9,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.12893775004005337,
+            "termination_matches": true
+          },
+          {
+            "seed": 10,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.0432286971730077,
+            "termination_matches": true
+          },
+          {
+            "seed": 11,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.04589005592787741,
+            "termination_matches": true
+          },
+          {
+            "seed": 12,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.11851804392441126,
+            "termination_matches": true
+          },
+          {
+            "seed": 13,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.6155857688753071,
+            "termination_matches": true
+          },
+          {
+            "seed": 14,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.03105105747726662,
+            "termination_matches": true
+          },
+          {
+            "seed": 15,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.02696285377125718,
+            "termination_matches": true
+          },
+          {
+            "seed": 16,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.020313186459457996,
+            "termination_matches": true
+          },
+          {
+            "seed": 17,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.18513868866423422,
+            "termination_matches": true
+          },
+          {
+            "seed": 18,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.024241446948721986,
+            "termination_matches": true
+          },
+          {
+            "seed": 19,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.13762461880308774,
+            "termination_matches": true
+          },
+          {
+            "seed": 20,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.07219871981513387,
+            "termination_matches": true
+          },
+          {
+            "seed": 21,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.7765694100246275,
+            "termination_matches": true
+          },
+          {
+            "seed": 22,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.11346214476157586,
+            "termination_matches": true
+          },
+          {
+            "seed": 23,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.215897216624196,
+            "termination_matches": true
+          },
+          {
+            "seed": 24,
+            "common_end_um": 3000.0,
+            "max_distance_um": 0.2357681540680834,
+            "termination_matches": true
+          }
+        ],
+        "comparison_terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "cubic_terminations": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    }
+  },
+  "meshes": {
+    "linear": {
+      "0p1": {
+        "area_um2": 646185.5587966671,
+        "vertex_count": 687420,
+        "triangle_count": 1373864,
+        "bounds_um": [
+          [
+            -26.913738250732422,
+            -25.1094970703125,
+            0.0
+          ],
+          [
+            29.26441192626953,
+            25.091964721679688,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 0.00010438964145402405,
+        "z_spacing_bounds_max_abs_um": 0.0
+      },
+      "0p3": {
+        "area_um2": 226615.4121495958,
+        "vertex_count": 239821,
+        "triangle_count": 479296,
+        "bounds_um": [
+          [
+            -25.090538024902344,
+            -14.633049011230469,
+            0.0
+          ],
+          [
+            26.963096618652344,
+            14.672721862792969,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 7.380350475001599e-05,
+        "z_spacing_bounds_max_abs_um": 0.00011444091796875
+      },
+      "0p6": {
+        "area_um2": 67342.3942113643,
+        "vertex_count": 71738,
+        "triangle_count": 143300,
+        "bounds_um": [
+          [
+            -14.742355346679688,
+            -10.645782470703125,
+            0.0
+          ],
+          [
+            25.711044311523438,
+            10.64919662475586,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 2.527784696386609e-05,
+        "z_spacing_bounds_max_abs_um": 0.000461578369140625
+      }
+    },
+    "educational_kerr": {
+      "0p1": {
+        "area_um2": 647907.1868248334,
+        "vertex_count": 686251,
+        "triangle_count": 1371544,
+        "bounds_um": [
+          [
+            -26.76109504699707,
+            -25.247941970825195,
+            0.0
+          ],
+          [
+            29.046913146972656,
+            25.246726989746094,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 8.802695271932182e-05,
+        "z_spacing_bounds_max_abs_um": 0.0
+      },
+      "0p3": {
+        "area_um2": 227166.65999885253,
+        "vertex_count": 241497,
+        "triangle_count": 482596,
+        "bounds_um": [
+          [
+            -25.11107635498047,
+            -22.723834991455078,
+            0.0
+          ],
+          [
+            27.05975341796875,
+            22.731483459472656,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 8.08390622614395e-05,
+        "z_spacing_bounds_max_abs_um": 0.0001220703125
+      },
+      "0p6": {
+        "area_um2": 67640.46261186809,
+        "vertex_count": 71402,
+        "triangle_count": 142650,
+        "bounds_um": [
+          [
+            -23.47062110900879,
+            -10.212268829345703,
+            0.0
+          ],
+          [
+            25.944564819335938,
+            10.21279525756836,
+            3000.0
+          ]
+        ],
+        "z_spacing_area_relative_difference": 2.3969572707587673e-05,
+        "z_spacing_bounds_max_abs_um": 0.0001983642578125
+      }
+    }
+  },
+  "sampling": {
+    "linear": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6564687289009474e-08,
+      "scratch_bytes": 576480000
+    },
+    "weak_reference": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6564687270768074e-08,
+      "scratch_bytes": 576480000
+    },
+    "intermediate_kerr": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.6416833074591045e-08,
+      "scratch_bytes": 576480000
+    },
+    "educational_kerr": {
+      "saved_spacing_xy_um": 0.5,
+      "saved_z_spacing_um": 2.5,
+      "coordinate_bounds_xy_um": [
+        -49.875,
+        49.625
+      ],
+      "original_dx_um": 0.25,
+      "decimation_stride": 2,
+      "central_y0_interpolation": "Complex linear interpolation of nearest symmetric full-grid rows; saved x matches cross_psi",
+      "complex_dtype": "complex128",
+      "scratch_I_J_dtype": "float32; current computed in float64 and quantized only for storage",
+      "sampled_power_fraction_beyond_saved_xy_Nyquist_max": 2.5877879835492785e-08,
+      "scratch_bytes": 576480000
+    }
+  },
+  "limitations": [
+    "Infinite cladding plus an artificial radial absorber, not a glass-air interface at radius 62.5 um",
+    "All four fixed coefficients retained; weak-reference absolute accuracy is not guaranteed",
+    "No physical watt scale, material damage/collapse guarantee, temporal pulses, polarization, backward-z or full Maxwell solution",
+    "Limited numerical qualification, not complete 3 mm spatial/full-wave convergence",
+    "Numerical diagnostics use the full grid; saved section/mesh/current ROI is fixed and decimated",
+    "J/I defines power-flow streamlines, not photons; all seeds and masked terminations retained",
+    "Meshes are fixed iso-intensity surfaces, not paths or per-slice normalized brightness"
+  ],
+  "runtime_seconds": 2147.780603056017
+}

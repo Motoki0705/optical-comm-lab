@@ -1,0 +1,86 @@
+{
+  "scope": "10 um/coarse CPU CLI reproduction, not a duplicate 3 mm GPU qualification",
+  "all_arrays_exactly_reproduced": true,
+  "checks": {
+    "linear_sections.npz": true,
+    "linear_flows.npz": true,
+    "weak_reference_sections.npz": true,
+    "weak_reference_flows.npz": true,
+    "intermediate_kerr_sections.npz": true,
+    "intermediate_kerr_flows.npz": true,
+    "educational_kerr_sections.npz": true,
+    "educational_kerr_flows.npz": true,
+    "linear_iso_0p1.npz": true,
+    "linear_iso_0p3.npz": true,
+    "linear_iso_0p6.npz": true,
+    "educational_kerr_iso_0p1.npz": true,
+    "educational_kerr_iso_0p3.npz": true,
+    "educational_kerr_iso_0p6.npz": true
+  },
+  "audit_a": {
+    "schema_version": 1,
+    "all_file_hashes_match": true,
+    "source_hashes_checked": false,
+    "cases": {
+      "linear": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "weak_reference": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "intermediate_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "educational_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      }
+    },
+    "total_bytes": 5167320,
+    "max_file_bytes": 1061423
+  },
+  "audit_b": {
+    "schema_version": 1,
+    "all_file_hashes_match": true,
+    "source_hashes_checked": false,
+    "cases": {
+      "linear": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "weak_reference": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "intermediate_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      },
+      "educational_kerr": {
+        "section_axes": true,
+        "complex128": true,
+        "all_flow_masks_valid": true,
+        "mesh_indices_valid": true
+      }
+    },
+    "total_bytes": 5167320,
+    "max_file_bytes": 1061423
+  }
+}
