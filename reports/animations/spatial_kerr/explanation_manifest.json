@@ -1,0 +1,614 @@
+{
+  "schema_version": 1,
+  "status": "assembled_and_browser_checked",
+  "created_utc": "2026-10-13T15:11:55.876312+00:00",
+  "scope": "Offline explanatory report; saved circular-core CW fields, no new propagation or communications evaluation",
+  "regeneration_command": ".venv/bin/python scripts/build_spatial_kerr_report.py --physics-run artifacts/spatial_kerr --renders reports/animations/spatial_kerr",
+  "inputs": {
+    "artifacts/spatial_kerr/config.json": {
+      "sha256": "44fdce2d7bd39421fba5ef5459b4855666adf1c7ef82719b185c9e9f1c213944",
+      "bytes": 1543
+    },
+    "artifacts/spatial_kerr/core_observables.png": {
+      "sha256": "9b1f24594bcaa0f85c0e419c7799823c3cafa15a25f32f48b8800e20d9fe6561",
+      "bytes": 228855
+    },
+    "artifacts/spatial_kerr/educational_kerr_flows.npz": {
+      "sha256": "a7709bd6cbd102c3cee80ae0f24de72ce5b2ec48e66180f2e904fb6d4038e61d",
+      "bytes": 6036928
+    },
+    "artifacts/spatial_kerr/educational_kerr_iso_0p1.npz": {
+      "sha256": "a0869ff0040f809652d027b727e16b363e7d8e7a874b60df8803dcfd29ec8ad6",
+      "bytes": 16201155
+    },
+    "artifacts/spatial_kerr/educational_kerr_iso_0p3.npz": {
+      "sha256": "b23421cdd26bb7735fd7339b64608280bf18b384fd310865866f1063e653b6a2",
+      "bytes": 5572162
+    },
+    "artifacts/spatial_kerr/educational_kerr_iso_0p6.npz": {
+      "sha256": "5341a4bf08c39bf507d66fdefad651542e4486c9f16d5d9fcd0f35577158e8c6",
+      "bytes": 1619535
+    },
+    "artifacts/spatial_kerr/educational_kerr_sections.npz": {
+      "sha256": "d14c593ac6cccda05a39a808508862202d4af169b27c73714eb613bd4183e054",
+      "bytes": 9291791
+    },
+    "artifacts/spatial_kerr/intermediate_kerr_flows.npz": {
+      "sha256": "0d53c5211279a3fd8cf272a5227abbf49d9613e086dfa5b423d38e7cce495041",
+      "bytes": 5936284
+    },
+    "artifacts/spatial_kerr/intermediate_kerr_sections.npz": {
+      "sha256": "cb614a0b4b7cb6203ca4312f618251d86e6ddc7696559292326c58e1727c2233",
+      "bytes": 9292599
+    },
+    "artifacts/spatial_kerr/kerr_difference.png": {
+      "sha256": "692a9a5bc78400d587ce01cb774fc11a697051c18e7c7c8eabf57e664ac9caca",
+      "bytes": 170593
+    },
+    "artifacts/spatial_kerr/linear_flows.npz": {
+      "sha256": "70ceca6e514e04be2c0a4219afc0cc6cedab4438901d91ff76368c38cd857c6b",
+      "bytes": 6033556
+    },
+    "artifacts/spatial_kerr/linear_iso_0p1.npz": {
+      "sha256": "b5b3eca68dd56aa9c9925c3f993716ae51f8018dbbe402e0710d4f4b90165852",
+      "bytes": 16206169
+    },
+    "artifacts/spatial_kerr/linear_iso_0p3.npz": {
+      "sha256": "921a5632017bbd00e7a32528075d866a20cc5da6742d87b03e23745ae15909b9",
+      "bytes": 5533902
+    },
+    "artifacts/spatial_kerr/linear_iso_0p6.npz": {
+      "sha256": "61af1b8639a23ab02195fbe6dd39176f8617a2003a93d99016d9f856138c12f1",
+      "bytes": 1627919
+    },
+    "artifacts/spatial_kerr/linear_sections.npz": {
+      "sha256": "d1c2da898c032d6f51e9b7760e696e7f99302b8fe61dd74815449a6f2ced3dfe",
+      "bytes": 9292196
+    },
+    "artifacts/spatial_kerr/longitudinal_comparison.png": {
+      "sha256": "6bdc98abde3a4380a5b8cb01ad71411c3b99e58a0f835d989a03360cc38cc342",
+      "bytes": 272265
+    },
+    "artifacts/spatial_kerr/manifest.json": {
+      "sha256": "29fd4232d06b433981d226056aca1f9514f892c8ef43d032d0e1317c626ce5ee",
+      "bytes": 10606
+    },
+    "artifacts/spatial_kerr/metrics.json": {
+      "sha256": "bb2a9ab3ca9b0be1d97f5a865440e4ada45f432da9c381fa050e2242decdec58",
+      "bytes": 49248
+    },
+    "artifacts/spatial_kerr/power_flow_projection.png": {
+      "sha256": "c494ab131a6b1c42207a4d0ce2e978f319121d2331540011966c2dcfbd492a40",
+      "bytes": 405037
+    },
+    "artifacts/spatial_kerr/verification.json": {
+      "sha256": "4d0df8a1e7281b36b9f36ef33a6331e4af5eef79de33c521f0d01958a9004a38",
+      "bytes": 780
+    },
+    "artifacts/spatial_kerr/weak_reference_flows.npz": {
+      "sha256": "0ded3635de9463b7bc16383cd2b00667c6845301683d393593f02fcad20fb538",
+      "bytes": 6033614
+    },
+    "artifacts/spatial_kerr/weak_reference_sections.npz": {
+      "sha256": "aa8546d654ff601f79436b2d864b12b8d6981777c2c44a4391121f2dee6a9c21",
+      "bytes": 9292211
+    },
+    "configs/spatial_kerr.json": {
+      "sha256": "44fdce2d7bd39421fba5ef5459b4855666adf1c7ef82719b185c9e9f1c213944",
+      "bytes": 1543
+    },
+    "docs/requirements.md": {
+      "sha256": "416c75ea3e7048150276c59b8f910864adb3432a641ff718af7369eb80f76f77",
+      "bytes": 6650
+    },
+    "docs/spatial-kerr.md": {
+      "sha256": "cebb9868f087884a410752455393788dfcc2e6e53f1b7e2a00afab4259fc3ffb",
+      "bytes": 21260
+    },
+    "pyproject.toml": {
+      "sha256": "cf93ea327f686967b33f2617247eb7daff59a4224645dd0b8b1c3d6541284eea",
+      "bytes": 659
+    },
+    "reports/animations/spatial_kerr/01_reflection.blend": {
+      "sha256": "ff534f5d5fd2a7276ca7adc1b5a2701dfb216ebe5ceed15571a6e1dd4c959666",
+      "bytes": 51170793
+    },
+    "reports/animations/spatial_kerr/01_reflection.mp4": {
+      "sha256": "ae690f8e7768081b217974b71005fcb6eff9ed9b6fb4edb248441d7ef3c2bfca",
+      "bytes": 1956985
+    },
+    "reports/animations/spatial_kerr/02_kerr_comparison.blend": {
+      "sha256": "3a53b09ff8de8eaca91bb0b7e559a2a3981faba86f3ac24fed38bf124b3a2df9",
+      "bytes": 99021784
+    },
+    "reports/animations/spatial_kerr/02_kerr_comparison.mp4": {
+      "sha256": "7743775a44cffd1aa407bc752f95ce7425390e1248895111e7c02074ece14c3e",
+      "bytes": 1403366
+    },
+    "reports/animations/spatial_kerr/03_phase_change.blend": {
+      "sha256": "7230f6d34cad9a153db39209db32c23096b220490efd1276a2f84bea3497fc0f",
+      "bytes": 19030636
+    },
+    "reports/animations/spatial_kerr/03_phase_change.mp4": {
+      "sha256": "feae975a81909235b64fa43eeb72d09fe29cd8026dc2b3e8cf73fff19e73ed73",
+      "bytes": 1460929
+    },
+    "reports/animations/spatial_kerr/entrance_01.png": {
+      "sha256": "17dad03c2090b87b946d29d395bc6e7f41c5b086806cebaa7ab03b1fd1b3df6b",
+      "bytes": 1954898
+    },
+    "reports/animations/spatial_kerr/poster_01.png": {
+      "sha256": "608ef79a0ff6af0016619a00c06168cb7fab2fdf9470c2f4af25a6df91c6629a",
+      "bytes": 1544344
+    },
+    "reports/animations/spatial_kerr/poster_02.png": {
+      "sha256": "0ac314e7e3e3534d941fc345d664cdc178738f501dba681f35694ea42b3f3d7a",
+      "bytes": 1574472
+    },
+    "reports/animations/spatial_kerr/poster_03.png": {
+      "sha256": "9a5e485f9e340fe05f230e064d24d808e2f6a0624777be7ecc4f060c621e8111",
+      "bytes": 1374357
+    },
+    "reports/animations/spatial_kerr/render_manifest.json": {
+      "sha256": "e35b5cd1831d5510e17373467648c7a61991abadc77e3fec6e8f821c7592c076",
+      "bytes": 370696
+    },
+    "scripts/build_spatial_kerr_report.py": {
+      "sha256": "e4ced0cf2fd357c3c7dcc044536140bbc6e7353284605301f6f82606ad7df527",
+      "bytes": 73362
+    },
+    "scripts/simulate_spatial_kerr.py": {
+      "sha256": "fc8526ba44d18d12d2a8267650c97efc2fc232e67da766921d9873fe54d16531",
+      "bytes": 1781
+    },
+    "src/optical_comm/visualization/spatial.py": {
+      "sha256": "1f65be9d50fbb9c2878cedefee48b83e836954aca63c55989ecc3d41dfa2e617",
+      "bytes": 21380
+    },
+    "src/optical_comm/visualization/spatial_artifacts.py": {
+      "sha256": "68f4ad0cc658f29e00fa5340fa5c7082f77efd009ef8b24a8ea559bcf40f63d3",
+      "bytes": 29511
+    },
+    "uv.lock": {
+      "sha256": "2831d3931026c6b2bf483d1c01b888549200d1b854484b3b7c5e6bc4808124d4",
+      "bytes": 194574
+    },
+    "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc": {
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "bytes": 19484784
+    }
+  },
+  "outputs": {
+    "figures/four_case_intensity.png": {
+      "sha256": "beb5b23bcb726c5aed180474c289dcc85dd531f63a543c9d3f61d0f2d6af2af0",
+      "bytes": 282163
+    },
+    "figures/four_case_intensity.svg": {
+      "sha256": "d44f1c236553a374b71414899e74ec123706b68da087f9b3180de814e75e6b36",
+      "bytes": 305234
+    },
+    "figures/intensity_linear.png": {
+      "sha256": "8ef2e9440253ac193d2b1d78c7720e04b5d952cca09707225736955dec0108ad",
+      "bytes": 91428
+    },
+    "figures/intensity_linear.svg": {
+      "sha256": "923e1b1135d0ae5e745cb7bab7fbb2e08a5a74b9b59780574da4e7854c5730f8",
+      "bytes": 101870
+    },
+    "figures/intensity_linear_mobile.png": {
+      "sha256": "748ceeee55e381a73b3d5c03517350e2cca33eb3f2517e25b929eddc71a0fb88",
+      "bytes": 64614
+    },
+    "figures/intensity_weak_reference.png": {
+      "sha256": "64b559da1ec7c751295cc43aa110e8d04edc138eeaaa571c973e9ce97ccb2199",
+      "bytes": 94736
+    },
+    "figures/intensity_weak_reference.svg": {
+      "sha256": "86b75a950f88fccc67d0390ece4393c1d44f6061ef1641262b2b0b7e3591a6ef",
+      "bytes": 105264
+    },
+    "figures/intensity_weak_reference_mobile.png": {
+      "sha256": "fefd8ba296d9ce7f740ca3764166e1b75fa02c499d9b862e2fa753e8de110607",
+      "bytes": 68677
+    },
+    "figures/intensity_intermediate_kerr.png": {
+      "sha256": "5bf7ff0cb7070e755477640c45eaa8487eb6de6e8ebb1187dbe96f3ad161be9a",
+      "bytes": 93101
+    },
+    "figures/intensity_intermediate_kerr.svg": {
+      "sha256": "07ce657d30797646429b6e614b6b8c313929cd66efe8e45cea04a4af88e9c0dd",
+      "bytes": 103157
+    },
+    "figures/intensity_intermediate_kerr_mobile.png": {
+      "sha256": "597c889ff5ee9fd20ba8a94feebbfd34842bd3400544bb54c29f66f792d7d1c9",
+      "bytes": 67097
+    },
+    "figures/intensity_educational_kerr.png": {
+      "sha256": "1ff91e17cc45edfbbb43e5513a1380b9eb8a3dc5f30c2e8197b0905bf5338623",
+      "bytes": 92619
+    },
+    "figures/intensity_educational_kerr.svg": {
+      "sha256": "ac424cd26e3641fbff36c65c6bf56b7d96186c79a8faa3fe73fcceaaa058be7c",
+      "bytes": 99850
+    },
+    "figures/intensity_educational_kerr_mobile.png": {
+      "sha256": "dabd8f4ea5843ab49b3af0990abfafb07c583e766977b498660562a129804ac2",
+      "bytes": 66872
+    },
+    "figures/output_intensity_and_phase.png": {
+      "sha256": "6253a2fedbe4c6d5f287bce11927f95936a0acb41a7e3d0d35fc2b7e739cad7f",
+      "bytes": 191283
+    },
+    "figures/output_intensity_and_phase.svg": {
+      "sha256": "bc29e811241f8a85f8320e711efd089b527373f0cd8a8d0247f70a6afd3b0ef7",
+      "bytes": 147682
+    },
+    "figures/output_intensity_and_phase_mobile.png": {
+      "sha256": "eb870903ce9957e7b2bf1beca804633aec7493a93e78d49f617aded2cd7a1e34",
+      "bytes": 221772
+    },
+    "figures/figures_manifest.json": {
+      "sha256": "ae4833b62a05d0477793500429b6ab963686d3497f4385703f31911242585c6f",
+      "bytes": 10206
+    },
+    "index.html": {
+      "sha256": "e900bdf55a534e1b8c2373ee2f48b4b8e5c09ad378deb2c97b8744e4c715f7e0",
+      "bytes": 24675
+    },
+    "README.md": {
+      "sha256": "f200616aae16b4f90e19dffbf8e7d9cde6251150571e2c5d07e726468f798c22",
+      "bytes": 4312
+    }
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "font": {
+      "path": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+      "sha256": "b76b0433203017ca80401b2ee0dd69350349871c4b19d504c34dbdd80541690a",
+      "family": "Noto Sans CJK JP"
+    }
+  },
+  "visual_encoding": {
+    "intensity": {
+      "quantity": "abs(central_psi)**2",
+      "section": "y=0",
+      "normalization": "shared input peak=1; no per-case/per-distance normalization",
+      "intensity_scale": [
+        0.0,
+        3.0
+      ],
+      "x_view_um": [
+        -35.0,
+        35.0
+      ],
+      "observed_visible_section_max": 2.2384575918076313,
+      "clipped_intensity_values": 0,
+      "field_interpolation": "saved central_psi uses complex linear interpolation to y=0; nearest-cell plotting without smoothing",
+      "boundary_lines": "linear core boundary"
+    },
+    "phase": {
+      "cross_z_um": 3000.0,
+      "phase_quantity": "arg(psi_educational_kerr * conj(psi_linear))",
+      "phase_range_rad": [
+        -3.141592653589793,
+        3.141592653589793
+      ],
+      "phase_valid": "both intensities >= fixed input-based threshold and inside core",
+      "phase_intensity_threshold": 0.0001,
+      "intensity_scale": [
+        0.0,
+        1.0
+      ],
+      "intensity_scale_scope": "output cross section only; shared OFF/ON fixed range, absolute input-peak=1 units; no case-maximum normalization",
+      "observed_output_section_max": 0.8782908337792548,
+      "clipped_intensity_values": 0
+    },
+    "entrance_image": {
+      "file": "entrance_01.png",
+      "sha256": "17dad03c2090b87b946d29d395bc6e7f41c5b086806cebaa7ab03b1fd1b3df6b",
+      "source_film": "01_reflection",
+      "source_frame": 1
+    },
+    "interactive_comparison": {
+      "cases": [
+        "linear",
+        "weak_reference",
+        "intermediate_kerr",
+        "educational_kerr"
+      ],
+      "interpolation_between_cases": false,
+      "shared_coordinates_and_scale": true
+    }
+  },
+  "displayed_difference_vs_numerical_comparisons": [
+    {
+      "label": "コア内の横位置",
+      "key": "core_centroid_x_um_max_abs",
+      "observed_difference_um": 2.02421630051838,
+      "numerical_comparison_max_um": 0.08056834639335442,
+      "comparison_values_um": {
+        "dz_base_to_fine": 4.394568312804381e-06,
+        "finer_dx": 0.004321959052754565,
+        "half_cell_shift": 0.08056834639335442,
+        "azimuth_45deg": 0.006353624989900553,
+        "window_linear": 0.00027518673189624865,
+        "window_educational_kerr": 0.00010848886882230957
+      }
+    },
+    {
+      "label": "コア内の幅",
+      "key": "core_radial_rms_um_max_abs",
+      "observed_difference_um": 0.7795152705895063,
+      "numerical_comparison_max_um": 0.01896268937882173,
+      "comparison_values_um": {
+        "dz_base_to_fine": 3.257857517979801e-06,
+        "finer_dx": 0.0012561325023714431,
+        "half_cell_shift": 0.01896268937882173,
+        "azimuth_45deg": 0.002212561812011238,
+        "window_linear": 0.00014427936637417815,
+        "window_educational_kerr": 5.596841117139206e-05
+      }
+    }
+  ],
+  "weak_reference_below_observed_numerical_comparisons": true,
+  "ordinary_checks": {
+    "input_hashes_match": true,
+    "local_reference_count": 32,
+    "video_probe": {
+      "01": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frames": 144,
+        "duration_seconds": 6.0
+      },
+      "02": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frames": 144,
+        "duration_seconds": 6.0
+      },
+      "03": {
+        "codec": "h264",
+        "width": 1920,
+        "height": 1080,
+        "fps": 24.0,
+        "frames": 144,
+        "duration_seconds": 6.0
+      },
+      "entrance_image": {
+        "file": "entrance_01.png",
+        "sha256": "17dad03c2090b87b946d29d395bc6e7f41c5b086806cebaa7ab03b1fd1b3df6b",
+        "source_film": "01_reflection",
+        "source_frame": 1,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    "browser": {
+      "record_path": ".work/spatial-kerr-report-final/browser_checks.json",
+      "record_sha256": "b1242c9dc6032cbd839615ef4d010356eb5070b06797db372373dd03e99f555c",
+      "record": {
+        "scope": "final_delivered_media",
+        "status": "ordinary_browser_checks",
+        "all_passed": true,
+        "html_sha256": "e900bdf55a534e1b8c2373ee2f48b4b8e5c09ad378deb2c97b8744e4c715f7e0",
+        "render_manifest_sha256": "e35b5cd1831d5510e17373467648c7a61991abadc77e3fec6e8f821c7592c076",
+        "media_sha256": {
+          "01_reflection.mp4": "ae690f8e7768081b217974b71005fcb6eff9ed9b6fb4edb248441d7ef3c2bfca",
+          "02_kerr_comparison.mp4": "7743775a44cffd1aa407bc752f95ce7425390e1248895111e7c02074ece14c3e",
+          "03_phase_change.mp4": "feae975a81909235b64fa43eeb72d09fe29cd8026dc2b3e8cf73fff19e73ed73"
+        },
+        "browser_version": "156.0.8078.4",
+        "checks": {
+          "local_file_playback": true,
+          "seek": true,
+          "playback_speed": true,
+          "video_switching": true,
+          "case_switching": true,
+          "mobile_width": true,
+          "no_horizontal_overflow": true,
+          "local_references": true,
+          "svg_rendering": true,
+          "mp4_download": true,
+          "no_page_errors": true,
+          "no_external_runtime_requests": true
+        },
+        "playback": [
+          {
+            "number": "01",
+            "width": 1920,
+            "height": 1080,
+            "duration": 6,
+            "time": 0.3671,
+            "paused": true,
+            "decoded": 13
+          },
+          {
+            "number": "02",
+            "width": 1920,
+            "height": 1080,
+            "duration": 6,
+            "time": 0.3722,
+            "paused": true,
+            "decoded": 13
+          },
+          {
+            "number": "03",
+            "width": 1920,
+            "height": 1080,
+            "duration": 6,
+            "time": 0.3638,
+            "paused": true,
+            "decoded": 13
+          }
+        ],
+        "seeks": [
+          {
+            "number": "01",
+            "target": 3,
+            "observed": 3,
+            "keyboard_right_time": 3.06,
+            "keyboard_left_time": 3,
+            "keyboard_scope": "browser native"
+          },
+          {
+            "number": "02",
+            "target": 3,
+            "observed": 3,
+            "keyboard_right_time": 3.06,
+            "keyboard_left_time": 3,
+            "keyboard_scope": "browser native"
+          },
+          {
+            "number": "03",
+            "target": 3,
+            "observed": 3,
+            "keyboard_right_time": 3.06,
+            "keyboard_left_time": 3,
+            "keyboard_scope": "browser native"
+          }
+        ],
+        "speed": [
+          {
+            "number": "01",
+            "rate": 0.5,
+            "observed_rate": 0.5,
+            "advanced_seconds": 0.15290000000000004
+          },
+          {
+            "number": "01",
+            "rate": 1.5,
+            "observed_rate": 1.5,
+            "advanced_seconds": 0.4558
+          },
+          {
+            "number": "02",
+            "rate": 0.5,
+            "observed_rate": 0.5,
+            "advanced_seconds": 0.1524000000000001
+          },
+          {
+            "number": "02",
+            "rate": 1.5,
+            "observed_rate": 1.5,
+            "advanced_seconds": 0.45730000000000004
+          },
+          {
+            "number": "03",
+            "rate": 0.5,
+            "observed_rate": 0.5,
+            "advanced_seconds": 0.1513
+          },
+          {
+            "number": "03",
+            "rate": 1.5,
+            "observed_rate": 1.5,
+            "advanced_seconds": 0.46510000000000007
+          }
+        ],
+        "video_switch_states": [
+          [
+            {
+              "id": "film-01",
+              "paused": false
+            },
+            {
+              "id": "film-02",
+              "paused": true
+            },
+            {
+              "id": "film-03",
+              "paused": true
+            }
+          ],
+          [
+            {
+              "id": "film-01",
+              "paused": true
+            },
+            {
+              "id": "film-02",
+              "paused": false
+            },
+            {
+              "id": "film-03",
+              "paused": true
+            }
+          ],
+          [
+            {
+              "id": "film-01",
+              "paused": true
+            },
+            {
+              "id": "film-02",
+              "paused": true
+            },
+            {
+              "id": "film-03",
+              "paused": false
+            }
+          ]
+        ],
+        "selected_cases": [
+          "linear",
+          "weak_reference",
+          "intermediate_kerr",
+          "educational_kerr"
+        ],
+        "widths": [
+          {
+            "viewport": 1440,
+            "document": 1440
+          },
+          {
+            "viewport": 390,
+            "document": 390
+          },
+          {
+            "viewport": 320,
+            "document": 320
+          }
+        ],
+        "local_reference_count": 38,
+        "svg_count": 2,
+        "download": {
+          "filename": "01_reflection.mp4",
+          "sha256": "ae690f8e7768081b217974b71005fcb6eff9ed9b6fb4edb248441d7ef3c2bfca",
+          "protocol": "loopback HTTP; same frozen local files"
+        },
+        "page_errors": [],
+        "external_requests": [],
+        "screenshots": [
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/delivered_film_01_at_3s.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/delivered_film_02_at_3s.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/delivered_film_03_at_3s.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/desktop_comparison.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/desktop_top.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/mobile_comparison.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/mobile_endpoint_100pct.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/mobile_film02.png",
+          "/home/kamimura/projects/optical-comm-lab/.work/spatial-kerr-report-final/screenshots/mobile_top.png"
+        ],
+        "independent_validator": {
+          "requested": 0,
+          "attempted": 0,
+          "completed": 0,
+          "original_research_review_reused": false
+        }
+      }
+    }
+  },
+  "independent_validator": {
+    "requested": 0,
+    "attempted": 0,
+    "completed": 0,
+    "original_research_review_reused": false
+  }
+}
