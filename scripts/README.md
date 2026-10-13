@@ -78,7 +78,36 @@ in `src/optical_comm/`; a new CLI should call those modules rather than copy
 numerical methods. Saved figures and report text belong in `reports/`, and
 compact run data belong in `artifacts/`.
 
-`animate_kerr.py` builds a native, editable Blender scene and a 30-second
+`simulate_kerr_films.py` saves qualified 80 km dual-polarization Manakov pulse
+trajectories for three controls: Kerr only, dispersion only, and both together.
+`render_kerr_films.py` uses those complex fields for three native Blender/Cycles
+films, and `build_kerr_explanation.py` creates the movie-centered offline
+Japanese page from the completed numerical and render manifests.
+
+```bash
+# Rebuild the explanation from the saved three films; no rendering or propagation.
+.venv/bin/python scripts/build_kerr_explanation.py
+
+# Isolate a numerical reproduction from the delivered artifacts.
+.venv/bin/python scripts/simulate_kerr_films.py --config configs/kerr_films.json --output .work/kerr-physics-reproduction
+
+# Render three movies from that reproduction into scratch output.
+.venv/bin/python scripts/render_kerr_films.py --mode render --data-dir .work/kerr-physics-reproduction --output-dir .work/kerr-films-reproduction --scratch-dir .work/kerr-films-reproduction-frames
+.venv/bin/python scripts/build_kerr_explanation.py --physics-run .work/kerr-physics-reproduction --renders .work/kerr-films-reproduction
+```
+
+The simulation is a separate deterministic Gaussian-pulse experiment, without
+EDFA/ASE, training, or BER scores. Rendering requires Blender/OptiX, FFmpeg,
+FFprobe, Pillow, and a licensed Japanese font; use the project environment
+explicitly. The render manifest's `python3` command assumes that environment
+is active. See the [render guide](../docs/kerr-rendering.md) for preview, saved
+scenes, backend requirements, and options. The explanation CLI uses only Python
+standard-library modules, validates data and media hashes, and refuses
+incomplete inputs. Delivered films and provenance are linked from the
+[offline page](../reports/animations/kerr_physics/index.html) and its
+[README](../reports/animations/kerr_physics/README.md).
+
+The historical `animate_kerr.py` builds a native, editable Blender scene and a 30-second
 Japanese MP4 explaining Kerr self-phase modulation. It renders an analytic
 scalar teaching example, separate from the measured DP/Manakov link results.
 Run it with ordinary Python plus Blender and FFmpeg; the project environment

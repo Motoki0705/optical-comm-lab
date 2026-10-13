@@ -1,0 +1,284 @@
+{
+  "schema": "optical-comm-kerr-explanation/v1",
+  "issue": 17,
+  "created_utc": "2026-10-13T07:38:10.105814+00:00",
+  "source_commit": "d05a2fd521fe5d22e3e876b89de9442651272f75",
+  "scope": "Offline Japanese explanation of three films generated from a separate 80 km deterministic dual-polarization Manakov pulse experiment. No learning or communications-performance evaluation.",
+  "generator": {
+    "path": "scripts/build_kerr_explanation.py",
+    "sha256": "8a12f8568d37261030a8cb9be6b3d3db4371359bfec8d79eea996f2585e0d3fb"
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39"
+  },
+  "regeneration_command": ".venv/bin/python scripts/build_kerr_explanation.py --physics-run artifacts/kerr-physics --renders reports/animations/kerr_physics",
+  "input_manifests": {
+    "physics": "artifacts/kerr-physics/manifest.json",
+    "render": "reports/animations/kerr_physics/manifest.json"
+  },
+  "inputs": [
+    {
+      "path": "artifacts/kerr-physics/README.md",
+      "bytes": 1680,
+      "sha256": "b5efefc5c6e445ee8f2d2b33f95cd0251629dd644e06249fed9586e775eee22c"
+    },
+    {
+      "path": "artifacts/kerr-physics/combined.npz",
+      "bytes": 2032271,
+      "sha256": "a20d63dfde4277ae989fc4242456a72918fd85f049aaa7e9f14f73d137bd395c"
+    },
+    {
+      "path": "artifacts/kerr-physics/config.json",
+      "bytes": 2723,
+      "sha256": "ae1342ce9a334f2447ee87a036929f6f47a278679c860fc96d968290983f4b8c"
+    },
+    {
+      "path": "artifacts/kerr-physics/derived_metrics.json",
+      "bytes": 75916,
+      "sha256": "d7e63cda0a3ea733b3daa0cc24e3f049c625c869ff6c2e6471a367a60e180317"
+    },
+    {
+      "path": "artifacts/kerr-physics/dispersion_only.npz",
+      "bytes": 1924537,
+      "sha256": "38bdce7786d15ee2a240ac75c479270c56d880693dd529b2953069418c5e5c1c"
+    },
+    {
+      "path": "artifacts/kerr-physics/manifest.json",
+      "bytes": 15539,
+      "sha256": "5b6d575df0088b3267a94d3b3b1f88c44619f777a33e1c62986941fce6c650f9"
+    },
+    {
+      "path": "artifacts/kerr-physics/pure_spm.npz",
+      "bytes": 2058538,
+      "sha256": "a141536832098978628d4956e4d970203bf5f3071f639cf59c4e27fce0f42b32"
+    },
+    {
+      "path": "artifacts/kerr-physics/qualification.json",
+      "bytes": 6564,
+      "sha256": "c326bf5c419381609c05aff5eef7976a0fe92ba0c3d26e1cd3447622108fc619"
+    },
+    {
+      "path": "artifacts/kerr-physics/summary.csv",
+      "bytes": 22370,
+      "sha256": "e6b9771449791cee63e2ccc6f59151aea05e2429d22cbf805be8d007e97f6ca1"
+    },
+    {
+      "path": "artifacts/kerr-physics/tests.json",
+      "bytes": 276,
+      "sha256": "3d5454ca30723fe1fb0d0593965979ee0fbc218cfd2a1e9718aeecc7cb9bcc16"
+    },
+    {
+      "path": "artifacts/kerr-physics/tests.txt",
+      "bytes": 99,
+      "sha256": "4c2212bb547c663ccfc41a6bcb944bfcdf711b7a428005a891cfd1f854851260"
+    },
+    {
+      "path": "configs/kerr_films.json",
+      "bytes": 2662,
+      "sha256": "1b1593d1bc54c4f927a7279fca73184da0835d441800bab7a17152680d5ca6e8"
+    },
+    {
+      "path": "docs/channel-methods.md",
+      "bytes": 12530,
+      "sha256": "0085740c40c9dd3e944f6de75ab1636c147dfe0c7af49fe74656592b7bea7358"
+    },
+    {
+      "path": "docs/experiment-plan.md",
+      "bytes": 4684,
+      "sha256": "e4b913c5ad03290f3c5df4b04baf843a3cef66c5ba209a44dd5512e84a676199"
+    },
+    {
+      "path": "docs/kerr-physics.md",
+      "bytes": 10031,
+      "sha256": "4aee60bc55a8d603d0618eee5ea6d6f183582ea9ed09ecad7b7693e555c532fe"
+    },
+    {
+      "path": "docs/kerr-rendering.md",
+      "bytes": 9137,
+      "sha256": "0056dccbeecbcc121599dd754864b001acac3b10dc73737b98be16d4a139853f"
+    },
+    {
+      "path": "docs/requirements.md",
+      "bytes": 3485,
+      "sha256": "984104ccb7f246bd164f16bdc99ca72fd062787081b52bcc3549cf06abc6a2e3"
+    },
+    {
+      "path": "pyproject.toml",
+      "bytes": 620,
+      "sha256": "3205bedba62661e3ffedbc5bfabade9fca84b770bd14d395c373c546921d9a8e"
+    },
+    {
+      "path": "reports/animations/kerr_physics/01_self_phase_modulation.blend",
+      "bytes": 19920847,
+      "sha256": "41feb549c8d48bc0a7fad4e228105f64cf71d9cc44b5f0b0228fa279e65227f5"
+    },
+    {
+      "path": "reports/animations/kerr_physics/01_self_phase_modulation.mp4",
+      "bytes": 6990235,
+      "sha256": "3f0e5edbba6d351eec45a0772b03ca9212f8130fb395f73c9a157ba7995970f6"
+    },
+    {
+      "path": "reports/animations/kerr_physics/02_chromatic_dispersion.blend",
+      "bytes": 27158380,
+      "sha256": "3d0735c102e0f7b30c2d2e7416a238e6776b0e3b39c7c566216d979a60c8e19a"
+    },
+    {
+      "path": "reports/animations/kerr_physics/02_chromatic_dispersion.mp4",
+      "bytes": 7256440,
+      "sha256": "0d923d6868bd66006f0938bee29eff4d6abd6c8e7ffb3ee44ac2130a70bc947a"
+    },
+    {
+      "path": "reports/animations/kerr_physics/03_kerr_dispersion_interplay.blend",
+      "bytes": 27631836,
+      "sha256": "6873d6d94fd758f46d00f65492f07840ff481e346847f6aace1fb6e87548c2e4"
+    },
+    {
+      "path": "reports/animations/kerr_physics/03_kerr_dispersion_interplay.mp4",
+      "bytes": 7222674,
+      "sha256": "b90ed93d9fa1d46eb9fe25f95d5353ebb62bd61e71d0db23b1ad1a493cc80627"
+    },
+    {
+      "path": "reports/animations/kerr_physics/LICENSE-fonts.txt",
+      "bytes": 22200,
+      "sha256": "303f80a4bf0591248755d36c784805c5a391a2c52810590d6208a267648cac5a"
+    },
+    {
+      "path": "reports/animations/kerr_physics/manifest.json",
+      "bytes": 372364,
+      "sha256": "aa0846045f744c9dd8da8fa01d4c00f7128df89dd6ea121e2315e58d457c0802"
+    },
+    {
+      "path": "reports/animations/kerr_physics/poster_01.png",
+      "bytes": 1800694,
+      "sha256": "b5b33fef5518dc35ada48528f8be21b0e41b971435ba3fc138eb0c21a8dc6191"
+    },
+    {
+      "path": "reports/animations/kerr_physics/poster_02.png",
+      "bytes": 1829230,
+      "sha256": "c50b9fbcb42980febb078ca92d17703d64171058015a3f95855866d9505820cd"
+    },
+    {
+      "path": "reports/animations/kerr_physics/poster_03.png",
+      "bytes": 1828352,
+      "sha256": "9cc6c2ceaa8562d15a8e72a98c614a25a48bf7d912495f9cd56906dfa5ae4db5"
+    },
+    {
+      "path": "scripts/build_kerr_explanation.py",
+      "bytes": 59515,
+      "sha256": "8a12f8568d37261030a8cb9be6b3d3db4371359bfec8d79eea996f2585e0d3fb"
+    },
+    {
+      "path": "scripts/render_kerr_films.py",
+      "bytes": 48267,
+      "sha256": "fbda829695065b1c8b8464a89084f685ced63605a74c29732742be1d3059b6eb"
+    },
+    {
+      "path": "scripts/simulate_kerr_films.py",
+      "bytes": 16788,
+      "sha256": "2778cdb903cae0db22da0a3f45abe3896e1943ed5ed9a5aecd1afffb7ec918a6"
+    },
+    {
+      "path": "src/optical_comm/__init__.py",
+      "bytes": 151,
+      "sha256": "7be7e87dec6fecec2b3b0763b70981c173920317f1afb8640f284a5431c949fd"
+    },
+    {
+      "path": "src/optical_comm/channel.py",
+      "bytes": 10712,
+      "sha256": "9b00b0fbbd423733dd20de409d184ce73a65e623e7839e6ffa9a6d5164deba56"
+    },
+    {
+      "path": "src/optical_comm/config.py",
+      "bytes": 4191,
+      "sha256": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2"
+    },
+    {
+      "path": "src/optical_comm/dsp.py",
+      "bytes": 3949,
+      "sha256": "ab80dfe8f59d60fb9f828c5882b906121e1fb7a546c76ec4a4e19044b058aca9"
+    },
+    {
+      "path": "src/optical_comm/experiment.py",
+      "bytes": 26804,
+      "sha256": "f191a1cb395948a523ba366d2f765e502cd37907330454be0304fe5264293b72"
+    },
+    {
+      "path": "src/optical_comm/metrics.py",
+      "bytes": 5633,
+      "sha256": "7c4bb5b789085434d03281807b7bfb8856a42d667b3548fc52d3a1a394c83c4d"
+    },
+    {
+      "path": "src/optical_comm/reservoir.py",
+      "bytes": 17753,
+      "sha256": "02f2440a7698f61b7e1d84be180e723c1e79a93e1c296bfb980ac2420d1ee48d"
+    },
+    {
+      "path": "src/optical_comm/visualization/__init__.py",
+      "bytes": 683,
+      "sha256": "9768a3bde719abbb78e660550ffe1b8d36a3d6d08f931040d337c47807e5fdcc"
+    },
+    {
+      "path": "src/optical_comm/visualization/pulses.py",
+      "bytes": 22333,
+      "sha256": "6108c410ef1c2372d591880e4ce1c0551af94f90b8ff2e4fe383ee6cc65c85c1"
+    },
+    {
+      "path": "tests/test_kerr_pulses.py",
+      "bytes": 8708,
+      "sha256": "ad991f54a5fbf3ca4a4983825170cd6665a4fa9b2c7097341fabc27242b56de1"
+    },
+    {
+      "path": "uv.lock",
+      "bytes": 177839,
+      "sha256": "4d8f45524db6914258bd60e62edf17add15a8029bec75ee541301edc288e91c1"
+    },
+    {
+      "path": "/usr/share/fonts/opentype/ipaexfont-gothic/ipaexg.ttf",
+      "bytes": 6099900,
+      "sha256": "3b9955a5e437ffb24c41548e79296fa724822da21ee75dc1b94f6ccdb8f400dd"
+    }
+  ],
+  "outputs": {
+    "index.html": {
+      "bytes": 30488,
+      "sha256": "acf9ff805366631a71d174d22864b32f6ae31aa3f935eba185594adc1b13e8fe"
+    },
+    "README.md": {
+      "bytes": 6312,
+      "sha256": "dc3f603a3d4527c50336322b0f9a4bec88568495e2d6899d9f5a0c5f9e12388f"
+    }
+  },
+  "ordinary_checks": {
+    "checked_file_count": 44,
+    "physical_run_complete_and_ordinary_checks_passed": true,
+    "three_movies_scenes_and_posters_hash_verified": true,
+    "renderer_physical_input_identity_verified": true,
+    "shared_visual_encoding_and_scene_settings_verified": true,
+    "metrics_derived_from_full_solver_records": true,
+    "max_render_crop_energy_omission_fraction": 0.000258358570155659,
+    "html_external_runtime_assets": 0,
+    "scope": "Input integrity and structural generation checks. Browser interaction and visual inspection are recorded separately by the coordinating agent.",
+    "html_structure": {
+      "local_video_players": 3,
+      "local_link_and_media_references_checked": 26,
+      "duplicate_ids": 0,
+      "broken_local_references": 0,
+      "external_runtime_assets": 0,
+      "autoplay": false,
+      "keyboard_focus_and_native_controls": true
+    }
+  },
+  "independent_validator": {
+    "requested": 0,
+    "attempted": 0,
+    "completed": 0
+  },
+  "browser": {
+    "external_runtime_assets": [],
+    "autoplay": false,
+    "local_video_count": 3,
+    "font_source": "browser/OS native fonts; no network requests",
+    "keyboard": "With video focused: Space/K play or pause; left/right seek 5 seconds; F fullscreen; native video controls retained."
+  }
+}

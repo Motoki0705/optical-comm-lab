@@ -4,6 +4,8 @@
 
 結果と図は [日本語レポート](reports/final_report.md)、オフラインで読める [画像埋め込みHTML](reports/final_report.html) に保存します。HTMLはブラウザの印刷機能でPDFにできます。
 
+光ファイバ内部の変化は、[3本の物理シミュレーション映像と日本語解説](reports/animations/kerr_physics/index.html)で見られます。自己位相変調、波長分散、両者の同時作用を、計算した電場からBlenderで映像化しました。各12秒・1080pのMP4と編集できるシーン、[再生成記録](reports/animations/kerr_physics/README.md)を保存しています。80 kmの単独パルスによる説明用実験で、1600 kmの学習評価とは別のデータです。
+
 ## 環境
 
 Python 3.12 と [uv](https://docs.astral.sh/uv/) が必要です。`.python-version` と `uv.lock` を用いて環境を固定します。CPUで全処理を実行できます。図の再生成には日本語フォント（推奨 `Noto Sans CJK JP`）が必要で、Ubuntu/Debianでは `fonts-noto-cjk` を導入します。フォントを導入できない場合は各描画CLIの `--font /path/to/font.ttf` を使えます。
@@ -65,6 +67,7 @@ CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使�
 .venv/bin/python scripts/visualize_concepts.py
 .venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification
 .venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --verification-record artifacts/verification/ordinary_checks.json --review-record artifacts/verification/independent_review.json
+.venv/bin/python scripts/build_kerr_explanation.py
 ```
 
 正確なコマンド、フォント・環境、入力と出力のハッシュは [結果図のマニフェスト](reports/figures/results_manifest.json) と [レポートのマニフェスト](reports/report_manifest.json) に保存します。検証・独立評価の集約記録はレポート生成の追加入力です。元の公開版と同じ検証記録を含めるには、レポートマニフェストの `regeneration_command` を使います。pilotの描画確認は `--allow-pilot --output-dir .work/pilot-figures` のように、最終図から分離します。

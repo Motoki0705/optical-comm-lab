@@ -68,8 +68,8 @@ CSS = r"""
 :root{color-scheme:dark;--bg:#111212;--panel:#191b1b;--paper:#f0eade;--muted:#a7a69f;--gold:#d7aa71;--rule:#ffffff1c;--width:1160px}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:5rem}body{margin:0;background:var(--bg);color:var(--paper);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans CJK JP","Yu Gothic",Meiryo,sans-serif;font-size:16px;line-height:1.9;letter-spacing:.025em}a{color:inherit;text-decoration-color:#746a5c;text-underline-offset:.28em}a:hover{color:var(--gold)}button,select{font:inherit}button,a,select,video{touch-action:manipulation}button:focus-visible,a:focus-visible,select:focus-visible,video:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:5px}::selection{background:#d7aa7145}.skip{position:absolute;left:1rem;top:-5rem;padding:.4rem 1rem;background:var(--paper);color:var(--bg);z-index:20}.skip:focus{top:1rem}
 .serif,h1,h2,.statement{font-family:"Noto Serif CJK JP","Yu Mincho","Hiragino Mincho ProN",serif;font-weight:500}.shell{width:min(calc(100% - 96px),var(--width));margin-inline:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding:24px 0;border-bottom:1px solid var(--rule);font-size:.72rem;letter-spacing:.15em}.brand{text-decoration:none;font-weight:600}.topbar nav{display:flex;gap:1.7rem}.topbar nav a{text-decoration:none;color:var(--muted)}.topbar nav a:hover{color:var(--paper)}
-.hero{position:relative;min-height:660px;min-height:min(860px,92svh);display:grid;align-items:end;isolation:isolate;overflow:hidden;margin-top:20px}.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-3}.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#080a0adb 0%,#0b0d0d9a 34%,#080a0a12 78%),linear-gradient(0deg,#111212 1%,#11121233 42%,transparent 65%)}.hero-copy{padding:90px 0 70px;max-width:850px}.eyebrow{font-size:.7rem;letter-spacing:.25em;color:var(--gold);margin:0 0 1.4rem;text-transform:uppercase}.hero h1{font-size:clamp(2.6rem,5.7vw,5rem);line-height:1.45;letter-spacing:.1em;margin:0 0 1.6rem;text-wrap:balance}.hero-lead{max-width:530px;font-size:1rem;color:#d6d3c9;line-height:2.05;margin:0}.hero-foot{display:flex;gap:2rem;flex-wrap:wrap;margin-top:2.2rem;font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
-.intro{max-width:740px;margin:80px auto 100px}.intro .statement{font-size:clamp(1.45rem,2.5vw,2rem);line-height:1.9;letter-spacing:.07em;margin-bottom:1.8rem}.intro p{color:var(--muted);font-size:.95rem}.contents{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.8rem;padding-top:1.5rem;border-top:1px solid var(--rule)}.contents a{text-decoration:none;display:flex;flex-direction:column;gap:.35rem}.contents small{font-size:.65rem;color:var(--gold);letter-spacing:.15em}.contents span{font-size:.83rem;color:var(--paper)}
+.hero{position:relative;min-height:660px;min-height:min(860px,92svh);display:grid;align-items:end;isolation:isolate;overflow:hidden;margin-top:20px}.hero img{position:absolute;inset:-12% 0 auto;width:100%;height:124%;object-fit:cover;object-position:center;z-index:-3}.hero::before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,#080a0adb 0%,#0b0d0d9a 34%,#080a0a12 78%),linear-gradient(0deg,#111212 1%,#11121233 42%,transparent 65%)}.hero-copy{padding:90px 0 70px;max-width:850px}.eyebrow{font-size:.7rem;letter-spacing:.25em;color:var(--gold);margin:0 0 1.4rem;text-transform:uppercase}.hero h1{font-size:clamp(2.6rem,5.7vw,5rem);line-height:1.45;letter-spacing:.1em;margin:0 0 1.6rem;text-wrap:balance}.hero-lead{max-width:530px;font-size:1rem;color:#d6d3c9;line-height:2.05;margin:0}.hero-foot{display:flex;gap:2rem;flex-wrap:wrap;margin-top:2.2rem;font-size:.72rem;letter-spacing:.12em;color:var(--muted)}
+.intro{max-width:740px;margin:80px auto 100px}.intro .statement{font-size:clamp(1.45rem,2.5vw,2rem);line-height:1.9;letter-spacing:.07em;margin-bottom:1.8rem}.intro p{color:var(--muted);font-size:.95rem}.intro .observation{color:#d9d4c9;border-left:2px solid var(--gold);padding-left:18px;margin-top:1.5rem}.contents{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.8rem;padding-top:1.5rem;border-top:1px solid var(--rule)}.contents a{text-decoration:none;display:flex;flex-direction:column;gap:.35rem}.contents small{font-size:.65rem;color:var(--gold);letter-spacing:.15em}.contents span{font-size:.83rem;color:var(--paper)}
 .chapter{margin:0 auto 128px;scroll-margin-top:28px}.chapter-heading{display:flex;align-items:end;justify-content:space-between;gap:4rem;margin-bottom:26px}.chapter-title{flex:1}.chapter-title .eyebrow{margin:0 0 .7rem}.chapter-title h2{font-size:clamp(1.8rem,3.2vw,2.7rem);letter-spacing:.06em;line-height:1.65;margin:0;text-wrap:balance}.chapter-number{display:inline-block;font-family:Georgia,serif;font-style:italic;font-size:1.2rem;color:var(--gold);margin-right:1.1rem;vertical-align:middle}.chapter-lead{max-width:360px;margin:0 0 .2rem;color:var(--muted);font-size:.86rem;line-height:1.85}.film{margin:0}.screen{background:#080909;box-shadow:0 14px 60px #0005;line-height:0}.screen video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;max-height:82svh}.film-caption{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:15px 0 30px;font-size:.7rem;color:var(--muted);line-height:1.8}.film-caption .left{display:flex;gap:1rem;flex-wrap:wrap}.rate{display:flex;gap:.65rem;align-items:center;white-space:nowrap}.rate select{border:1px solid #ffffff2a;border-radius:2px;background:#202121;color:var(--paper);padding:.13rem .5rem;font-size:.73rem;min-width:70px}.explanation{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6rem;border-top:1px solid var(--rule);padding-top:28px}.explanation h3{font-size:.7rem;font-weight:500;letter-spacing:.16em;color:var(--gold);margin:0 0 .8rem}.explanation p{font-size:.9rem;line-height:1.95;margin:0;color:#cecec6}.observed{margin-top:26px;padding:19px 0 0;border-top:1px solid var(--rule);display:flex;gap:2rem;align-items:baseline;flex-wrap:wrap}.observed-label{font-size:.7rem;color:var(--muted);letter-spacing:.12em}.measurement{font-size:.84rem}.measurement strong{font-family:Georgia,serif;font-size:1.3rem;font-weight:400;color:var(--paper);letter-spacing:.03em}.measurement .unit{font-size:.74rem;color:var(--muted);margin-left:.3rem}.measurement-note{font-size:.73rem;color:var(--muted);margin:10px 0 0}
 .closing{display:grid;grid-template-columns:1fr 1fr;gap:5rem;padding:65px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:65px}.closing h2{font-size:clamp(1.6rem,2.7vw,2.2rem);margin:0;line-height:1.8;letter-spacing:.06em}.closing p{font-size:.91rem;color:var(--muted);margin:0}.closing p+p{margin-top:1.3rem}.reading{max-width:870px;margin:0 auto 64px}.reading h2{font-family:inherit;font-size:.85rem;letter-spacing:.12em;margin-bottom:1.4rem}.reading dl{display:grid;grid-template-columns:160px 1fr;gap:1rem 2rem;margin:0;font-size:.84rem}.reading dt{color:var(--gold)}.reading dd{margin:0;color:var(--muted)}
 .supplement{margin:0 auto 60px;max-width:870px}.supplement details{border-top:1px solid var(--rule);padding:20px 0}.supplement details:last-child{border-bottom:1px solid var(--rule)}.supplement summary{cursor:pointer;font-size:.83rem;color:var(--paper);list-style-position:outside;margin-left:1rem;padding-left:.5rem}.detail-body{padding:22px 0 2px;font-size:.81rem;color:var(--muted)}.detail-body p{margin:0 0 1rem}.detail-body ul{padding-left:1.2rem}.detail-body li{margin:.6rem 0}.detail-body code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;color:#e4dfd2;font-size:.78rem;overflow-wrap:anywhere}.detail-body pre{background:#090b0b;padding:18px;overflow:auto;line-height:1.7;border:1px solid var(--rule)}.detail-body pre code{white-space:pre-wrap}.specs{border-collapse:collapse;width:100%}.specs th,.specs td{padding:.65rem 0;border-bottom:1px solid var(--rule);vertical-align:top;text-align:left;font-weight:400}.specs th{width:41%;color:var(--paper)}.downloads{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.downloads a{display:block}.foot{display:flex;gap:1rem;flex-wrap:wrap;justify-content:space-between;padding:25px 0 45px;color:#81857f;font-size:.66rem;letter-spacing:.08em}.foot a{color:var(--muted)}
@@ -90,7 +90,9 @@ document.querySelectorAll('video').forEach(video => {
   });
   video.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
-    if (event.code === 'Space' || event.code === 'KeyK') {
+    // Space belongs to the browser's native media controls. Handling it here
+    // as well can toggle twice when a native play button is focused.
+    if (event.code === 'KeyK') {
       event.preventDefault();
       if (video.paused) video.play().catch(() => {}); else video.pause();
     } else if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') {
@@ -404,9 +406,13 @@ def load_context(physics: Path, renders: Path, output: Path) -> tuple[dict[str, 
     if phase["input"] != "arg(Ax), circular phase modulo 2pi" or phase["mapping"] != "cyclic teal at 0, warm orange toward +pi/2, blue toward -pi/2, magenta at +/-pi":
         raise ValueError("The phase-color mapping needs an updated Japanese explanation")
     loss_db = context["config"]["loss_db_per_km"] * context["config"]["length_km"]
+    time_upsampling = encoding["display_time_upsampling"]
+    upsampling_factor = number(time_upsampling["factor"], "display_time_upsampling.factor")
+    if upsampling_factor != 4:
+        raise ValueError("The display interpolation needs an updated explanation")
     mappings = [
-        ("横方向", f'パルスと一緒に進む時間の座標。{fmt(window[0])}〜{fmt(window[1])} psの共通範囲を、一つのパルスの前後として表す。映像中のガラスの長さは説明用の縮尺。'),
-        ("線の揺れ", f'計算したX・Y偏波の電場から作る。見えるように振動の周期を{fmt(carrier_ps)} psへ拡大した。実際の{fmt(context["config"]["wavelength_nm"])} nmの光に対して約{fmt(carrier_ps / actual_period_ps)}倍。この入力の偏光方向は一定。'),
+        ("横方向", f'パルスと一緒に進む時間の座標。生成する電場形状は{fmt(window[0])}〜{fmt(window[1])} psの共通範囲で、カメラがその内部を接写する。低い裾は画面の外に出ることがある。映像中のガラスの長さは説明用の縮尺。'),
+        ("線の揺れ", f'計算したX・Y偏波の電場から作る。見えるように振動の周期を{fmt(carrier_ps)} psへ拡大した。実際の{context["config"]["wavelength_nm"]:.0f} nmの光に対して約{carrier_ps / actual_period_ps:,.0f}倍。この入力の偏光方向は一定。'),
         ("透明な輪郭", f'電力の平方根に比例する振幅を、大きさに置き換えた模式表現。線と輪郭には、3本・全距離で共通の尺度を使う。{fmt(loss_db)} dBの伝送損失も残している。'),
         ("色", "位相を見分けるための色分け。青緑は0、橙は正側、青は負側、折り返しの境界は紫。光の見える色を撮影したものとしては読まない。ごく弱い裾では色を隠す。"),
         ("映像の進行", f'距離0〜{fmt(context["config"]["length_km"])} kmに伴う変化を、ゆっくり見る。1 km刻みの81波形の間は描画する形状と色を補間し、各動画フレームをBlenderでレンダリングした。上映時間は実際の飛行時間を表す値ではない。'),
@@ -422,6 +428,7 @@ def load_context(physics: Path, renders: Path, output: Path) -> tuple[dict[str, 
         "geometry": geometry,
         "max_render_crop_omission": max_omission,
         "geometry_scale_details": {"field_scene_units_per_sqrt_W": amplitude_scale, "envelope_scene_units_per_sqrt_W": envelope_scale},
+        "display_time_upsampling_factor": upsampling_factor,
     })
     context["sources"].append({"title": "Corning SMF-28 ULL データシート", "url": encoding["geometry_reference"], "use": "コアとクラッドの直径比の参考。描画したガラスと器具は説明用のモデル。"})
     checks = {
@@ -491,7 +498,7 @@ def build_page(context: dict[str, Any], output: Path) -> str:
     rows = [
         ("伝搬モデル", "二偏波のManakov方程式 / 対称SSFM"),
         ("距離", f"{length} km / 増幅器なし"),
-        ("波長", f'{fmt(config["wavelength_nm"])} nm'),
+        ("波長", f'{config["wavelength_nm"]:.0f} nm'),
         ("入射パルス", f'ガウス型 / 強度の1/e半幅 {fmt(config["t0_ps"])} ps'),
         ("入射ピーク電力", f'XY合計 {fmt(config["peak_power_w"] * 1000)} mW / 二偏波に等分'),
         ("損失", f'{fmt(config["loss_db_per_km"])} dB/km'),
@@ -510,7 +517,8 @@ def build_page(context: dict[str, Any], output: Path) -> str:
     render_manifest = link("映像のマニフェスト", relative(context["render_manifest"], output))
     explanation_manifest = link("この解説のマニフェスト", "explanation_manifest.json")
     qualified = context["verification_text"]
-    crop_note = f'映像の共通時間窓の外に残るエネルギーは、3条件・全距離を通して最大{fmt(context["max_render_crop_omission"] * 100)}%。表示する窓を切った結果として、この割合を記録した。RMS幅の計算には、2 nsの全計算窓を用いる。'
+    crop_note = f'生成する電場形状の共通時間窓の外に残るエネルギーは、3条件・全距離を通して最大{fmt(context["max_render_crop_omission"] * 100)}%。元の物理データの標本から計算した値で、接写した画面の外に出るエネルギーを測った値ではない。RMS幅の計算には、2 nsの全計算窓を用いる。'
+    interpolation_note = f'滑らかに描くため、複素電場の実部・虚部をパルス内の時間方向へ{fmt(context["display_time_upsampling_factor"])}倍の点密度で線形補間し、その点で模式的な振動を描く。元データの標本点は保持した。これは描画の補間で、物理計算の精度を追加する処理ではない。'
     total_duration = fmt(sum(context["films"][case]["duration_seconds"] for case in CASE_ORDER))
     combined = measurements["combined"]
     dispersion = measurements["dispersion_only"]
@@ -526,13 +534,13 @@ def build_page(context: dict[str, Any], output: Path) -> str:
     return f'''<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="数値計算した光パルスをBlenderで映像化し、自己位相変調、波長分散、その相互作用を3本の動画で見る日本語解説。"><meta name="color-scheme" content="dark light"><title>光が、光を変えていく。— 光ファイバの中のKerr効果</title><style>{CSS}</style></head>
 <body><a class="skip" href="#films">動画と解説へ進む</a><header class="topbar shell"><a class="brand" href="{reports_readme}">OPTICAL COMM LAB</a><nav aria-label="ページ内案内"><a href="#films">3つの映像</a><a href="#reading">映像の読み方</a><a href="#sources">出典・記録</a></nav></header>
-<main><section class="hero" aria-labelledby="page-title"><img src="{escape(relative(renders / FILMS["combined"]["poster"], output))}" alt="光ファイバと、計算された光パルスの立体的な可視化"><div class="hero-copy shell"><p class="eyebrow">INSIDE AN OPTICAL FIBER</p><h1 id="page-title">光が、光を<br>変えていく。</h1><p class="hero-lead">光ファイバの中で、短い光のパルスはどう変わるのか。<br>同じパルスを、三つの条件で追いかける。</p><div class="hero-foot"><span>3 FILMS / {total_duration} SECONDS</span><span>PHYSICS SIMULATION + BLENDER</span><span>{length} km</span></div></div></section>
-<div class="intro shell" id="films"><p class="statement">光の「強さ」と「位相」。<br>二つを分けて見ると、変化の理由が見えてくる。</p><p>強さは、パルスのどこに光のエネルギーが集まっているか。位相は、光の振動が周期のどこにあるか。この二つは別の性質だ。Kerr効果は強さに応じて位相を変え、波長分散は周波数成分の到着をずらす。</p><p>以下の映像は、ガウス型の短い光パルスを{length} km伝搬させた計算から作った。まず一つずつ、最後に同時に。映像の下で、注目する場所と計算結果を確かめていく。</p><nav class="contents" aria-label="各映像へ">{contents}</nav></div>
+<main><section class="hero" aria-labelledby="page-title"><img src="{escape(relative(renders / FILMS["combined"]["poster"], output))}" alt="光ファイバと、計算された光パルスの立体的な可視化"><div class="hero-copy shell"><p class="eyebrow">INSIDE AN OPTICAL FIBER</p><h1 id="page-title">光が、光を<br>変えていく。</h1><p class="hero-lead">光ファイバの中で、パルスはどう変わるのか。<br>同じパルスを、三つの条件で追いかける。</p><div class="hero-foot"><span>3 FILMS / {total_duration} SECONDS</span><span>PHYSICS SIMULATION + BLENDER</span><span>{length} km</span></div></div></section>
+<div class="intro shell" id="films"><p class="statement">光の「強さ」と「位相」。<br>二つを分けて見ると、変化の理由が見えてくる。</p><p>強さは、パルスのどこに光のエネルギーが集まっているか。位相は、光の振動が周期のどこにあるか。この二つは別の性質だ。Kerr効果は強さに応じて位相を変え、波長分散は周波数成分の到着をずらす。</p><p>以下の映像は、ガウス型の短い光パルスを{length} km伝搬させた計算から作った。まず一つずつ、最後に同時に。横方向は、一つのパルスの中での相対時刻。パルスと一緒に進む視点で見ている。</p><p class="observation">波が低くなるのは、3条件に共通するファイバの損失です。Kerr効果だけの条件では、時間方向の幅は変わりません。</p><nav class="contents" aria-label="各映像へ">{contents}</nav></div>
 {"".join(chapters)}
 <section class="closing shell" aria-labelledby="conclusion"><h2 id="conclusion">位相の変化が、<br>形の変化へつながる。</h2><div><p>{escape(comparison)}</p><p>光通信では、多数のパルスが続いて情報を運ぶ。位相や形が変わると、受信した情報を読み取りにくくなることがある。この三つの映像は、その前段にある物理を、単独のパルスで見ている。</p><p>本リポジトリの1600 km・DP-16QAM・増幅雑音を含む学習評価とは、別の説明用実験。ここから補償性能やビット誤り率の改善を結論づけることはできない。</p></div></section>
 <section class="reading shell" id="reading" aria-labelledby="reading-title"><h2 id="reading-title">映像の読み方</h2><dl>{mappings}<dt>操作</dt><dd>自動再生はしない。動画にフォーカスした状態で Space / K は再生・停止、← / → は5秒移動、F は全画面。各動画の速度は0.5倍にもできる。</dd></dl></section>
 <div class="supplement shell" id="sources"><details><summary>計算条件と、ここから言えること</summary><div class="detail-body"><table class="specs"><caption class="eyebrow">3本に共通する入射条件</caption><tbody>{table}</tbody></table><p>{escape(qualified)}</p><p>強度幅と周波数幅は、分布全体を重み付けして求めたRMS幅。見かけの輪郭の幅、半値全幅、中心の明るさとは区別する。入射に対する比を示し、各フレームを個別の最大値で描き直して結果を強調しない。</p><p>{technical} · {physical_manifest} · {render_manifest}</p></div></details>
-<details><summary>映像の表現と、実際の光との対応</summary><div class="detail-body">{paragraph(geometry)}{paragraph(crop_note)}<p>ごく弱い裾では、位相の色を隠す。基準は各保存距離のピーク電力に対する10⁻⁶。振幅を毎フレームの最大値で拡大せず、損失を含む絶対値を共通の表示尺度へ写している。</p><p>ガラスの見え方、背景、照明、カメラの動きは説明のための表現。使用した表現と倍率は映像マニフェストに保存した。</p><p>{render_technical} · {render_manifest}</p></div></details>
+<details><summary>映像の表現と、実際の光との対応</summary><div class="detail-body">{paragraph(geometry)}{paragraph(crop_note)}{paragraph(interpolation_note)}<p>ごく弱い裾では、位相の色を隠す。基準は各保存距離のピーク電力に対する10⁻⁶。振幅を毎フレームの最大値で拡大せず、損失を含む絶対値を共通の表示尺度へ写している。</p><p>ガラスの見え方、背景、照明、カメラの動きは説明のための表現。使用した表現と倍率は映像マニフェストに保存した。</p><p>{render_technical} · {render_manifest}</p></div></details>
 <details><summary>動画・Blenderシーン・再生成記録</summary><div class="detail-body"><div class="downloads">{"".join(download_rows)}</div><p style="margin-top:1.5rem">動画はこのHTMLの隣に保存したMP4を読む。フォルダ全体を保持すれば、ネット接続を使わずに閲覧できる。外部フォントや画像を取得しない。出典リンクを開くときだけ接続が必要。</p><p>{explanation_manifest} · {link("再生成手順", "README.md")}</p><pre><code>{escape(context["regeneration_command"])}</code></pre><p>ファイルのSHA-256は、今回届けた版の識別に用いる。Blender、GPU、エンコード環境が変わると、再描画した画素やMP4のバイト列は一致しないことがある。</p></div></details>
 <details><summary>出典</summary><div class="detail-body"><ul>{sources}</ul></div></details></div></main>
 <footer class="foot shell"><span>OPTICAL COMM LAB · KERR PHYSICS FILMS</span><span>{link("研究の結果レポート", final_report)} · {link("記録と再生成", "README.md")}</span></footer><script>{JAVASCRIPT}</script></body></html>
@@ -576,7 +584,9 @@ HTMLと動画・ポスターを同じフォルダ構成で保持すれば、ブ�
 
 計算マニフェストに記録されたソース・設定・全artifact、映像マニフェストの入力・出力をSHA-256で照合する。未完成の計算、数値確認に失敗した計算、欠落・変更された動画や入力からは生成しない。`--output-dir .work/kerr-explanation-check` を追加すれば、公開済みのHTMLとREADMEを変更せずに確認できる。
 
-計算と動画をやり直すときは、各マニフェストの再生成コマンドを、保存済み成果物と分けた出力先で実行する。GPU・Blender・FFmpegの差で画素やエンコード済みのバイト列が変わる可能性があり、SHA-256は今回保存した版を識別するための記録。
+計算と動画をやり直すときは、[描画手順]({relative(context["render_doc"], output)})にある `.venv/bin/python` のコマンドを使い、保存済み成果物と分けた出力先で実行する。描画マニフェストの `python3` は、Pillowを含むプロジェクト環境を有効にしたPythonを想定している。GPU・Blender・FFmpegの差で画素やエンコード済みのバイト列が変わる可能性があり、SHA-256は今回保存した版を識別するための記録。
+
+描画ではパルス内の時刻方向に4倍の密度で複素電場を線形補間する。元の物理標本点と、数値結果の導出量は保持する。詳細は映像マニフェストの `display_time_upsampling` を参照する。接写で画面の外に出る低い裾と、数値データ窓の切り取りによる省略は区別する。
 
 [explanation_manifest.json](explanation_manifest.json) は入力と出力のハッシュ、生成CLIの版、環境、再生成コマンドと通常確認を記録する。自己参照を避けるため、そのマニフェスト自身のハッシュは内包しない。独立validator評価は今回のタスクでは指定0・試行0・完了0。
 
@@ -649,11 +659,12 @@ def main() -> None:
     if not output.is_relative_to(ROOT) or (output != renders and not output.is_relative_to(ROOT / ".work")):
         raise ValueError("Output must be the render directory or an isolated .work directory")
     context, inputs, checks = load_context(physics, renders, output)
-    command = ["python3", "scripts/build_kerr_explanation.py", "--physics-run", display(physics), "--renders", display(renders)]
+    command = [".venv/bin/python", "scripts/build_kerr_explanation.py", "--physics-run", display(physics), "--renders", display(renders)]
     if output != renders:
         command.extend(["--output-dir", display(output)])
     context["regeneration_command"] = shlex.join(command)
     inputs.add(Path(__file__).resolve())
+    checks["checked_file_count"] = len(inputs)
     frozen = {path: sha256(path) for path in inputs}
     page = build_page(context, output)
     readme = build_readme(context, output)
