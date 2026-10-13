@@ -1,0 +1,158 @@
+{
+  "analytic_limits": {
+    "lossy_kerr_complex_field_relative_rms": 2.9294762294991967e-15,
+    "complex_gaussian_dispersion_field_relative_rms": 2.965159641673521e-14,
+    "threshold_relative_rms": 1e-10,
+    "passed": true
+  },
+  "energy": {
+    "cases": {
+      "pure_spm": {
+        "max_expected_loss_energy_relative_error": 1.6209256159527285e-14,
+        "max_parseval_relative_error": 3.552713678800501e-15
+      },
+      "dispersion_only": {
+        "max_expected_loss_energy_relative_error": 1.412203687323199e-13,
+        "max_parseval_relative_error": 6.439293542825908e-15
+      },
+      "combined": {
+        "max_expected_loss_energy_relative_error": 1.412203687323199e-13,
+        "max_parseval_relative_error": 7.993605777301127e-15
+      }
+    },
+    "threshold_relative_error": 1e-10,
+    "passed": true
+  },
+  "segmented_vs_whole": {
+    "field_relative_rms": {
+      "pure_spm": 0.0,
+      "dispersion_only": 1.944561762173856e-14,
+      "combined": 1.9196448938375134e-14
+    },
+    "threshold_relative_rms": 1e-10,
+    "passed": true
+  },
+  "step_refinement": {
+    "case": "combined",
+    "step_sizes_km": [
+      0.5,
+      0.25,
+      0.125
+    ],
+    "coarse_middle_field_relative_rms": 3.416612402465914e-05,
+    "middle_fine_field_relative_rms": 8.543652274113422e-06,
+    "difference_ratio": 3.999006856608589,
+    "expected_second_order_ratio": 4,
+    "production_to_continuum_relative_rms_richardson_estimate": 1.1391536365484564e-05,
+    "production_vs_fine_metric_absolute_differences": {
+      "rms_time_ps": 4.43750601704096e-05,
+      "rms_frequency_GHz": 2.1881028766657096e-05,
+      "peak_xy_power_W": 4.5618149020635115e-10,
+      "center_phase_rad": 5.020848242054399e-06
+    },
+    "thresholds": {
+      "production_vs_fine_field_relative_rms": 0.0001,
+      "second_order_difference_ratio_min": 3.5,
+      "second_order_difference_ratio_max": 4.5
+    },
+    "passed": true
+  },
+  "time_grid_and_window": {
+    "baseline_n_samples": 8192,
+    "baseline_period_ns": 2.0000000000009974,
+    "baseline_dt_ps": 0.24414062500012174,
+    "refined_n_samples": 16384,
+    "refined_dt_ps": 0.1220703125,
+    "expanded_period_ns": 4.000000000001995,
+    "time_grid_field_relative_rms": 3.136414815215919e-14,
+    "expanded_window_central_field_relative_rms": 1.0595892436521544e-10,
+    "expanded_window_energy_outside_original_fraction": 1.1227223200557137e-20,
+    "thresholds": {
+      "field_relative_rms": 1e-08,
+      "outside_original_energy_fraction": 1e-10
+    },
+    "passed": true
+  },
+  "passed": true,
+  "scope": "Normal numerical verification of an illustrative deterministic isolated pulse; no new communications scores or independent-validator evaluation.",
+  "display_export": {
+    "cases": {
+      "pure_spm": {
+        "method": "periodic Fourier truncation before downsampling; full time window retained",
+        "source_n_samples": 8192,
+        "display_n_samples": 2048,
+        "decimation": 4,
+        "source_dt_ps": 0.24414062500012174,
+        "display_dt_ps": 0.9765625000004869,
+        "display_field_dtype": "complex64",
+        "display_observables_dtype": "float32 except axes, energy and attenuation=float64; mask=bool",
+        "max_discarded_spectral_energy_fraction": 2.347361268270945e-30,
+        "lowpass_field_relative_rms_vs_common_source_samples": 7.91554883298925e-16,
+        "stored_field_relative_rms_vs_common_source_samples": 2.5481485425448616e-08,
+        "max_energy_relative_error_before_storage": 4.255484853388225e-13,
+        "max_stored_field_energy_relative_error": 1.9371670045842393e-08,
+        "max_valid_phase_absolute_error_rad": 5.9067385427269414e-08,
+        "max_valid_chirp_absolute_error_GHz": 3.2561846544603867e-07,
+        "thresholds": {
+          "discarded_energy_fraction": 1e-10,
+          "stored_field_relative_rms": 1e-06,
+          "stored_energy_relative_error": 1e-06,
+          "phase_error_rad": 1e-05,
+          "chirp_error_GHz": 0.0001
+        },
+        "passed": true
+      },
+      "dispersion_only": {
+        "method": "periodic Fourier truncation before downsampling; full time window retained",
+        "source_n_samples": 8192,
+        "display_n_samples": 2048,
+        "decimation": 4,
+        "source_dt_ps": 0.24414062500012174,
+        "display_dt_ps": 0.9765625000004869,
+        "display_field_dtype": "complex64",
+        "display_observables_dtype": "float32 except axes, energy and attenuation=float64; mask=bool",
+        "max_discarded_spectral_energy_fraction": 3.120508382075648e-29,
+        "lowpass_field_relative_rms_vs_common_source_samples": 2.671387538677119e-15,
+        "stored_field_relative_rms_vs_common_source_samples": 2.566355302750441e-08,
+        "max_energy_relative_error_before_storage": 4.2732484217822275e-13,
+        "max_stored_field_energy_relative_error": 1.6668564639665817e-08,
+        "max_valid_phase_absolute_error_rad": 9.536151424072159e-07,
+        "max_valid_chirp_absolute_error_GHz": 1.3037742666608207e-06,
+        "thresholds": {
+          "discarded_energy_fraction": 1e-10,
+          "stored_field_relative_rms": 1e-06,
+          "stored_energy_relative_error": 1e-06,
+          "phase_error_rad": 1e-05,
+          "chirp_error_GHz": 0.0001
+        },
+        "passed": true
+      },
+      "combined": {
+        "method": "periodic Fourier truncation before downsampling; full time window retained",
+        "source_n_samples": 8192,
+        "display_n_samples": 2048,
+        "decimation": 4,
+        "source_dt_ps": 0.24414062500012174,
+        "display_dt_ps": 0.9765625000004869,
+        "display_field_dtype": "complex64",
+        "display_observables_dtype": "float32 except axes, energy and attenuation=float64; mask=bool",
+        "max_discarded_spectral_energy_fraction": 3.2623735019134616e-29,
+        "lowpass_field_relative_rms_vs_common_source_samples": 2.706405586918749e-15,
+        "stored_field_relative_rms_vs_common_source_samples": 2.5857559545638657e-08,
+        "max_energy_relative_error_before_storage": 4.255484853388225e-13,
+        "max_stored_field_energy_relative_error": 1.945393135471818e-08,
+        "max_valid_phase_absolute_error_rad": 1.903058546304237e-06,
+        "max_valid_chirp_absolute_error_GHz": 3.5719761302929924e-06,
+        "thresholds": {
+          "discarded_energy_fraction": 1e-10,
+          "stored_field_relative_rms": 1e-06,
+          "stored_energy_relative_error": 1e-06,
+          "phase_error_rad": 1e-05,
+          "chirp_error_GHz": 0.0001
+        },
+        "passed": true
+      }
+    },
+    "passed": true
+  }
+}

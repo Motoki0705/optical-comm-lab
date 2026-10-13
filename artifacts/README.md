@@ -91,3 +91,12 @@ stored-constellation correspondence, and the export/regeneration commands.
 These are reconstructions of previously counted frames, not additional test
 evidence. Regenerate into a fresh directory with
 `scripts/export_waveform_diagnostics.py` as described in `scripts/README.md`.
+
+`kerr-physics/` contains a separate deterministic isolated-pulse demonstration
+for the Blender films: compact complex XY fields at 81 distances, physical
+observables, full-grid scalar metrics, analytic/numerical qualification, tests
+and a source/config/artifact manifest. Spectra are pulse energy density in J/Hz;
+raw data retain loss. The saved display data use qualified Fourier decimation
+and complex64; the actual solver and all numerical checks use complex128.
+Regenerate into a fresh directory with `scripts/simulate_kerr_films.py` as
+documented in [kerr-physics.md](../docs/kerr-physics.md).
