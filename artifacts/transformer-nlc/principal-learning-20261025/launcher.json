@@ -1,0 +1,20 @@
+{
+  "PYTHONPATH": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src:/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results",
+  "actual_invocation": [
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+    "-u",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py"
+  ],
+  "job_state": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/job-state.json",
+  "pid": 3177520,
+  "runner": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py",
+  "runner_sha256": "34ff5d8b69f68bea5ed245431349adbc252dbb9c638ff2944aa7b7a87d0a81ba",
+  "scope": "fixed main16/main64 pilot, resources, resume, production36 and frozen held-out evaluation; no expanded experiments",
+  "source_freeze_sha256": "0f2ebde3f0d103c52500a3ad0d8ea178f0d5ababbcb8e2402b0d607b853c8523",
+  "tool_session_id": 7464,
+  "validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ]
+}

@@ -1,0 +1,1318 @@
+{
+  "checkpoint_files": [
+    {
+      "bytes": 1535099,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r0/best.pt",
+      "sha256": "c8a1256fd8491cedb9a89321143aedc5054cb04b31dd55d9ea4c882b30b5a3c7",
+      "trial_id": "main16-A-unmasked-r0"
+    },
+    {
+      "bytes": 1544315,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r0/latest.pt",
+      "sha256": "9d2a556a72c7286a99a2886269fbe2242aa6ef5cfc02f0c1ffde9f37c955a83b",
+      "trial_id": "main16-A-unmasked-r0"
+    },
+    {
+      "bytes": 1572731,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r1/best.pt",
+      "sha256": "c9170276b4bd424bfaaebe6cb2f6d45e5df3b7cf341ed7fd237ad7e0dad2782f",
+      "trial_id": "main16-A-unmasked-r1"
+    },
+    {
+      "bytes": 1578811,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r1/latest.pt",
+      "sha256": "c6170425a46cd833231075be5f6d87f6966424a08e5656124bb6470eb0a70554",
+      "trial_id": "main16-A-unmasked-r1"
+    },
+    {
+      "bytes": 1564219,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r2/best.pt",
+      "sha256": "cd3b13b0c75d0fa43297dc887e9b3055eda896d0144441b468fa081c58b65196",
+      "trial_id": "main16-A-unmasked-r2"
+    },
+    {
+      "bytes": 1573499,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r2/latest.pt",
+      "sha256": "38cf69ed05e6ecfc62911d5d5ee31c601ba6f8698b310e452824dbe2f16dac2e",
+      "trial_id": "main16-A-unmasked-r2"
+    },
+    {
+      "bytes": 1535227,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r0/best.pt",
+      "sha256": "f32ec49656d83c8f8a93b1194f16dea634608b27d8e26cf4eea0474832cae117",
+      "trial_id": "main16-A-masked-r0"
+    },
+    {
+      "bytes": 1544443,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r0/latest.pt",
+      "sha256": "c0490327666db966c59a08c8b2704c71cad4c2a6656fc27e18d1e82b510492d7",
+      "trial_id": "main16-A-masked-r0"
+    },
+    {
+      "bytes": 1564283,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r1/best.pt",
+      "sha256": "8b6b2ec989d900457fe003aebe6cc48e12cb7426f00b1e7f045ec912dc85f649",
+      "trial_id": "main16-A-masked-r1"
+    },
+    {
+      "bytes": 1573563,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r1/latest.pt",
+      "sha256": "9df55c380e8cc1e61f74160f1d2586649007178d8bd078dfb59746960c8e56d3",
+      "trial_id": "main16-A-masked-r1"
+    },
+    {
+      "bytes": 1554811,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r2/best.pt",
+      "sha256": "7e31b80d332365ab0f2b51c9c50f0f182c4985bff03e63b9e2bd1d331a1733b3",
+      "trial_id": "main16-A-masked-r2"
+    },
+    {
+      "bytes": 1564091,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r2/latest.pt",
+      "sha256": "03d0c5073e59eb24d497417f861ca5ec6b375b1c794889a946271cdf1818b476",
+      "trial_id": "main16-A-masked-r2"
+    },
+    {
+      "bytes": 431611,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r0/best.pt",
+      "sha256": "c2d5cdf35271ece59fe58a38b174bc7c1be323a456960f6713a0207661d05c15",
+      "trial_id": "main16-B-unmasked-r0"
+    },
+    {
+      "bytes": 440827,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r0/latest.pt",
+      "sha256": "196402d24dc901241b4c0757b0978c0c46c64e43f36fbcece2861ddd4ecc5f3c",
+      "trial_id": "main16-B-unmasked-r0"
+    },
+    {
+      "bytes": 453691,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r1/best.pt",
+      "sha256": "5bf40bbf3a7e3a2539bb70aabf389ded3055a63498dc2e8a6c0922ed10a9ef56",
+      "trial_id": "main16-B-unmasked-r1"
+    },
+    {
+      "bytes": 462971,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r1/latest.pt",
+      "sha256": "e8a926c2f124de21de40b3fd64d1dfbaf0ac3c6f85279aa06a5185660ff465a6",
+      "trial_id": "main16-B-unmasked-r1"
+    },
+    {
+      "bytes": 461883,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r2/best.pt",
+      "sha256": "3d3ef3a5276d420c5c62093d7a1af551a06e393122281c70a78e8bb0962dce9a",
+      "trial_id": "main16-B-unmasked-r2"
+    },
+    {
+      "bytes": 471163,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r2/latest.pt",
+      "sha256": "7614298571606e20062c9ce35236c1d0caca89ebbe895e8d0939993a19229a77",
+      "trial_id": "main16-B-unmasked-r2"
+    },
+    {
+      "bytes": 432955,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r0/best.pt",
+      "sha256": "f8c52a05b85c636bde40291a878f35ccef7c11c2e4a5b365044a70d6f7a8398d",
+      "trial_id": "main16-B-masked-r0"
+    },
+    {
+      "bytes": 442107,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r0/latest.pt",
+      "sha256": "8df91bb7d2694221e5ee8f4392f268630fdf2ab859cf3211386a79fd41e597ae",
+      "trial_id": "main16-B-masked-r0"
+    },
+    {
+      "bytes": 443771,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r1/best.pt",
+      "sha256": "8fc6e3e66feab8f45e97baf15b628b37d4168a0f3649b8d65cbdfb0e83b177a6",
+      "trial_id": "main16-B-masked-r1"
+    },
+    {
+      "bytes": 453051,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r1/latest.pt",
+      "sha256": "92fa9bb85294e189c9e0bdf5c685cdb791c93d9137603e451db71219c5a13f25",
+      "trial_id": "main16-B-masked-r1"
+    },
+    {
+      "bytes": 454971,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r2/best.pt",
+      "sha256": "7c5011152e4fc2017f53e607e04d3498997b2cfa31a48a0a8d43d41929e76393",
+      "trial_id": "main16-B-masked-r2"
+    },
+    {
+      "bytes": 464251,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r2/latest.pt",
+      "sha256": "3bd4d37ba31921bcdf79603d44d91d90b09f9fc8a6ed0fa5eabd092d6e5913d6",
+      "trial_id": "main16-B-masked-r2"
+    },
+    {
+      "bytes": 150523,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r0/best.pt",
+      "sha256": "cccf0257972a8f31c04bcf53d70171a5e17d646283d91bc37a004e26db351e9d",
+      "trial_id": "main16-C-unmasked-r0"
+    },
+    {
+      "bytes": 159739,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r0/latest.pt",
+      "sha256": "0b89946ffb6f1a2288c73a0ad3e6550b7ea197249d2c76131842e39dbcfcbae6",
+      "trial_id": "main16-C-unmasked-r0"
+    },
+    {
+      "bytes": 188603,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r1/best.pt",
+      "sha256": "43c3ef7d65589bbf8606895348b89d474741bd575bfd9154473ea6743a1d0ae2",
+      "trial_id": "main16-C-unmasked-r1"
+    },
+    {
+      "bytes": 188795,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r1/latest.pt",
+      "sha256": "b31a4c72eddf659856781412cc72ad070dc2e393dfccf668ee8d387572ddc21f",
+      "trial_id": "main16-C-unmasked-r1"
+    },
+    {
+      "bytes": 188027,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r2/best.pt",
+      "sha256": "b1f99708ed09d9cd2ee17bd4d630bf4674858128566048b46e35bcac59288c97",
+      "trial_id": "main16-C-unmasked-r2"
+    },
+    {
+      "bytes": 188795,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r2/latest.pt",
+      "sha256": "08ba428b81fe1c3ed4f8c90a7e49bf0af19e4e5aee43338bc78c52ebe3d0b326",
+      "trial_id": "main16-C-unmasked-r2"
+    },
+    {
+      "bytes": 148219,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r0/best.pt",
+      "sha256": "e28e6a7a64b342023a6fa7ee58d18db736c56eb13b72a0e0aed883e7d515d125",
+      "trial_id": "main16-C-masked-r0"
+    },
+    {
+      "bytes": 157435,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r0/latest.pt",
+      "sha256": "786d5e03929b2e91f0350a23c3e6a70078e8e1898efe2028b9ca4db8434d9f7b",
+      "trial_id": "main16-C-masked-r0"
+    },
+    {
+      "bytes": 187579,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r1/best.pt",
+      "sha256": "a861d143dda8dcedda5bdeb384bc4631048999975143a0d906dba5b932a63a74",
+      "trial_id": "main16-C-masked-r1"
+    },
+    {
+      "bytes": 188795,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r1/latest.pt",
+      "sha256": "d7a1f526b218939958246fd6cb7baacae2994ae1ce312900f970eebd07aeb2f3",
+      "trial_id": "main16-C-masked-r1"
+    },
+    {
+      "bytes": 176059,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r2/best.pt",
+      "sha256": "6efb0596cb2a5e2f14ae101d00cf142883ac745e71c4cc427456666ca210f206",
+      "trial_id": "main16-C-masked-r2"
+    },
+    {
+      "bytes": 185339,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r2/latest.pt",
+      "sha256": "e4c623dc239f6bb5e6df11984d398a494b10eacf8415f6a3d5d25c016a035c1f",
+      "trial_id": "main16-C-masked-r2"
+    },
+    {
+      "bytes": 1098747,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r0/best.pt",
+      "sha256": "d1efa393175cd1185b7ecc90626e4135211f08011e9609073d4d44645e291d26",
+      "trial_id": "main64-high-unmasked-r0"
+    },
+    {
+      "bytes": 1108027,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r0/latest.pt",
+      "sha256": "99bc47a0d008b120a632f7293d2920ee156d157247220072707888fb2614bdee",
+      "trial_id": "main64-high-unmasked-r0"
+    },
+    {
+      "bytes": 1122811,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r1/best.pt",
+      "sha256": "2a66c4bfcf866413cd51eb3523961bfabd62f1b42b3060e1d88eb81b534b3ec5",
+      "trial_id": "main64-high-unmasked-r1"
+    },
+    {
+      "bytes": 1123771,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r1/latest.pt",
+      "sha256": "f59207b0938bc76446a3caa957e6b98d13d3a1337f220ca026a78bbf80c9e30c",
+      "trial_id": "main64-high-unmasked-r1"
+    },
+    {
+      "bytes": 1085755,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r2/best.pt",
+      "sha256": "e85e8bc8f1442080cf0de3b23823c399f4a06837f28339ce76e825f5baafe0dd",
+      "trial_id": "main64-high-unmasked-r2"
+    },
+    {
+      "bytes": 1094971,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r2/latest.pt",
+      "sha256": "eef87cf01390d86a8f35d17473355090b800200beb17ffdfdfdf31e83394cb24",
+      "trial_id": "main64-high-unmasked-r2"
+    },
+    {
+      "bytes": 1105467,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r0/best.pt",
+      "sha256": "9d018e038d43b6c29784bf221a269f20fff95aa6a3f2abe7552f34ea4ff35059",
+      "trial_id": "main64-high-masked-r0"
+    },
+    {
+      "bytes": 1114747,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r0/latest.pt",
+      "sha256": "218da2cc352c08506ed77d51ac3b57502f96eee38d1f214028012aa9c3241a26",
+      "trial_id": "main64-high-masked-r0"
+    },
+    {
+      "bytes": 1123643,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r1/best.pt",
+      "sha256": "d690a11fcf7e82423f8fd515fb83eb2a5f84d6376cc9baa5baaebfc49aa8d07d",
+      "trial_id": "main64-high-masked-r1"
+    },
+    {
+      "bytes": 1123771,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r1/latest.pt",
+      "sha256": "c55d7b2b37eb5ff1191086afdc2403c2376f51c75799cb93f7a70ad0f8cc2172",
+      "trial_id": "main64-high-masked-r1"
+    },
+    {
+      "bytes": 1083835,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r2/best.pt",
+      "sha256": "2e8c7c697c03fb65e64d2323f0ee3c9b17acb241ecf5a3a270fa7553f8e6d6a9",
+      "trial_id": "main64-high-masked-r2"
+    },
+    {
+      "bytes": 1093051,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r2/latest.pt",
+      "sha256": "f71c1b485ccf404fa806baadcfa384aae39f6a220464ef59eacc84119255c872",
+      "trial_id": "main64-high-masked-r2"
+    },
+    {
+      "bytes": 355069,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r0/best.pt",
+      "sha256": "78e007ade13e3b955ff004747e4fd50760ea596c3ad1b3ce3df7138dd98dc400",
+      "trial_id": "main64-mid-unmasked-r0"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r0/latest.pt",
+      "sha256": "78e007ade13e3b955ff004747e4fd50760ea596c3ad1b3ce3df7138dd98dc400",
+      "trial_id": "main64-mid-unmasked-r0"
+    },
+    {
+      "bytes": 355069,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r1/best.pt",
+      "sha256": "23faae43b1072ff9e8843467b656b3223d93ed736c83b9142dea8e6cb984b72c",
+      "trial_id": "main64-mid-unmasked-r1"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r1/latest.pt",
+      "sha256": "23faae43b1072ff9e8843467b656b3223d93ed736c83b9142dea8e6cb984b72c",
+      "trial_id": "main64-mid-unmasked-r1"
+    },
+    {
+      "bytes": 355069,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r2/best.pt",
+      "sha256": "bf7510d390ed2da473bd244bcd5d96c81a99851deee6dadec4be8af6ab228c29",
+      "trial_id": "main64-mid-unmasked-r2"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r2/latest.pt",
+      "sha256": "bf7510d390ed2da473bd244bcd5d96c81a99851deee6dadec4be8af6ab228c29",
+      "trial_id": "main64-mid-unmasked-r2"
+    },
+    {
+      "bytes": 355069,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r0/best.pt",
+      "sha256": "ea03316e1b08803a7671f13f6772538a7be6d8ba3d0913862be955b4e184a588",
+      "trial_id": "main64-mid-masked-r0"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r0/latest.pt",
+      "sha256": "ea03316e1b08803a7671f13f6772538a7be6d8ba3d0913862be955b4e184a588",
+      "trial_id": "main64-mid-masked-r0"
+    },
+    {
+      "bytes": 355069,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r1/best.pt",
+      "sha256": "74cfc6a1f10b17d873f8ba48ebaa68f7182496f0c865b9ad8c9fbee1d4734700",
+      "trial_id": "main64-mid-masked-r1"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r1/latest.pt",
+      "sha256": "74cfc6a1f10b17d873f8ba48ebaa68f7182496f0c865b9ad8c9fbee1d4734700",
+      "trial_id": "main64-mid-masked-r1"
+    },
+    {
+      "bytes": 355005,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r2/best.pt",
+      "sha256": "12daaf34a8f26ac98cb28f0ff921e0a70b1b38c4945608dfdde4696377279b56",
+      "trial_id": "main64-mid-masked-r2"
+    },
+    {
+      "bytes": 355069,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r2/latest.pt",
+      "sha256": "6d9779bfecc73e77942c64c870ef28c6150678c3c387206eeee7a624fb89466c",
+      "trial_id": "main64-mid-masked-r2"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r0/best.pt",
+      "sha256": "e6c79428fe65e8eaa8ba8de60f478f9a12fc345d010708634b74228f06025bc2",
+      "trial_id": "main64-low-adopted-unmasked-r0"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r0/latest.pt",
+      "sha256": "e6c79428fe65e8eaa8ba8de60f478f9a12fc345d010708634b74228f06025bc2",
+      "trial_id": "main64-low-adopted-unmasked-r0"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r1/best.pt",
+      "sha256": "71550622f179452ebcf40e5a211c7fc90088b188da02a23064508f7c8c4c0602",
+      "trial_id": "main64-low-adopted-unmasked-r1"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r1/latest.pt",
+      "sha256": "71550622f179452ebcf40e5a211c7fc90088b188da02a23064508f7c8c4c0602",
+      "trial_id": "main64-low-adopted-unmasked-r1"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r2/best.pt",
+      "sha256": "332cbc756ca230f59f61eba9722c11ba4fcef131d2b5e8f587c2a1d04a82cb21",
+      "trial_id": "main64-low-adopted-unmasked-r2"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r2/latest.pt",
+      "sha256": "332cbc756ca230f59f61eba9722c11ba4fcef131d2b5e8f587c2a1d04a82cb21",
+      "trial_id": "main64-low-adopted-unmasked-r2"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r0/best.pt",
+      "sha256": "7f92948cbe5710a40ca0ecddb4c33da380b26c9748f27a5c832559ca7be45bf8",
+      "trial_id": "main64-low-adopted-masked-r0"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r0/latest.pt",
+      "sha256": "7f92948cbe5710a40ca0ecddb4c33da380b26c9748f27a5c832559ca7be45bf8",
+      "trial_id": "main64-low-adopted-masked-r0"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r1/best.pt",
+      "sha256": "9bc1eae0cc27819be329c670f29e426e499cc0ef1d4e500ce196915a5da20c33",
+      "trial_id": "main64-low-adopted-masked-r1"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r1/latest.pt",
+      "sha256": "9bc1eae0cc27819be329c670f29e426e499cc0ef1d4e500ce196915a5da20c33",
+      "trial_id": "main64-low-adopted-masked-r1"
+    },
+    {
+      "bytes": 155773,
+      "kind": "best",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r2/best.pt",
+      "sha256": "2149610cbfa4777649a28ed9b56b772bcad816a2ec06649ec40c0ae964e9c709",
+      "trial_id": "main64-low-adopted-masked-r2"
+    },
+    {
+      "bytes": 155773,
+      "kind": "latest",
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r2/latest.pt",
+      "sha256": "2149610cbfa4777649a28ed9b56b772bcad816a2ec06649ec40c0ae964e9c709",
+      "trial_id": "main64-low-adopted-masked-r2"
+    }
+  ],
+  "checks": [
+    "36 complete fixed production trials",
+    "all run/history arrays identical",
+    "epoch and8-step full-data budgets",
+    "all finite training/validation losses and epoch times",
+    "72 best/latest file hashes",
+    "unchanged18-file scientific source and dependency-lock hashes"
+  ],
+  "independent_validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ],
+  "schema": "transformer-training-artifact-integrity-v1",
+  "status": "passed",
+  "trials": [
+    {
+      "best_epoch": 28,
+      "best_validation_mse": 0.02131503075361252,
+      "candidate": "A",
+      "completed_epochs": 128,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 34631,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r0/history.json",
+        "sha256": "6f9360b01f1c7880fc67138f4b55cafc7915153d2430539164c68d9fef0c7643"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 65227,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r0/run.json",
+        "sha256": "c0c74040b6bd724d9047c6394d63cac567af8d001774fed4fcf2503cfc4e2418"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-A-unmasked-r0"
+    },
+    {
+      "best_epoch": 435,
+      "best_validation_mse": 0.021070165559649467,
+      "candidate": "A",
+      "completed_epochs": 500,
+      "condition": 16,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136167,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r1/history.json",
+        "sha256": "27103bf8ded2835e0b8e06f2243304fff0367924e9b28b0c7556d4e68596be3e"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 174211,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r1/run.json",
+        "sha256": "56430a2f928a891b05005c54ca3f49732947c10a89c5b7afa881176c7d33c79e"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main16-A-unmasked-r1"
+    },
+    {
+      "best_epoch": 343,
+      "best_validation_mse": 0.02110282238572836,
+      "candidate": "A",
+      "completed_epochs": 443,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 120670,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r2/history.json",
+        "sha256": "31223e8fd6637f1426a8ff1a606ad40aa8223818d0d11bd3115ee7788bf3c20a"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 157568,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-unmasked-r2/run.json",
+        "sha256": "4d1e888d13ca9a52c990a9f016bf9e6d3789bace8f25682547d08355ff0c8092"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-A-unmasked-r2"
+    },
+    {
+      "best_epoch": 29,
+      "best_validation_mse": 0.021312545984983444,
+      "candidate": "A",
+      "completed_epochs": 129,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 34902,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r0/history.json",
+        "sha256": "e1e2cf279379d27585515d5e58b6ca2716d14575d1a16c81c3035422bde3e6a0"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 65515,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r0/run.json",
+        "sha256": "75d2413a6961773d4f75ccc7d67fee293be6044d7e35a15ed95aaad211eba50d"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-A-masked-r0"
+    },
+    {
+      "best_epoch": 344,
+      "best_validation_mse": 0.021071928553283215,
+      "candidate": "A",
+      "completed_epochs": 444,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 120949,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r1/history.json",
+        "sha256": "e4059269d55176f54a316ced8022aaf4016473e4043e3b06744d319fa9139d96"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 157862,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r1/run.json",
+        "sha256": "45a9dd9a623ec496b11dcccf34100833c9e3d9933cfb34e82c5f30d41bb81c76"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-A-masked-r1"
+    },
+    {
+      "best_epoch": 242,
+      "best_validation_mse": 0.02110125683248043,
+      "candidate": "A",
+      "completed_epochs": 342,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 93065,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r2/history.json",
+        "sha256": "d2e2e81db744c689df8200e9530aa49fe4300b0c2087233735b402d27bfd534c"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 127939,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-A-masked-r2/run.json",
+        "sha256": "ae3c62b9f0492d47911f3662277bb2858734827c87dad4db8b377193703ba536"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-A-masked-r2"
+    },
+    {
+      "best_epoch": 64,
+      "best_validation_mse": 0.021318667568266392,
+      "candidate": "B",
+      "completed_epochs": 164,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 44419,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r0/history.json",
+        "sha256": "024b85aff86a097f37cc9ca1c6dae6f7528cd0c3da0d848a0864330ea273310c"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 75733,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r0/run.json",
+        "sha256": "b28b7f17a4df38796e1e6db35253e0189307c7c59e0ad75e34d38157e323f811"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-unmasked-r0"
+    },
+    {
+      "best_epoch": 303,
+      "best_validation_mse": 0.021077485755085945,
+      "candidate": "B",
+      "completed_epochs": 403,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 109830,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r1/history.json",
+        "sha256": "24ca5cbd5d16a25faefcc9171e2df0157449139978f2776cdcc7f5565ac60c57"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 145923,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r1/run.json",
+        "sha256": "b2a7e13ed16b30cd17f3784aa5c36a48606f9fdad223e7093ff4385a4e30ac2d"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-unmasked-r1"
+    },
+    {
+      "best_epoch": 391,
+      "best_validation_mse": 0.02110415603965521,
+      "candidate": "B",
+      "completed_epochs": 491,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 133856,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r2/history.json",
+        "sha256": "82a58bc939652e8b3faf1f54ddb605599bfab57a66c201d2036a51c2fb8740c3"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 171710,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-unmasked-r2/run.json",
+        "sha256": "769a3d6db79fd2a0756012643e2d438b45472a212b9bdd2f22b4bd2c07902f52"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-unmasked-r2"
+    },
+    {
+      "best_epoch": 78,
+      "best_validation_mse": 0.021321842446923256,
+      "candidate": "B",
+      "completed_epochs": 178,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 48256,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r0/history.json",
+        "sha256": "6971d64dec45ac82284d21d69474abe5f80b2ed186ae323fcbb8678143dc2ca2"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 79845,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r0/run.json",
+        "sha256": "6f794718980cdeb15a64e4d48ea25bb4d8a5ff8bd97291440d343377fca5d0c7"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-masked-r0"
+    },
+    {
+      "best_epoch": 196,
+      "best_validation_mse": 0.021077953279018402,
+      "candidate": "B",
+      "completed_epochs": 296,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 80512,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r1/history.json",
+        "sha256": "8faa5322cb925dbe50411b56dc2daaf8857ee2f1cdcde513e35916168f79016b"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 114461,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r1/run.json",
+        "sha256": "095740abd11b6d3089b0d33a0295a38032292df6a1960539fde03c4a1f5dde4c"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-masked-r1"
+    },
+    {
+      "best_epoch": 317,
+      "best_validation_mse": 0.021104609593749046,
+      "candidate": "B",
+      "completed_epochs": 417,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 113647,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r2/history.json",
+        "sha256": "2597dd878d5f6fb3f3746e23970e0270ad5fd1c935e8ebc44739c0cf00420457"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 150018,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-B-masked-r2/run.json",
+        "sha256": "cd20b1a19c57342953a80f670cd915d4f07ff7c82c53b1f0208e9adbe461eaf7"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-B-masked-r2"
+    },
+    {
+      "best_epoch": 87,
+      "best_validation_mse": 0.0212967311963439,
+      "candidate": "C",
+      "completed_epochs": 187,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 50821,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r0/history.json",
+        "sha256": "8d5a754869b90d8b8fbb02c65a6a6e7a8dc1bac8564b50d0b0513549658b83e0"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 82591,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r0/run.json",
+        "sha256": "ddf7267b7a79a6fd354bb46b73fe1dc97e554742f4bddfffbc40ca33fafaa584"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-C-unmasked-r0"
+    },
+    {
+      "best_epoch": 498,
+      "best_validation_mse": 0.02107269875705242,
+      "candidate": "C",
+      "completed_epochs": 500,
+      "condition": 16,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136476,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r1/history.json",
+        "sha256": "68d01e7686d607cda451f5b210c7132ef7143ec44c22a56df2b525333517a0bb"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 174516,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r1/run.json",
+        "sha256": "ba5daca0ba91dcdad754db17bacad8e4dad25830c8b2aa97eca781b9df2c1913"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main16-C-unmasked-r1"
+    },
+    {
+      "best_epoch": 492,
+      "best_validation_mse": 0.02109407354146242,
+      "candidate": "C",
+      "completed_epochs": 500,
+      "condition": 16,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136352,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r2/history.json",
+        "sha256": "dcaef67a36617fbcf227ed069a09b2a911228d11cfb9d7ec4a94a8dc2bfc4903"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 174394,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-unmasked-r2/run.json",
+        "sha256": "d906c2786522392549006f0633f5ba31d305ab0c7b2f95f8f0f52eb6032a84d9"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main16-C-unmasked-r2"
+    },
+    {
+      "best_epoch": 62,
+      "best_validation_mse": 0.02130684070289135,
+      "candidate": "C",
+      "completed_epochs": 162,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 44000,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r0/history.json",
+        "sha256": "c9d8ab8c8f64d9f738aa2cefcf1460829fe34fecb31f62217133cefd7f27d74f"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 75269,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r0/run.json",
+        "sha256": "0da38332a8845abb9133fa12ccd0c5bda385cb1b8668434e2556f891a929511d"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-C-masked-r0"
+    },
+    {
+      "best_epoch": 487,
+      "best_validation_mse": 0.021074539981782436,
+      "candidate": "C",
+      "completed_epochs": 500,
+      "condition": 16,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136279,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r1/history.json",
+        "sha256": "be705c119b242028072498c242e8d6503f5a1a9401ac207276e97e8aa5c492ae"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 174316,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r1/run.json",
+        "sha256": "51ecc94db7dcf91e0648d2998067db1013391485a1753023687a2558b2bb402c"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main16-C-masked-r1"
+    },
+    {
+      "best_epoch": 363,
+      "best_validation_mse": 0.02109336480498314,
+      "candidate": "C",
+      "completed_epochs": 463,
+      "condition": 16,
+      "convergence": "patience",
+      "history": {
+        "bytes": 126355,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r2/history.json",
+        "sha256": "492e2c3d07dd75871ed6c8e1a36a55751a10b731efae0f52f30f0d6a9fb1fa85"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 163646,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main16-C-masked-r2/run.json",
+        "sha256": "69db958e8469b7ebc506a24ee76d451322357ce23db576b302fa06864c612aee"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main16-C-masked-r2"
+    },
+    {
+      "best_epoch": 231,
+      "best_validation_mse": 0.006008408032357693,
+      "candidate": "high",
+      "completed_epochs": 331,
+      "condition": 64,
+      "convergence": "patience",
+      "history": {
+        "bytes": 90324,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r0/history.json",
+        "sha256": "87603b4bcafa1cdd8ab6789b6f2503557b9e4ae0c2c4345ede1cc8e94ec08036"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 124988,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r0/run.json",
+        "sha256": "64268a3fdc1e8939888daa02239e67dad79be8b6ac0bdb2a01e0b5f1657a1d82"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main64-high-unmasked-r0"
+    },
+    {
+      "best_epoch": 490,
+      "best_validation_mse": 0.005984867690131068,
+      "candidate": "high",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136581,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r1/history.json",
+        "sha256": "010568616f558bc96ca59c588fdc17512a367cb1ed659d06b14d708d665ce628"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 174631,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r1/run.json",
+        "sha256": "e744f3fc4244df6e656a841e8fafec554c86c99f1ba08a244fa532c168bc9c26"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-high-unmasked-r1"
+    },
+    {
+      "best_epoch": 90,
+      "best_validation_mse": 0.006057571619749069,
+      "candidate": "high",
+      "completed_epochs": 190,
+      "condition": 64,
+      "convergence": "patience",
+      "history": {
+        "bytes": 51726,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r2/history.json",
+        "sha256": "fcb4c253a2d0b1d1a1b17d4dae898875f251f17422c2d8df6bbed0dd9bc29bad"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 83568,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-unmasked-r2/run.json",
+        "sha256": "743e796b85063b2f140eebea13e5eea6dc72c9b2460ecf34b76ddfdcf01ceeaa"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main64-high-unmasked-r2"
+    },
+    {
+      "best_epoch": 303,
+      "best_validation_mse": 0.006009043427184224,
+      "candidate": "high",
+      "completed_epochs": 403,
+      "condition": 64,
+      "convergence": "patience",
+      "history": {
+        "bytes": 110026,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r0/history.json",
+        "sha256": "a40edbf9a26976078f84c89eddcc8ef0d1f4234e8c127b56bbdddb20ba2a52da"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 146127,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r0/run.json",
+        "sha256": "100d63fc17185641b7b5006fd2ec6dde4fc9fa9373c0861fb504932a4c39cc5b"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main64-high-masked-r0"
+    },
+    {
+      "best_epoch": 499,
+      "best_validation_mse": 0.005984012968838215,
+      "candidate": "high",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136538,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r1/history.json",
+        "sha256": "378bee2df3bf780eef58aa0d1fbb53b928f531392b53ec5a29b6d895f60da6b8"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 174585,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r1/run.json",
+        "sha256": "c52af75fff1bdc94ca30525f7533c9a3141a3cf349ed35de280f6214d96f9f71"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-high-masked-r1"
+    },
+    {
+      "best_epoch": 69,
+      "best_validation_mse": 0.006056860322132707,
+      "candidate": "high",
+      "completed_epochs": 169,
+      "condition": 64,
+      "convergence": "patience",
+      "history": {
+        "bytes": 45964,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r2/history.json",
+        "sha256": "34dd91ae84cf487151574477153419e0af36ed8116ccc6cc3e43fafc891d3cf8"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 77382,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-high-masked-r2/run.json",
+        "sha256": "354ce97d63b86a4eb8ce03246c2d405f875721d777ca8a510ed34d31cecf1c89"
+      },
+      "stop_reason": "patience",
+      "trial_id": "main64-high-masked-r2"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.00601212284527719,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136676,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r0/history.json",
+        "sha256": "33ce7bb00aadbb1464bd66e33e93c61d2dc7dab5e4548246df1d4c9f8b641334"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 174725,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r0/run.json",
+        "sha256": "60f30420b4d99d604c87ffabe48a7488b38b2be06b84028b54b2322c5d00bdd3"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-unmasked-r0"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006004211027175188,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136568,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r1/history.json",
+        "sha256": "8fd4148e557a062c93f8dc18180b73a1baef0e9e5065bcf9106b40711653585b"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 174615,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r1/run.json",
+        "sha256": "86fd47dc6ccbac52ca9c271e3cc788fe3c51bcfde134a12754dc20e30090ea2f"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-unmasked-r1"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006063055945560336,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136671,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r2/history.json",
+        "sha256": "862c4f3b950065a6ea53b1deb735dfe6f4429981813866dea0913d8e49d7cfc3"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 174718,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-unmasked-r2/run.json",
+        "sha256": "81731502be67bd6c2e4a18a98e83ecbf890bd1cd341d19c0987280f881685c06"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-unmasked-r2"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006010811543092132,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136676,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r0/history.json",
+        "sha256": "d72c1eaec10392138f12c9e3ad45225d4e35ca94253e21a0c08cce8c09e8636e"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 174721,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r0/run.json",
+        "sha256": "21f3f8870dba6f0e4567a767fb3b9d52af2152f05f0b390a70c88b0740ff6c66"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-masked-r0"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006008984055370092,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136568,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r1/history.json",
+        "sha256": "29fe7affc506c6c0e1faaf43193c7e96f4dc5badd9e5ad32ef025294f45ff108"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 174612,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r1/run.json",
+        "sha256": "6ec96ab76bf9a22154f3b7bb2ee1df50b4812323645247401c1747d13cd4915f"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-masked-r1"
+    },
+    {
+      "best_epoch": 499,
+      "best_validation_mse": 0.006067802431061864,
+      "candidate": "mid",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136613,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r2/history.json",
+        "sha256": "8e317f3870475310d4661aa9b6d57f61078acf714dd03a875540bacbcaacc02c"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 174656,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-mid-masked-r2/run.json",
+        "sha256": "681f27646b46298458f7c40357a221770fa025706df36371ba8c67e3d7f46031"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-mid-masked-r2"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006014738464727998,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136584,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r0/history.json",
+        "sha256": "607124b2151d2d0a41403d3fc6eb96c9cf4f87a54a2f75abf7f6aabc317a8a11"
+      },
+      "masked": false,
+      "replicate": 0,
+      "run": {
+        "bytes": 174648,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r0/run.json",
+        "sha256": "1a5a318e0acaf8b5edb7b247accd631824f208fd1705b6d4549ef94e2fb5fb1a"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-unmasked-r0"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006002646870911121,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136584,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r1/history.json",
+        "sha256": "971c5cea82e455d56f980b8de53b3205e3ec5c4affe25929ec1ee2b4274cc53a"
+      },
+      "masked": false,
+      "replicate": 1,
+      "run": {
+        "bytes": 174645,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r1/run.json",
+        "sha256": "011fcb678dd384a2dc5f686d218fbb77dfe78b925be96947aa002dfc8656c6cb"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-unmasked-r1"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006057034246623516,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136606,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r2/history.json",
+        "sha256": "92d472ac8f4d0dc27b61f3b96d8842d7db08ed36bd9156ae528f4ca3878615ac"
+      },
+      "masked": false,
+      "replicate": 2,
+      "run": {
+        "bytes": 174667,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-unmasked-r2/run.json",
+        "sha256": "820ce10f068d3fcfede408195b1248173f4a20a7c8d2f7097ce5ff3806492b81"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-unmasked-r2"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006016451166942716,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136590,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r0/history.json",
+        "sha256": "724f663693b9b37e1657ea649bc493218bf22203a8d90338d587aada697281c1"
+      },
+      "masked": true,
+      "replicate": 0,
+      "run": {
+        "bytes": 174650,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r0/run.json",
+        "sha256": "1dfcb0e7de1e71e28494ed9dec225884ecff6c45a66cf15d1d34a0cde7d0c7e9"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-masked-r0"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006004468305036426,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136614,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r1/history.json",
+        "sha256": "550f1bc4de58b0ef119897baf417aa03e5f29c15590f7649790d20073f632a80"
+      },
+      "masked": true,
+      "replicate": 1,
+      "run": {
+        "bytes": 174672,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r1/run.json",
+        "sha256": "332dbad25a75d83da056830904172d4b384ff3b6eeec0ca42d6dc2d02bb9d91e"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-masked-r1"
+    },
+    {
+      "best_epoch": 500,
+      "best_validation_mse": 0.006056765792891383,
+      "candidate": "low-adopted",
+      "completed_epochs": 500,
+      "condition": 64,
+      "convergence": "not_established",
+      "history": {
+        "bytes": 136626,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r2/history.json",
+        "sha256": "cf26801f6439ee18733077024d10c215213ba8772e8342f0826374eac69923d1"
+      },
+      "masked": true,
+      "replicate": 2,
+      "run": {
+        "bytes": 174684,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/main64-low-adopted-masked-r2/run.json",
+        "sha256": "89729ba8f053b09bf0e97ab714c4e623b689fd13557820f6b44c68bf837bf303"
+      },
+      "stop_reason": "epoch_cap",
+      "trial_id": "main64-low-adopted-masked-r2"
+    }
+  ],
+  "verified_unix": 1792947555.8578534
+}

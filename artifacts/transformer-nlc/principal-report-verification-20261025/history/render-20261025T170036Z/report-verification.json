@@ -1,0 +1,612 @@
+{
+  "schema": "transformer-principal-report-verification-v1",
+  "status": "passed",
+  "recorded_utc": "2026-10-25T17:00:36.488370+00:00",
+  "report_directory": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/reports/transformer-nlc/principal-20261025",
+  "report_manifest_sha256": "e60bbff24b0c034368390a14e7d56a44ab4dd5041d068a7a63063ba81c94c65e",
+  "report_generator_commit": "70f60185fbfdc9ff81aa21d7cfabbedc681d49c3",
+  "learning_producer_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+  "learning_content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142",
+  "hashes_checked": {
+    "inputs": 91,
+    "code": 12,
+    "outputs": 15
+  },
+  "inventory": {
+    "training_trials": 36,
+    "trials_per_condition": {
+      "16": 18,
+      "64": 18
+    },
+    "test_replicates_including_baselines": 42,
+    "deduplicated_baseline_replicates": 6,
+    "scored_frames_including_baselines": 168,
+    "count_rows_X_Y_total": 630,
+    "summary_groups": 14,
+    "stop_reasons": {
+      "patience": 18,
+      "epoch_cap": 18
+    },
+    "per_seed_bits": {
+      "16": 2097152,
+      "64": 3145728
+    }
+  },
+  "baseline_summaries": [
+    {
+      "condition": 16,
+      "candidate": "no-nlc",
+      "masked": null,
+      "replicates": [
+        0,
+        1,
+        2
+      ],
+      "pooled_counting": {
+        "bit_errors": 91839,
+        "n_bits": 6291456,
+        "ber": 0.014597415924072266,
+        "ber_ci_low": 0.014503843087525357,
+        "ber_ci_high": 0.014691435869761469,
+        "q_ber_db": 6.772498746005508,
+        "q_ci_low_db": 6.762398711885065,
+        "q_ci_high_db": 6.782594740144344,
+        "q_limit": null,
+        "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+      },
+      "mean_seed_q_db": 6.772689822279372,
+      "sample_std_seed_q_db": 0.03639158144326948,
+      "seed_q_points_db": [
+        6.730931664246162,
+        6.797635764730763,
+        6.789502037861192
+      ],
+      "seed_ber_points": [
+        0.014986991882324219,
+        0.014365196228027344,
+        0.014440059661865234
+      ]
+    },
+    {
+      "condition": 64,
+      "candidate": "no-nlc",
+      "masked": null,
+      "replicates": [
+        0,
+        1,
+        2
+      ],
+      "pooled_counting": {
+        "bit_errors": 141917,
+        "n_bits": 9437184,
+        "ber": 0.01503806644015842,
+        "ber_ci_low": 0.014960513835531295,
+        "ber_ci_high": 0.015115916781620041,
+        "q_ber_db": 6.725536612265769,
+        "q_ci_low_db": 6.717337013977053,
+        "q_ci_high_db": 6.733733465077993,
+        "q_limit": null,
+        "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+      },
+      "mean_seed_q_db": 6.725543813325075,
+      "sample_std_seed_q_db": 0.007116133026615634,
+      "seed_q_points_db": [
+        6.731099759626538,
+        6.728008734868491,
+        6.717522945480194
+      ],
+      "seed_ber_points": [
+        0.014985402425130209,
+        0.0150146484375,
+        0.015114148457845053
+      ]
+    }
+  ],
+  "all_fixed_candidate_deltas": [
+    {
+      "condition": 16,
+      "candidate": "A",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.723530628586316,
+        6.7989855353707345,
+        6.789502037861192
+      ],
+      "seed_mean_Q_dB": 6.7706727339394135,
+      "paired_seed_delta_Q_dB": [
+        -0.0074010356598464,
+        0.0013497706399716591,
+        0.0
+      ],
+      "mean_paired_delta_Q_dB": -0.002017088339958247,
+      "sample_SD_paired_delta_Q_dB": 0.004711224549162404,
+      "pooled_BER": 0.014616648356119791,
+      "pooled_errors": 91960,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 16,
+      "candidate": "B",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.7246367806256675,
+        6.793383985452652,
+        6.791675121151096
+      ],
+      "seed_mean_Q_dB": 6.769898629076472,
+      "paired_seed_delta_Q_dB": [
+        -0.0062948836204945735,
+        -0.00425177927811049,
+        0.0021730832899038433
+      ],
+      "mean_paired_delta_Q_dB": -0.002791193202900407,
+      "sample_SD_paired_delta_Q_dB": 0.004418891225321554,
+      "pooled_BER": 0.014623641967773438,
+      "pooled_errors": 92004,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 16,
+      "candidate": "C",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.727605858310973,
+        6.795664449450763,
+        6.7899675257887235
+      ],
+      "seed_mean_Q_dB": 6.771079277850153,
+      "paired_seed_delta_Q_dB": [
+        -0.0033258059351890523,
+        -0.001971315279999608,
+        0.0004654879275314272
+      ],
+      "mean_paired_delta_Q_dB": -0.0016105444292190778,
+      "sample_SD_paired_delta_Q_dB": 0.0019212220052495688,
+      "pooled_BER": 0.014612515767415365,
+      "pooled_errors": 91934,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 16,
+      "candidate": "A",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.723128520778266,
+        6.797168721294846,
+        6.789295184560601
+      ],
+      "seed_mean_Q_dB": 6.769864142211238,
+      "paired_seed_delta_Q_dB": [
+        -0.007803143467896234,
+        -0.00046704343591663644,
+        -0.00020685330059144746
+      ],
+      "mean_paired_delta_Q_dB": -0.0028256800681347727,
+      "sample_SD_paired_delta_Q_dB": 0.004312572451403434,
+      "pooled_BER": 0.01462411880493164,
+      "pooled_errors": 92007,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 16,
+      "candidate": "B",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.721520778311348,
+        6.793953889308383,
+        6.790743548353023
+      ],
+      "seed_mean_Q_dB": 6.768739405324252,
+      "paired_seed_delta_Q_dB": [
+        -0.009410885934814317,
+        -0.0036818754223801875,
+        0.0012415104918312991
+      ],
+      "mean_paired_delta_Q_dB": -0.003950416955121068,
+      "sample_SD_paired_delta_Q_dB": 0.005331273142853233,
+      "pooled_BER": 0.01463460922241211,
+      "pooled_errors": 92073,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 16,
+      "candidate": "C",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.726397644085815,
+        6.7973243918833735,
+        6.790019252483259
+      ],
+      "seed_mean_Q_dB": 6.771247096150816,
+      "paired_seed_delta_Q_dB": [
+        -0.004534020160346763,
+        -0.00031137284738935733,
+        0.0005172146220671081
+      ],
+      "mean_paired_delta_Q_dB": -0.0014427261285563375,
+      "sample_SD_paired_delta_Q_dB": 0.0027090059785597367,
+      "pooled_BER": 0.014611085255940756,
+      "pooled_errors": 91925,
+      "pooled_bits": 6291456
+    },
+    {
+      "condition": 64,
+      "candidate": "high",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.732444957493381,
+        6.7340938796362675,
+        6.716486961175984
+      ],
+      "seed_mean_Q_dB": 6.727675266101877,
+      "paired_seed_delta_Q_dB": [
+        0.0013451978668426179,
+        0.006085144767776107,
+        -0.00103598430421048
+      ],
+      "mean_paired_delta_Q_dB": 0.0021314527768027483,
+      "sample_SD_paired_delta_Q_dB": 0.0036250886061654337,
+      "pooled_BER": 0.015017933315700956,
+      "pooled_errors": 141727,
+      "pooled_bits": 9437184
+    },
+    {
+      "condition": 64,
+      "candidate": "mid",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.728512428014573,
+        6.724418860929954,
+        6.7114472307937625
+      ],
+      "seed_mean_Q_dB": 6.721459506579429,
+      "paired_seed_delta_Q_dB": [
+        -0.0025873316119646717,
+        -0.00358987393853738,
+        -0.006075714686431866
+      ],
+      "mean_paired_delta_Q_dB": -0.004084306745644639,
+      "sample_SD_paired_delta_Q_dB": 0.0017959821739413984,
+      "pooled_BER": 0.015076849195692275,
+      "pooled_errors": 142283,
+      "pooled_bits": 9437184
+    },
+    {
+      "condition": 64,
+      "candidate": "low-adopted",
+      "masked": false,
+      "seed_Q_points_dB": [
+        6.730360230227648,
+        6.726196335592444,
+        6.716921350611544
+      ],
+      "seed_mean_Q_dB": 6.7244926388105455,
+      "paired_seed_delta_Q_dB": [
+        -0.0007395293988903262,
+        -0.0018123992760470387,
+        -0.0006015948686499684
+      ],
+      "mean_paired_delta_Q_dB": -0.0010511745145291111,
+      "sample_SD_paired_delta_Q_dB": 0.000662837715296268,
+      "pooled_BER": 0.015048027038574219,
+      "pooled_errors": 142011,
+      "pooled_bits": 9437184
+    },
+    {
+      "condition": 64,
+      "candidate": "high",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.732108585523413,
+        6.732848667702886,
+        6.716587197766827
+      ],
+      "seed_mean_Q_dB": 6.727181483664375,
+      "paired_seed_delta_Q_dB": [
+        0.0010088258968750097,
+        0.004839932834394212,
+        -0.0009357477133669079
+      ],
+      "mean_paired_delta_Q_dB": 0.0016376703393007712,
+      "sample_SD_paired_delta_Q_dB": 0.0029387421538855482,
+      "pooled_BER": 0.015022595723470053,
+      "pooled_errors": 141771,
+      "pooled_bits": 9437184
+    },
+    {
+      "condition": 64,
+      "candidate": "mid",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.730192187940867,
+        6.721704942938888,
+        6.711680622222263
+      ],
+      "seed_mean_Q_dB": 6.72119258436734,
+      "paired_seed_delta_Q_dB": [
+        -0.0009075716856710159,
+        -0.006303791929603619,
+        -0.0058423232579309925
+      ],
+      "mean_paired_delta_Q_dB": -0.004351228957735209,
+      "sample_SD_paired_delta_Q_dB": 0.002991207095691349,
+      "pooled_BER": 0.01507939232720269,
+      "pooled_errors": 142307,
+      "pooled_bits": 9437184
+    },
+    {
+      "condition": 64,
+      "candidate": "low-adopted",
+      "masked": true,
+      "seed_Q_points_dB": [
+        6.727773715124114,
+        6.727035235077549,
+        6.7180243922116585
+      ],
+      "seed_mean_Q_dB": 6.72427778080444,
+      "paired_seed_delta_Q_dB": [
+        -0.0033260445024243523,
+        -0.0009734997909420784,
+        0.000501446731464128
+      ],
+      "mean_paired_delta_Q_dB": -0.001266032520634101,
+      "sample_SD_paired_delta_Q_dB": 0.0019304413575214063,
+      "pooled_BER": 0.015050040351019965,
+      "pooled_errors": 142030,
+      "pooled_bits": 9437184
+    }
+  ],
+  "offline_asset_check": {
+    "status": "passed",
+    "relative_links": [
+      "figures/ber-q.svg",
+      "figures/frame-variation.svg",
+      "figures/performance-rmps.svg",
+      "figures/learning.svg",
+      "figures/mask.svg",
+      "report-manifest.json",
+      "tables/counts.csv",
+      "tables/summary.json",
+      "tables/run-inventory.json"
+    ],
+    "optional_external_citations": [
+      "https://arxiv.org/html/2304.13119v3"
+    ],
+    "scientific_figures": [
+      "figures/ber-q.svg",
+      "figures/frame-variation.svg",
+      "figures/performance-rmps.svg",
+      "figures/learning.svg",
+      "figures/mask.svg"
+    ],
+    "SVG_Japanese_glyph_paths": true,
+    "browser_rendering_performed": false
+  },
+  "regeneration": {
+    "status": "passed",
+    "directory": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-report-20261025/regenerated/principal-20261025",
+    "matching_output_hashes": [
+      "figures/ber-q.png",
+      "figures/ber-q.svg",
+      "figures/frame-variation.png",
+      "figures/frame-variation.svg",
+      "figures/learning.png",
+      "figures/learning.svg",
+      "figures/mask.png",
+      "figures/mask.svg",
+      "figures/performance-rmps.png",
+      "figures/performance-rmps.svg",
+      "tables/counts.csv",
+      "tables/run-inventory.json",
+      "tables/summary.json"
+    ],
+    "expected_command_only_document_variance": [
+      "report.html",
+      "report.md"
+    ],
+    "manifest_generated_time_varies": true,
+    "input_hashes_identical": true,
+    "numerical_source_identical": true,
+    "training_or_inference": false,
+    "checkpoint_or_bulk_access": false,
+    "command": [
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+      "-m",
+      "experiments.transformer_nlc",
+      "report",
+      "--metrics",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json",
+      "--ledger",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json",
+      "--resource-proof",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json",
+      "--output-root",
+      "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-report-20261025/regenerated",
+      "--run-id",
+      "principal-20261025"
+    ]
+  },
+  "portability_limit": "Frozen run/checkpoint/data references retain literal absolute producer paths. Compact regeneration and reload are verified in the original layout; arbitrary fresh-clone relocation is not verified.",
+  "scientific_limits": [
+    "Main two-condition partial reproduction, bounded 36-trial search and adopted physical/DSP assumptions.",
+    "Epoch caps do not establish convergence; paired seed deltas are descriptive and are not a significance declaration.",
+    "No isolated no-NLC latency/VRAM; no speed ratios; one-update resource probes include initialization and have no separate warmup.",
+    "Launch-power curves, PMD/rate changes, CNN-LSTM/DBP, and broad ablations remain deferred."
+  ],
+  "independent_validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ],
+  "ready_input_index": {
+    "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json",
+    "sha256": "827ebe6e1dedd189cb889dca7a956f45c65074002b662eeae8f9fc6c464f4353",
+    "status": "all_scientific_execution_and_normal_verification_complete"
+  },
+  "ready_index_compact_references_hash_checked": 106,
+  "scientific_gate_evidence": {
+    "checkpoint_reload_verification": {
+      "bytes": 554,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/checkpoint-reload-verification.json",
+      "sha256": "c3237b906a0d416c07a308ffcd76bceab46cd6a89811609529589f16666888cd"
+    },
+    "recount_evidence": {
+      "bytes": 3977,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/recount-evidence.json",
+      "sha256": "5eae3f79d9f3a3c550d46387361733eda1c7135f8a7fe6739cecc3ca82840a10"
+    },
+    "training_artifact_integrity": {
+      "bytes": 61150,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/training-artifact-integrity.json",
+      "sha256": "7ed91c0cf2a5932764146c1ba6ab8fa090c9b661d56ee949f2fd8aec547781d7"
+    },
+    "data_integrity": {
+      "bytes": 32566,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/completed-data-integrity.json",
+      "sha256": "adb7568e3edf142ce7b516b41fb4bcf8673e1921df715af7db38f820e22a98da"
+    },
+    "selection_freeze": {
+      "bytes": 966252,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-selection-20261025/selection-freeze.json",
+      "sha256": "fc26b8830d9ef9e0b3e864e5bf0e27347f84916dde1d29d13fd9841c9d63ddf1"
+    },
+    "ledger": {
+      "bytes": 25615,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json",
+      "sha256": "bae4a86bb8ef545be2f47b11cceb9b4948ab07533569aac24d1d58dea105c1f1"
+    },
+    "executing_source_freeze": {
+      "bytes": 10951,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/executing-source-freeze.json",
+      "sha256": "0f2ebde3f0d103c52500a3ad0d8ea178f0d5ababbcb8e2402b0d607b853c8523"
+    },
+    "installed_environments": {
+      "bytes": 3138,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/installed-environments.json",
+      "sha256": "df2c80e87acb11700e6a13906dc19e56cb1156f76af5432be8248e3746bf71da"
+    },
+    "runtime_measurement_scopes": {
+      "bytes": 2274,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/runtime-measurement-scopes.json",
+      "sha256": "247548b381ab40e9d3f3e7fdbef2bd748fdb7ebb51479b0e6e5fa655c1dc660d"
+    },
+    "resources": [
+      {
+        "bytes": 14018,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json",
+        "sha256": "313080c540069a6c76e4da81ef9ad581667c8b19450c6c8d88b5d4aa6a224ee0"
+      },
+      {
+        "bytes": 14025,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json",
+        "sha256": "fe2dc65b814bf65cf27c14538a8415f88e38a6ff3acb61a1eff504885cabe037"
+      },
+      {
+        "bytes": 14022,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json",
+        "sha256": "8b5d8608d7856b48842cbcbc9bc87965a9e5f98c6ebf86b1a15fbf9c53aa6e38"
+      },
+      {
+        "bytes": 14028,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json",
+        "sha256": "7e867d666d5b1bb9d505f9715f01969db3b2a3588ceea81cbaad2da0b4bada03"
+      }
+    ],
+    "qualifications": [
+      {
+        "condition": 16,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main16-20261025/qualification.json",
+        "sha256": "ef8ef5c85c5d0f94d52e324ce27966388bf5f9257299a8522c18872002314d4b"
+      },
+      {
+        "condition": 64,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main64-20261025/qualification.json",
+        "sha256": "0c45ebb90591f920dd35dd7f3c19ca4546a4f0f4d9ec0a762c99b3096811e8ba"
+      }
+    ],
+    "GPU_resume_verifications": [
+      {
+        "atol": 1e-06,
+        "checked": {
+          "scalars": 33,
+          "tensors": 162
+        },
+        "condition": 16,
+        "maxima": {
+          "floating_tensor_max_abs": 0.0,
+          "scalar_max_abs": 0.0
+        },
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main16-20261025/verification.json",
+        "rtol": 1e-05,
+        "sha256": "b97fedf91e74f9af258d0a6de0d91e71a69f7b9e6a5a7bfcdeca66e8c4c5fb4e",
+        "status": "passed"
+      },
+      {
+        "atol": 1e-06,
+        "checked": {
+          "scalars": 33,
+          "tensors": 98
+        },
+        "condition": 64,
+        "maxima": {
+          "floating_tensor_max_abs": 0.0,
+          "scalar_max_abs": 0.0
+        },
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main64-20261025/verification.json",
+        "rtol": 1e-05,
+        "sha256": "471ce92012702496dc6c0d20dfcf3ad816c190ede4fb53d643dd993ef502d237",
+        "status": "passed"
+      }
+    ]
+  },
+  "visual_inspection": {
+    "status": "completed",
+    "method": "view_image on all five original PNG figures, plus BER/Q SVG rasterized by installed librsvg into ignored scratch",
+    "PNG_figures": [
+      "ber-q.png",
+      "performance-rmps.png",
+      "learning.png",
+      "frame-variation.png",
+      "mask.png"
+    ],
+    "SVG_figure": "ber-q.svg",
+    "Japanese_labels_axes_and_units": "readable",
+    "browser_rendering_performed": false,
+    "presentation_observations": [
+      {
+        "figure": "performance-rmps.png/svg",
+        "severity": "readability limitation for parent review",
+        "observation": "Nearby candidate annotations overlap; rightmost A/high annotations extend beyond the axes. Numerical points/axes are intact, and the accompanying full RMPS and Q tables identify all candidates. Frozen generator was not edited."
+      }
+    ]
+  },
+  "source_tests": {
+    "status": "parent supplied prior passing result",
+    "reported_passed_tests": 33,
+    "scope": "frozen report implementation70f60185; not rerun by this report generation worker"
+  },
+  "generation_command": [
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+    "-m",
+    "experiments.transformer_nlc",
+    "report",
+    "--metrics",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json",
+    "--ledger",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json",
+    "--resource-proof",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json",
+    "--output-root",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/reports/transformer-nlc",
+    "--run-id",
+    "principal-20261025"
+  ],
+  "verification_scope": "Actual dry-run, generation, compact hash/coverage/count/offline-asset verification, independent scratch regeneration comparison, and visual inspection; no model training or inference.",
+  "packaging_scope": "The separate deliverable inventory hashes compact files including saved checkpoint bytes for archival identity only; no model loading or bulk-array reads."
+}

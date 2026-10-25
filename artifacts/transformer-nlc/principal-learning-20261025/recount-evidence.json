@@ -1,0 +1,64 @@
+{
+  "evaluations": [
+    {
+      "CLI_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py",
+        "--worker",
+        "recount",
+        "--metrics",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json"
+      ],
+      "CLI_command_sha256": "68ec1be1df75dc908d7c9414cf60a13c2e15aa93c4f50d0e423baea33f6aada4",
+      "CLI_log": {
+        "bytes": 416,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/09-recount-principal-evaluation-20261025.log",
+        "sha256": "bff8cdb35e8852be270c83391b63bf1672bc49a867d74c417f63281ef822774b"
+      },
+      "CLI_log_text": "{\"worker_driver_path\": \"/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py\", \"worker_driver_sha256\": \"b1dd415bb3d74f6cc095336cc5276a3db8f3f832b64132bdf0a80a2b4ce71e57\", \"worker_started_unix\": 1792947435.2803323}\n{\n  \"status\": \"passed\",\n  \"frame_predictions\": 168,\n  \"implementation\": \"saved Eq2 residual reconstruction + direct Gray decisions/count_nonzero\"\n}\n",
+      "CLI_returncode": 0,
+      "automatic_recount": {
+        "frame_predictions": 168,
+        "implementation": "saved Eq2 residual reconstruction + direct Gray decisions/count_nonzero",
+        "status": "passed"
+      },
+      "evaluation": "principal-evaluation-20261025",
+      "metrics": {
+        "bytes": 596020,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json",
+        "sha256": "0f16801a6ea2b48a708335e153d69c3cde62dab8ecac5939351b47f741849efa"
+      }
+    },
+    {
+      "CLI_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py",
+        "--worker",
+        "recount",
+        "--metrics",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-reload-20261025/metrics.json"
+      ],
+      "CLI_command_sha256": "390cfebe010bfa65e2f6070df0d4ff8f456063b778ffb45be7e06cc07fcde45a",
+      "CLI_log": {
+        "bytes": 416,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/09-recount-principal-evaluation-reload-20261025.log",
+        "sha256": "4082e87eb24dc2a572608752445573e5cc621eada94549e3e036f3b40fccf668"
+      },
+      "CLI_log_text": "{\"worker_driver_path\": \"/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/.work/primary-learning/run.py\", \"worker_driver_sha256\": \"b1dd415bb3d74f6cc095336cc5276a3db8f3f832b64132bdf0a80a2b4ce71e57\", \"worker_started_unix\": 1792947484.3342402}\n{\n  \"status\": \"passed\",\n  \"frame_predictions\": 168,\n  \"implementation\": \"saved Eq2 residual reconstruction + direct Gray decisions/count_nonzero\"\n}\n",
+      "CLI_returncode": 0,
+      "automatic_recount": {
+        "frame_predictions": 168,
+        "implementation": "saved Eq2 residual reconstruction + direct Gray decisions/count_nonzero",
+        "status": "passed"
+      },
+      "evaluation": "principal-evaluation-reload-20261025",
+      "metrics": {
+        "bytes": 596019,
+        "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-reload-20261025/metrics.json",
+        "sha256": "cf0094654b47cf23bd13b8f4a3291198529be47c8e4ef5f396418612a34c1e5e"
+      }
+    }
+  ],
+  "schema": "transformer-recount-evidence-v1",
+  "status": "passed"
+}

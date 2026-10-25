@@ -1,0 +1,36 @@
+{
+  "atol": 1e-06,
+  "best_checkpoint_GPU_reload_validation": "passed",
+  "checked": {
+    "scalars": 33,
+    "tensors": 98
+  },
+  "compared_checkpoint_fields": [
+    "model",
+    "optimizer",
+    "scheduler",
+    "epoch",
+    "optimizer_step",
+    "sampler",
+    "rng",
+    "best_validation_mse",
+    "patience_used",
+    "history",
+    "config",
+    "identities"
+  ],
+  "condition": 64,
+  "continuous_latest_sha256": "7d17add531c4162c9a0f700354a897a774c2fd0a9d1e60c6c2fcdb1ef60c01ef",
+  "continuous_run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main64-20261025/continuous/run.json",
+  "excluded_history_field": "seconds (wall time)",
+  "maxima": {
+    "floating_tensor_max_abs": 0.0,
+    "scalar_max_abs": 0.0
+  },
+  "resumed_latest_sha256": "e7028f5f14245951209e06c33ab29387c542636e0cc63a3f1a3d7a050db91284",
+  "resumed_run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main64-20261025/resumed/run.json",
+  "rtol": 1e-05,
+  "schema": "transformer-gpu-resume-verification-v1",
+  "selection_use": "verification only; excluded from 4 learning pilots and 36 production trials",
+  "status": "passed"
+}

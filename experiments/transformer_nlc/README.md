@@ -111,7 +111,49 @@ trainはX残差の中央b×2 MSE、validationは同一重みのXY swapによる�
 
 保存先は`artifacts/transformer-nlc/<run-id>/`。trainは`run.json`、`history.json`、`best.pt`、`latest.pt`、sweepは失敗を含む`ledger.json`、freezeは不変の`selection-freeze.json`、evaluateは`metrics.json`/`metrics.csv`とignored `bulk/`内の再計数用予測を保存する。入力source/data/checkpointと重なる出力、同runへの重複job、非resume上書きを拒否する。GPU許容差は設定に先に保存し、実測した再開検証と未検証を分ける。通常試験には小さな合成pilotでのCPU実学習対再開・test非読込・checkpoint reload・保存予測の独立Gray BER再計数を含める。
 
-BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。`report`入口は[#47](https://github.com/Motoki0705/optical-comm-lab/issues/47)の未実装を明示して終了し、見かけの報告は作らない。
+BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。保存結果の`report`生成には、以下に記録した内容の生成器を使う。
+
+## 主2条件の保存結果（2026-10-26）
+
+主16QAM 3200 km / 32 GBd / +2 dBm、主64QAM 960 km / 42 GBd / +3 dBmについて、各18件、計36件の学習・validationだけによる選択固定・held-out評価が完了した。
+通常DSPは6つのcondition/seed基準にまとめ、全手法で同じ4 test frame/seedを計数した。自動・CLIの独立再計数が合格し、全36 checkpointの再読み込み評価で168 frameの指標が完全一致した。18件はpatience停止、18件は500 epoch上限で収束未確認。失敗・OOMはなかった。独立validatorは指定/試行/完了=0/0/0。
+
+| 条件 / validation選択primary | 通常DSPのseed平均Q dB | primaryのseed平均Q dB | 同一seed通常DSPからの平均ΔQ dB |
+| --- | ---: | ---: | ---: |
+| 16QAM C / maskなし | 6.772690 | 6.771079 | −0.001611 |
+| 16QAM C / maskあり | 6.772690 | 6.771247 | −0.001443 |
+| 64QAM high / maskなし | 6.725544 | 6.727675 | ＋0.002131 |
+| 64QAM high / maskあり | 6.725544 | 6.727181 | ＋0.001638 |
+
+各値は3独立seedの記述値で、有意な改善の宣言ではない。差はseed間変動より小さく、論文の大きな改善を再現したとは扱わない。全36件・全seed/frame、計数区間と変動、負の結果、停止理由、理論RMPSと実測資源の範囲は[日本語レポート](../../reports/transformer-nlc/principal-20261025/report.md)と[オフラインHTML](../../reports/transformer-nlc/principal-20261025/report.html)に保存した。縮小探索と採用条件による主2条件の部分再現であり、論文値との一致の合否は未確定である。
+
+[実行証拠索引](../../artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json)は、6データmanifest、qualification、全36 run/history、freeze、主評価とreload評価、再計数、資源資格、環境、入力整合性を指す。[レポート生成manifest](../../reports/transformer-nlc/principal-20261025/report-manifest.json)は入力91件・生成コード12件・生成物15件のhashを残す。[生成・再生成の通常検証](../../artifacts/transformer-nlc/principal-report-verification-20261025/report-verification.json)には、図10ファイルと数値表3ファイルのhash一致、オフラインasset検査、PNGとSVGの目視確認を保存した。ブラウザでの描画確認は行っていない。
+
+学習・評価の生成元は`5705e7b9fe8db08b26e829979d39e2279f1739dd`、学習数値source hashは`c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142`。今回の描画は生成器の基点`70f60185fbfdc9ff81aa21d7cfabbedc681d49c3`に、RMPS図の注釈を候補形状・mask色・図外凡例へ変更する差分を適用した内容である。[正確な差分](../../artifacts/transformer-nlc/principal-report-verification-20261025/render-source.patch)と[実行時の内容hash](../../artifacts/transformer-nlc/principal-report-verification-20261025/render-source-snapshot.json)を保存し、全36点の座標・入力91件・数値表3件は不変と確認した。旧renderのmanifest・検証・索引は同じ検証directoryの`history/render-20261025T170036Z/`に保全した。元の科学manifestの生成元SHAやpathは変更していない。
+
+次は実際に検証した、学習・推論を行わないcompact集計からの再生成コマンド。上記の差分を含む内容hashと一致する生成器worktreeで実行し、出力をignored scratchへ分離する。新しい生成器checkoutを用意する場合は、基点commitから保存した`render-source.patch`を`git apply`で適用し、snapshotの内容hashと照合する。Python環境と日本語fontの実在する版はmanifestに記録している。
+
+```bash
+REPORT_CODE=/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report
+REPORT_RESULTS=/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results
+cd "$REPORT_CODE"
+PYTHONPATH="$REPORT_CODE/src:$REPORT_CODE" \
+  /home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python \
+  -m experiments.transformer_nlc report \
+  --metrics "$REPORT_RESULTS/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json" \
+  --ledger "$REPORT_RESULTS/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json" \
+  --resource-proof \
+    "$REPORT_RESULTS/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json" \
+    "$REPORT_RESULTS/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json" \
+    "$REPORT_RESULTS/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json" \
+    "$REPORT_RESULTS/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json" \
+  --output-root "$REPORT_RESULTS/.work/rmps-label-fix-20261026/regenerated" \
+  --run-id principal-20261025
+```
+
+この再生成先が既に存在する場合は、新しい出力先を選ぶか、未変更のreport所有directoryに限って`--regenerate`を明示する。既定の生成はcheckpointやbulk配列を開かない。図・表のhashは一致し、Markdown/HTMLの差は出力先を含むコマンドだけ、manifestの生成時刻は再生成ごとに変わる。
+
+freeze/run/checkpoint/data manifestは元のproducerの絶対パスを保存している。再読み込み評価とcompact再生成はその元配置で検証済みで、任意の新cloneへそのまま移せるとは主張しない。元配置を再現するか、保存された生成recipeから新runを作る必要がある。元metadataを移動先へ書き換えた手順は検証していない。
 
 ## 今後の実行範囲と進行
 

@@ -1,0 +1,478 @@
+[
+  {
+    "condition": 16,
+    "candidate": "no-nlc",
+    "masked": null,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 91839,
+      "n_bits": 6291456,
+      "ber": 0.014597415924072266,
+      "ber_ci_low": 0.014503843087525357,
+      "ber_ci_high": 0.014691435869761469,
+      "q_ber_db": 6.772498746005508,
+      "q_ci_low_db": 6.762398711885065,
+      "q_ci_high_db": 6.782594740144344,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.772689822279372,
+    "sample_std_seed_q_db": 0.03639158144326948,
+    "seed_q_points_db": [
+      6.730931664246162,
+      6.797635764730763,
+      6.789502037861192
+    ],
+    "seed_ber_points": [
+      0.014986991882324219,
+      0.014365196228027344,
+      0.014440059661865234
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "A",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 91960,
+      "n_bits": 6291456,
+      "ber": 0.014616648356119791,
+      "ber_ci_low": 0.01452301470915073,
+      "ber_ci_high": 0.014710729094190373,
+      "q_ber_db": 6.770429126239249,
+      "q_ci_low_db": 6.760331581181713,
+      "q_ci_high_db": 6.7805226279647535,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.7706727339394135,
+    "sample_std_seed_q_db": 0.04110070259856085,
+    "seed_q_points_db": [
+      6.723530628586316,
+      6.7989855353707345,
+      6.789502037861192
+    ],
+    "seed_ber_points": [
+      0.015057086944580078,
+      0.014352798461914062,
+      0.014440059661865234
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "B",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 92004,
+      "n_bits": 6291456,
+      "ber": 0.014623641967773438,
+      "ber_ci_low": 0.014529986218292133,
+      "ber_ci_high": 0.014717744801796143,
+      "q_ber_db": 6.769676996017443,
+      "q_ci_low_db": 6.759580354735764,
+      "q_ci_high_db": 6.77976959275091,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.769898629076472,
+    "sample_std_seed_q_db": 0.03920722188816715,
+    "seed_q_points_db": [
+      6.7246367806256675,
+      6.793383985452652,
+      6.791675121151096
+    ],
+    "seed_ber_points": [
+      0.01504659652709961,
+      0.014404296875,
+      0.014420032501220703
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "C",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 91934,
+      "n_bits": 6291456,
+      "ber": 0.014612515767415365,
+      "ber_ci_low": 0.014518895183619672,
+      "ber_ci_high": 0.014706583446189048,
+      "q_ber_db": 6.7708736817648605,
+      "q_ci_low_db": 6.7607756023228305,
+      "q_ci_high_db": 6.780967718594049,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.771079277850153,
+    "sample_std_seed_q_db": 0.03775668668759164,
+    "seed_q_points_db": [
+      6.727605858310973,
+      6.795664449450763,
+      6.7899675257887235
+    ],
+    "seed_ber_points": [
+      0.015018463134765625,
+      0.014383316040039062,
+      0.014435768127441406
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "A",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 92007,
+      "n_bits": 6291456,
+      "ber": 0.01462411880493164,
+      "ber_ci_low": 0.014530461548662056,
+      "ber_ci_high": 0.014718223145295351,
+      "q_ber_db": 6.769625723311819,
+      "q_ci_low_db": 6.759529143625279,
+      "q_ci_high_db": 6.779718258367275,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.769864142211238,
+    "sample_std_seed_q_db": 0.04066524164714766,
+    "seed_q_points_db": [
+      6.723128520778266,
+      6.797168721294846,
+      6.789295184560601
+    ],
+    "seed_ber_points": [
+      0.015060901641845703,
+      0.014369487762451172,
+      0.014441967010498047
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "B",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 92073,
+      "n_bits": 6291456,
+      "ber": 0.01463460922241211,
+      "ber_ci_low": 0.014540918823294493,
+      "ber_ci_high": 0.014728746695783852,
+      "q_ber_db": 6.768498011038724,
+      "q_ci_low_db": 6.7584027856079745,
+      "q_ci_high_db": 6.778589190016384,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.768739405324252,
+    "sample_std_seed_q_db": 0.04092402259065193,
+    "seed_q_points_db": [
+      6.721520778311348,
+      6.793953889308383,
+      6.790743548353023
+    ],
+    "seed_ber_points": [
+      0.015076160430908203,
+      0.014399051666259766,
+      0.01442861557006836
+    ]
+  },
+  {
+    "condition": 16,
+    "candidate": "C",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 91925,
+      "n_bits": 6291456,
+      "ber": 0.014611085255940756,
+      "ber_ci_low": 0.014517469194462604,
+      "ber_ci_high": 0.014705148413738765,
+      "q_ber_db": 6.771027586273695,
+      "q_ci_low_db": 6.760929321794377,
+      "q_ci_high_db": 6.7811218083892175,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.771247096150816,
+    "sample_std_seed_q_db": 0.03901212988689378,
+    "seed_q_points_db": [
+      6.726397644085815,
+      6.7973243918833735,
+      6.790019252483259
+    ],
+    "seed_ber_points": [
+      0.0150299072265625,
+      0.014368057250976562,
+      0.014435291290283203
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "no-nlc",
+    "masked": null,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 141917,
+      "n_bits": 9437184,
+      "ber": 0.01503806644015842,
+      "ber_ci_low": 0.014960513835531295,
+      "ber_ci_high": 0.015115916781620041,
+      "q_ber_db": 6.725536612265769,
+      "q_ci_low_db": 6.717337013977053,
+      "q_ci_high_db": 6.733733465077993,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.725543813325075,
+    "sample_std_seed_q_db": 0.007116133026615634,
+    "seed_q_points_db": [
+      6.731099759626538,
+      6.728008734868491,
+      6.717522945480194
+    ],
+    "seed_ber_points": [
+      0.014985402425130209,
+      0.0150146484375,
+      0.015114148457845053
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "high",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 141727,
+      "n_bits": 9437184,
+      "ber": 0.015017933315700956,
+      "ber_ci_low": 0.014940431919896907,
+      "ber_ci_high": 0.015095732460877634,
+      "q_ber_db": 6.727661809245822,
+      "q_ci_low_db": 6.719460181988581,
+      "q_ci_high_db": 6.735860693232311,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.727675266101877,
+    "sample_std_seed_q_db": 0.009724369459990952,
+    "seed_q_points_db": [
+      6.732444957493381,
+      6.7340938796362675,
+      6.716486961175984
+    ],
+    "seed_ber_points": [
+      0.014972686767578125,
+      0.014957110087076822,
+      0.015124003092447916
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "mid",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 142283,
+      "n_bits": 9437184,
+      "ber": 0.015076849195692275,
+      "ber_ci_low": 0.014999198047725227,
+      "ber_ci_high": 0.01515479805634246,
+      "q_ber_db": 6.721448232576899,
+      "q_ci_low_db": 6.713252530046708,
+      "q_ci_high_db": 6.729641185397906,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.721459506579429,
+    "sample_std_seed_q_db": 0.008909184736846982,
+    "seed_q_points_db": [
+      6.728512428014573,
+      6.724418860929954,
+      6.7114472307937625
+    ],
+    "seed_ber_points": [
+      0.015009880065917969,
+      0.015048662821451822,
+      0.015172004699707031
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "low-adopted",
+    "masked": false,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 142011,
+      "n_bits": 9437184,
+      "ber": 0.015048027038574219,
+      "ber_ci_low": 0.014970449112321265,
+      "ber_ci_high": 0.015125902695458729,
+      "q_ber_db": 6.7244859109872195,
+      "q_ci_low_db": 6.71628731483854,
+      "q_ci_high_db": 6.732681760570282,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.7244926388105455,
+    "sample_std_seed_q_db": 0.006879520940989926,
+    "seed_q_points_db": [
+      6.730360230227648,
+      6.726196335592444,
+      6.716921350611544
+    ],
+    "seed_ber_points": [
+      0.014992396036783854,
+      0.015031814575195312,
+      0.01511987050374349
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "high",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 141771,
+      "n_bits": 9437184,
+      "ber": 0.015022595723470053,
+      "ber_ci_low": 0.014945082465585834,
+      "ber_ci_high": 0.015100406727823304,
+      "q_ber_db": 6.72716948686684,
+      "q_ci_low_db": 6.718968329877305,
+      "q_ci_high_db": 6.735367900074304,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.727181483664375,
+    "sample_std_seed_q_db": 0.009182379902145757,
+    "seed_q_points_db": [
+      6.732108585523413,
+      6.732848667702886,
+      6.716587197766827
+    ],
+    "seed_ber_points": [
+      0.014975865681966146,
+      0.0149688720703125,
+      0.01512304941813151
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "mid",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 142307,
+      "n_bits": 9437184,
+      "ber": 0.01507939232720269,
+      "ber_ci_low": 0.015001734722014675,
+      "ber_ci_high": 0.015157347643490195,
+      "q_ber_db": 6.721180390824912,
+      "q_ci_low_db": 6.71298494317319,
+      "q_ci_high_db": 6.729373088490634,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.72119258436734,
+    "sample_std_seed_q_db": 0.00926641245671296,
+    "seed_q_points_db": [
+      6.730192187940867,
+      6.721704942938888,
+      6.711680622222263
+    ],
+    "seed_ber_points": [
+      0.014993985493977865,
+      0.015074412027994791,
+      0.015169779459635416
+    ]
+  },
+  {
+    "condition": 64,
+    "candidate": "low-adopted",
+    "masked": true,
+    "replicates": [
+      0,
+      1,
+      2
+    ],
+    "pooled_counting": {
+      "bit_errors": 142030,
+      "n_bits": 9437184,
+      "ber": 0.015050040351019965,
+      "ber_ci_low": 0.014972457307631798,
+      "ber_ci_high": 0.015127921123785915,
+      "q_ber_db": 6.724273592381881,
+      "q_ci_low_db": 6.716075198659709,
+      "q_ci_high_db": 6.73246923931846,
+      "q_limit": null,
+      "interval_scope": "binomial counting only; correlated errors require independent frame/replicate variation"
+    },
+    "mean_seed_q_db": 6.72427778080444,
+    "sample_std_seed_q_db": 0.005428166344544502,
+    "seed_q_points_db": [
+      6.727773715124114,
+      6.727035235077549,
+      6.7180243922116585
+    ],
+    "seed_ber_points": [
+      0.015016873677571615,
+      0.01502386728922526,
+      0.015109380086263021
+    ]
+  }
+]

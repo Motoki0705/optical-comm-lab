@@ -11,4 +11,11 @@ dist/
 artifacts/**/raw/
 artifacts/**/bulk/
 artifacts/**/temporary/
+# Observed Transformer-NLC advisory runtime controls; preserve their inodes.
+artifacts/transformer-nlc/**/.training.lock
+artifacts/transformer-nlc/**/.generation.lock
+artifacts/transformer-nlc/**/.benchmark.lock
+artifacts/transformer-nlc/**/.sweep.lock
+artifacts/transformer-nlc/**/.evaluation.lock
+artifacts/transformer-nlc/principal-selection-20261025/selection-freeze.json.lock
 .DS_Store

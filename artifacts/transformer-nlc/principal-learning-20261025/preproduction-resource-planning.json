@@ -1,0 +1,131 @@
+{
+  "checkpoint_estimate_note": "best/latest compact checkpoints and all histories retained; bulk ignored",
+  "conditions": [
+    {
+      "condition": 16,
+      "pilot_bulk_bytes": 3490140,
+      "pilot_geometry": {
+        "bps_phases": 64,
+        "bps_windows": [
+          33,
+          65,
+          129
+        ],
+        "condition": 16,
+        "context_symbols": 96,
+        "equalizer_taps": 11,
+        "guard_symbols": 256,
+        "launch_power_dbm": 2.0,
+        "link": {
+          "alpha_db_per_km": 0.2,
+          "ase_bandwidth_hz": 128000000000.0,
+          "ase_enabled": true,
+          "dispersion_ps_nm_km": 17,
+          "edfa_noise_figure_db": 6,
+          "gamma_per_w_km": 1.3,
+          "guard_symbols": 256,
+          "n_spans": 40,
+          "rolloff": 0.0625,
+          "rrc_span_symbols": 128,
+          "span_km": 80,
+          "sps": 4,
+          "step_km": 1,
+          "symbol_rate_hz": 32000000000.0,
+          "wavelength_m": 1.55e-06
+        },
+        "master_entropy": 2026102543,
+        "min_step_km": 1e-06,
+        "phase_max_deg": 0.05,
+        "pilot_symbols": 256,
+        "regime": "pilot",
+        "replicate": 0,
+        "ridge_relative": 1e-06,
+        "save_rx_2sps": false,
+        "save_rx_field": false,
+        "scored_symbols": 4096,
+        "test_frames": 1,
+        "train_frames": 1,
+        "validation_frames": 1
+      },
+      "pilot_physical_seconds": [
+        14.574468391001574,
+        11.778828793001594,
+        12.696804008999607
+      ],
+      "production_frames": 42,
+      "propagation_seconds_estimate": 3531.39483088001,
+      "qualification_path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main16-20261025/qualification.json",
+      "qualification_sha256": "ef8ef5c85c5d0f94d52e324ce27966388bf5f9257299a8522c18872002314d4b",
+      "qualified_baseline_physical_seconds": [
+        83.71920075700109,
+        85.17270499499864,
+        83.35058216800098
+      ]
+    },
+    {
+      "condition": 64,
+      "pilot_bulk_bytes": 3617628,
+      "pilot_geometry": {
+        "bps_phases": 64,
+        "bps_windows": [
+          33,
+          65,
+          129
+        ],
+        "condition": 64,
+        "context_symbols": 96,
+        "equalizer_taps": 11,
+        "guard_symbols": 256,
+        "launch_power_dbm": 3.0,
+        "link": {
+          "alpha_db_per_km": 0.2,
+          "ase_bandwidth_hz": 128000000000.0,
+          "ase_enabled": true,
+          "dispersion_ps_nm_km": 17,
+          "edfa_noise_figure_db": 6,
+          "gamma_per_w_km": 1.3,
+          "guard_symbols": 256,
+          "n_spans": 12,
+          "rolloff": 0.0625,
+          "rrc_span_symbols": 128,
+          "span_km": 80,
+          "sps": 4,
+          "step_km": 1,
+          "symbol_rate_hz": 42000000000.0,
+          "wavelength_m": 1.55e-06
+        },
+        "master_entropy": 2026102543,
+        "min_step_km": 1e-06,
+        "phase_max_deg": 0.05,
+        "pilot_symbols": 256,
+        "regime": "pilot",
+        "replicate": 0,
+        "ridge_relative": 1e-06,
+        "save_rx_2sps": false,
+        "save_rx_field": false,
+        "scored_symbols": 4096,
+        "test_frames": 1,
+        "train_frames": 1,
+        "validation_frames": 1
+      },
+      "pilot_physical_seconds": [
+        4.893480039005226,
+        3.97630187899631,
+        4.414715361999697
+      ],
+      "production_frames": 42,
+      "propagation_seconds_estimate": 1162.4590681899863,
+      "qualification_path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main64-20261025/qualification.json",
+      "qualification_sha256": "0c45ebb90591f920dd35dd7f3c19ca4546a4f0f4d9ec0a762c99b3096811e8ba",
+      "qualified_baseline_physical_seconds": [
+        27.59215485599998,
+        27.917492034001043,
+        27.523143694997998
+      ]
+    }
+  ],
+  "measured_unix": 1792932855.4082732,
+  "method": "42 production frames/condition times mean 3 qualified baseline full-link frame times. Production ASE recipe differs; excludes receiver, IO, startup. Not a runtime guarantee.",
+  "propagation_seconds_total_estimate": 4693.853899069996,
+  "reserve_disk_bytes": 21474836480
+}

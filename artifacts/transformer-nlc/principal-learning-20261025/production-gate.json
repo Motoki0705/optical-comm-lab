@@ -1,0 +1,125 @@
+{
+  "disk_free_bytes": 197729525760,
+  "disk_reserve_bytes": 21474836480,
+  "effective_batch_blocks": 512,
+  "estimate_limit": "single synthetic update is a rough planning proxy; includes initialization and is not a speedup result; smaller candidates differ; actual epoch telemetry is authoritative",
+  "fixed_trials": 36,
+  "max_epochs": 500,
+  "microbatch_blocks": 512,
+  "pilots": [
+    {
+      "condition": 16,
+      "epoch_seconds": [
+        0.6324061709965463,
+        0.04507863300386816,
+        0.042205393001495395,
+        0.046498552001139615,
+        0.06819676200393587
+      ],
+      "epochs": 5,
+      "masked": true,
+      "peak_allocated_GPU_bytes": 81249280,
+      "validation_generated": 4096,
+      "validation_used": 2048
+    },
+    {
+      "condition": 16,
+      "epoch_seconds": [
+        0.6936479630021495,
+        0.046862013994541485,
+        0.057815430001937784,
+        0.06153786900540581,
+        0.043770059004600625
+      ],
+      "epochs": 5,
+      "masked": false,
+      "peak_allocated_GPU_bytes": 81156608,
+      "validation_generated": 4096,
+      "validation_used": 2048
+    },
+    {
+      "condition": 64,
+      "epoch_seconds": [
+        0.6952003400001558,
+        0.04380312399734976,
+        0.033509387001686264,
+        0.03695664799306542,
+        0.028773904996342026
+      ],
+      "epochs": 5,
+      "masked": true,
+      "peak_allocated_GPU_bytes": 77953024,
+      "validation_generated": 4096,
+      "validation_used": 2048
+    },
+    {
+      "condition": 64,
+      "epoch_seconds": [
+        0.5990770690041245,
+        0.0778663780001807,
+        0.04249612599960528,
+        0.05724232899956405,
+        0.039748786999552976
+      ],
+      "epochs": 5,
+      "masked": false,
+      "peak_allocated_GPU_bytes": 77860352,
+      "validation_generated": 4096,
+      "validation_used": 2048
+    }
+  ],
+  "production_training_seconds_upper_planning_estimate": 219722.29847995914,
+  "qualification": {
+    "16": {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main16-20261025/qualification.json",
+      "sha256": "ef8ef5c85c5d0f94d52e324ce27966388bf5f9257299a8522c18872002314d4b"
+    },
+    "64": {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main64-20261025/qualification.json",
+      "sha256": "0c45ebb90591f920dd35dd7f3c19ca4546a4f0f4d9ec0a762c99b3096811e8ba"
+    }
+  },
+  "resources": [
+    {
+      "condition": 16,
+      "masked": true,
+      "microbatch": 512,
+      "peak_allocated_GPU_bytes": 2388422656,
+      "seconds": 2.437240507999377,
+      "status": "passed"
+    },
+    {
+      "condition": 16,
+      "masked": false,
+      "microbatch": 512,
+      "peak_allocated_GPU_bytes": 2388033024,
+      "seconds": 2.8942440320024616,
+      "status": "passed"
+    },
+    {
+      "condition": 64,
+      "masked": true,
+      "microbatch": 512,
+      "peak_allocated_GPU_bytes": 1667729408,
+      "seconds": 2.090063077994273,
+      "status": "passed"
+    },
+    {
+      "condition": 64,
+      "masked": false,
+      "microbatch": 512,
+      "peak_allocated_GPU_bytes": 1667483136,
+      "seconds": 4.785246742001618,
+      "status": "passed"
+    }
+  ],
+  "schema": "transformer-primary-production-gate-v1",
+  "source_content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142",
+  "status": "passed",
+  "test_metrics_seen": false,
+  "validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ]
+}
