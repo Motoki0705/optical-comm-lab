@@ -343,3 +343,31 @@ def test_cli_is_lazy_and_rejects_ignored_combinations(scratch):
     script = "import sys; from experiments.transformer_nlc.__main__ import main; main(['generate','--pilot','--run-id','lazy-smoke','--dry-run']); assert 'matplotlib.pyplot' not in sys.modules; assert 'torch' not in sys.modules; assert 'experiments.transformer_nlc.report' not in sys.modules"
     result = subprocess.run([sys.executable, "-c", script], cwd=ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
+
+
+def test_public_report_cli_rejects_symlink_regeneration_and_preserves_target(scratch):
+    path = synthetic_evidence(scratch / "input")
+    output_root = scratch / "reports"
+    output = output_root / "synthetic-pilot"
+    command = [sys.executable, "-m", "experiments.transformer_nlc", "report", "--metrics", str(path),
+               "--output-root", str(output_root.relative_to(ROOT)), "--allow-pilot"]
+    for flags in ([], ["--regenerate"]):
+        result = subprocess.run([*command, "--run-id", output.name, *flags], cwd=ROOT, capture_output=True, text=True)
+        assert result.returncode == 0, result.stderr
+        plan = json.loads(result.stdout)
+        assert plan["status"] == "complete" and plan["output"] == str(output)
+        assert plan["label"].startswith("PILOT")
+    assert "SYNTHETIC" in (output / "report.md").read_text()
+    alias = output_root / "synthetic-pilot-alias"
+    alias.symlink_to(output.name, target_is_directory=True)
+    before = {str(p.relative_to(output)): file_hash(p) for p in output.rglob("*") if p.is_file()}
+    entries = set(output_root.rglob("*"))
+
+    # The direct API and public CLI must reject the same unchanged owned target.
+    with pytest.raises(ValueError, match="destination cannot be a symlink"):
+        generate_report(path, alias, allow_pilot=True, regenerate=True)
+    result = subprocess.run([*command, "--run-id", alias.name, "--regenerate"], cwd=ROOT, capture_output=True, text=True)
+    assert result.returncode != 0 and "destination cannot be a symlink" in result.stderr
+    assert alias.is_symlink() and alias.readlink() == Path(output.name)
+    assert set(output_root.rglob("*")) == entries
+    assert {str(p.relative_to(output)): file_hash(p) for p in output.rglob("*") if p.is_file()} == before

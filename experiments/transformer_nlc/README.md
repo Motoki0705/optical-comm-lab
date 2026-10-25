@@ -140,7 +140,7 @@ BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを�
 
 全36予定runを表に残し、通常DSPをdataset/condition/seed/frameごとに一度だけ計数する。完全一致するbaseline重複だけを除外し、異なる計数は拒否する。Q合算とseed Q平均、独立bit計数区間とframe/seed変動、疎実装を仮定した理論RMPSとdense backendの実測資源を分ける。epoch capは未収束、未記録のmemory/latencyは未測定と表示する。resource proofは任意で、未入力を合格に読み替えない。
 
-同じrun-idへの通常出力は拒否する。`--regenerate`は、そのdirectoryがこのreportのmanifestで所有され、全出力hashが一致し、追加file/directoryがない場合だけ置き換える。変更済みの図や利用者の追加fileは削除しない。元入力とsource、既存ESN/Kerr reportへの出力は拒否する。CLIの`report`には変更すべき学習configやseedがないため、`--config`/`--seed`は受け取らない。再実行commandと図表のhashは`report-manifest.json`に残る。
+同じrun-idへの通常出力は拒否する。`--regenerate`は、そのdirectoryがこのreportのmanifestで所有され、全出力hashが一致し、追加file/directoryがない場合だけ置き換える。保存先run directory自体がsymlinkの場合は、CLI/APIともに`--regenerate`指定でも拒否する。変更済みの図や利用者の追加fileは削除しない。元入力とsource、既存ESN/Kerr reportへの出力は拒否する。CLIの`report`には変更すべき学習configやseedがないため、`--config`/`--seed`は受け取らない。再実行commandと図表のhashは`report-manifest.json`に残る。
 
 ## 今後の実行範囲と進行
 

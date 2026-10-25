@@ -9,7 +9,9 @@ import sys
 def _output(parser, args):
     if not args.run_id or Path(args.run_id).name != args.run_id or args.run_id in (".", ".."):
         parser.error("run-id must be one directory name")
-    return (args.output_root / args.run_id).resolve()
+    output = args.output_root / args.run_id
+    # The report guard must see a symlink run directory before resolving it.
+    return output if args.action == "report" else output.resolve()
 
 
 def _destination(parser):
