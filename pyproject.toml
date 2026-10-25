@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "optical-comm-lab"
 version = "0.1.0"
-description = "Reproducible software reservoir equalization of coherent optical links"
+description = "Reproducible experiments on coherent optical communication"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -23,7 +23,7 @@ spatial = ["scikit-image>=0.26,<0.27"]
 dev = ["pytest>=8.3,<10"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/optical_comm"]
+packages = ["src/optical_comm", "experiments"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
