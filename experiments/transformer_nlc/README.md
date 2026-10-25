@@ -86,6 +86,8 @@ maskの中心行はEq. 8の積形式とFig. 4を根拠に許可し、Algorithm 1
 
 production生成には一致した合格qualification artifactを`--qualification`で渡す。qualificationの計画・実行入口は`python -m experiments.transformer_nlc.data_cli qualify --help`。未資格をpilot扱いで通してproductionと称さない。production `sweep`は両条件×3replicateの6 manifestを要求し、固定36 trialsを全保存する。
 
+物理/DSPの契約、numerical-source fingerprint、実import位置の照合、専用qualificationの詳細は[data pipeline](docs/data-pipeline.md)を参照する。学習側はこの検査結果を再利用し、model/training/evaluationの実際にimportされたファイルが同じstudyに属することも照合する。wheelでも所在と内容hashを記録し、checkoutが混在したimportを拒否する。
+
 ```bash
 .venv/bin/python -m experiments.transformer_nlc sweep \
   --data-manifest artifacts/transformer-nlc/data-main16-r{0,1,2}/manifest.json \
@@ -104,6 +106,8 @@ production生成には一致した合格qualification artifactを`--qualificatio
 sweepの`--dry-run`を外した実行が完了した後にfreezeへ進む。freezeは36のbest-validation checkpointすべてとconfig/data/code hashを固定し、条件×maskごとに3replicateの平均validation MSEからprimaryを決める。同率は低RMPS、さらに同率なら候補表の下側。test配列はfreezeまで開かない。testではprimary以外も固定候補を全評価し、no-NLCは同一DSP・同一frameで一度だけ計数する。pilotの明示的なfreezeは`--allow-pilot`を要求し、本番の選択とは区別する。
 
 trainはX残差の中央b×2 MSE、validationは同一重みのXY swapによる両偏波平均MSE。有効batch512、Adam、10-epoch warmup後inverse-square-root、strict改善、patience100、production最大500 epochsを実効設定へ記録する。cap到達を収束とは呼ばない。failure/OOM/NaN・全attempt・途中epochの位置を残す。`--stop-after-epochs N`は設定のcapを変えずepoch境界で運用上のpauseを行い、`--resume`はlast completed epochへ戻る。途中epochの再実行はresume eventへ記録する。設定・data・実行コード・数値runtimeが不一致のresumeは拒否し、Adam/scheduler/PCG64/PyTorch RNGを復元する。
+
+記録済みOOM後に有効batchを保ってmicrobatchだけ小さくする場合、親が変更理由を決め、変更したTrainingConfigと`train --resume --microbatch-change-reason '理由'`を明示する。他の設定変更や理由なし変更は拒否する。元のbest checkpoint設定と変更履歴を別に保ち、sweep再開は手動回復済みの完了runを台帳へ照合できる。モデル初期化前にcheckpointを作れなかった失敗は`initialization-failures.json`を保存し、新run IDでの記録付き再試行とする。
 
 保存先は`artifacts/transformer-nlc/<run-id>/`。trainは`run.json`、`history.json`、`best.pt`、`latest.pt`、sweepは失敗を含む`ledger.json`、freezeは不変の`selection-freeze.json`、evaluateは`metrics.json`/`metrics.csv`とignored `bulk/`内の再計数用予測を保存する。入力source/data/checkpointと重なる出力、同runへの重複job、非resume上書きを拒否する。GPU許容差は設定に先に保存し、実測した再開検証と未検証を分ける。通常試験には小さな合成pilotでのCPU実学習対再開・test非読込・checkpoint reload・保存予測の独立Gray BER再計数を含める。
 

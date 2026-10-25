@@ -176,3 +176,80 @@ def test_fixed_config_budgets_scheduler_and_strict_unknowns(tmp_path):
         training_plan(TrainingConfig(), dataset)
     with pytest.raises(ValueError, match="fixed candidate"):
         TrainingConfig(model=tiny_training().model)
+
+
+def test_nonfinite_input_failure_is_persisted(tmp_path):
+    dataset = make_dataset(tmp_path / "data")
+    manifest = json.loads(dataset.read_text())
+    path = dataset.parent / "train.npz"
+    with np.load(path, allow_pickle=False) as archive:
+        arrays = {name: archive[name] for name in archive.files}
+    arrays["rx_nlc"][np.flatnonzero(arrays["scoring_mask"])[0], 0] = np.nan
+    atomic_npz(path, arrays)
+    manifest["frames"][0]["file_sha256"] = file_hash(path)
+    atomic_json(dataset, manifest)
+    with pytest.raises(FloatingPointError, match="Nonfinite data"):
+        train(tiny_training(), dataset, tmp_path / "failure")
+    record = json.loads((tmp_path / "failure/run.json").read_text())
+    assert record["status"] == "failed" and record["attempts"][0]["exception"] == "FloatingPointError"
+    assert load_checkpoint(tmp_path / "failure/latest.pt")["epoch"] == 0
+
+
+def test_sweep_records_all_failures_and_resume_settings(tmp_path, monkeypatch):
+    import experiments.transformer_nlc.training as module
+    dataset = make_dataset(tmp_path / "data")
+    # Fixed candidate b128 requires a larger whole-block synthetic pilot.
+    # Planning remains real; only a deliberate operational failure is injected.
+    monkeypatch.setattr(module, "training_plan", lambda *a, **k: {"fixture": "failure-only ledger exercise"})
+    def fail(*args, **kwargs):
+        raise RuntimeError("intentional unavailable execution resource")
+    monkeypatch.setattr(module, "train", fail)
+    ledger = module.sweep([dataset], tmp_path / "sweep", regime="pilot", max_epochs=1)
+    assert ledger["status"] == "incomplete" and len(ledger["trials"]) == 6
+    assert all(t["status"] == "failed" and len(t["attempts"]) == 1 for t in ledger["trials"])
+    resumed = module.sweep([dataset], tmp_path / "sweep", regime="pilot", max_epochs=1, resume=True)
+    assert all(len(t["attempts"]) == 2 and all(a["status"] == "failed" for a in t["attempts"]) for t in resumed["trials"])
+    with pytest.raises(ValueError, match="execution settings"):
+        module.sweep([dataset], tmp_path / "sweep", regime="pilot", max_epochs=1, microbatch_blocks=64, resume=True)
+
+
+def test_cli_dryrun_does_not_import_torch_or_create_output(tmp_path, monkeypatch, capsys):
+    import builtins
+    from experiments.transformer_nlc.__main__ import main
+    original = builtins.__import__
+    def import_guard(name, *args, **kwargs):
+        if name == "torch" or name.startswith("torch."):
+            raise AssertionError("dry-run imported torch")
+        return original(name, *args, **kwargs)
+    monkeypatch.setattr(builtins, "__import__", import_guard)
+    main(["generate", "--condition", "64", "--pilot", "--run-id", "never-created", "--output-root", str(tmp_path), "--dry-run"])
+    result = json.loads(capsys.readouterr().out)
+    assert result["condition"] == 64 and result["regime"] == "pilot"
+    assert not (tmp_path / "never-created").exists()
+    with pytest.raises(SystemExit):
+        main(["generate", "--scored-symbols", "128", "--run-id", "bad", "--dry-run"])
+
+
+def test_oom_recovery_requires_explicit_reason_and_preserves_effective_batch(tmp_path, monkeypatch):
+    import experiments.transformer_nlc.training as module
+    from experiments.transformer_nlc.evaluation import freeze_selection
+    dataset = make_dataset(tmp_path / "data")
+    config = tiny_training()
+    train(config, dataset, tmp_path / "run", stop_after_epochs=1)
+    original = module._train_epoch
+    def oom(*args, **kwargs):
+        raise torch.OutOfMemoryError("injected operational OOM at second epoch")
+    monkeypatch.setattr(module, "_train_epoch", oom)
+    with pytest.raises(torch.OutOfMemoryError):
+        train(config, dataset, tmp_path / "run", resume=True)
+    smaller = replace(config, microbatch_blocks=1)
+    with pytest.raises(ValueError, match="identity mismatch"):
+        train(smaller, dataset, tmp_path / "run", resume=True)
+    monkeypatch.setattr(module, "_train_epoch", original)
+    result = train(smaller, dataset, tmp_path / "run", resume=True, microbatch_change_reason="explicit resource recovery test")
+    event = result["resume_events"][-1]["microbatch_change"]
+    assert event["from"] == 2 and event["to"] == 1 and event["effective_batch_blocks"] == 3
+    assert result["optimizer_steps"] == 4
+    assert result["attempts"][-2]["oom"] is True
+    frozen = freeze_selection([tmp_path / "run"], tmp_path / "freeze.json", allow_pilot=True)
+    assert frozen["trials"][0]["operational_resume_events"][-1]["microbatch_change"] == event

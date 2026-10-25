@@ -11,7 +11,7 @@ import numpy as np
 from .checkpoint import (advisory_lock, code_identity, configure_runtime, device_lock,
                          load_checkpoint, protect_output, restore_rng, rng_state, save_checkpoint)
 from .data import (SCHEMA_VERSION, atomic_json, canonical_hash, file_hash, iter_blocks, load_frame,
-                   numerical_source_identity, validate_qualification)
+                   learning_seed_recipe, numerical_source_identity, validate_qualification)
 from .data_config import DataConfig
 from .training_config import CANDIDATES, TrainingConfig, fixed_trial_plan, learning_rate
 
@@ -26,6 +26,8 @@ def read_manifest(path: str | Path) -> tuple[Path, dict, DataConfig]:
     config = DataConfig.from_dict(manifest["config"])
     if manifest["config_sha256"] != canonical_hash(config.to_dict()):
         raise ValueError("Data configuration hash mismatch")
+    if canonical_hash(manifest["learning_seeds"]) != canonical_hash(learning_seed_recipe(config)):
+        raise ValueError("Learning seeds differ from the fixed independent-stream recipe")
     if not manifest.get("receiver_fixed_before_test_metrics") or manifest.get("test_metrics") != "not_computed":
         raise ValueError("Dataset must have frozen receiver and unopened test metrics")
     if config.regime == "production" and (manifest.get("qualification") or {}).get("status") != "passed":
@@ -145,7 +147,7 @@ def _validate(model, dataset: BlockDataset, config: TrainingConfig) -> float:
 
 
 def _train_epoch(model, optimizer, dataset: BlockDataset, order: np.ndarray,
-                 config: TrainingConfig, scheduler: dict, progress: dict) -> float:
+                 config: TrainingConfig, scheduler: dict, progress: dict, progress_callback=None) -> float:
     import torch
     total, count = 0., 0
     model.train()
@@ -175,12 +177,15 @@ def _train_epoch(model, optimizer, dataset: BlockDataset, order: np.ndarray,
         if any(not torch.all(torch.isfinite(parameter)).item() for parameter in model.parameters()):
             raise FloatingPointError("Nonfinite updated parameter")
         progress.update(optimizer_step=scheduler["step"], sampler_cursor=offset + len(effective), microbatch_position=0)
+        if progress_callback is not None:
+            progress_callback()
     return total / count
 
 
 def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | Path, *,
           resume: bool = False, command: list[str] | None = None,
-          stop_after_epochs: int | None = None, gpu_lock: str | Path | None = None) -> dict:
+          stop_after_epochs: int | None = None, gpu_lock: str | Path | None = None,
+          microbatch_change_reason: str | None = None) -> dict:
     """Train or restart without resetting Adam, scheduler, sampler or RNG.
 
     stop_after_epochs is an explicit operational pause used for restart tests
@@ -193,6 +198,8 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
     output = protect_output(output_dir, [manifest_path.parent])
     if stop_after_epochs is not None and (type(stop_after_epochs) is not int or stop_after_epochs < 1):
         raise ValueError("stop_after_epochs must be positive")
+    if microbatch_change_reason is not None and (not resume or not microbatch_change_reason.strip()):
+        raise ValueError("A microbatch change reason requires --resume and a nonempty explanation")
     output.mkdir(parents=True, exist_ok=True)
     with advisory_lock(output / ".training.lock"), device_lock(config.device, gpu_lock):
         existing = [p for p in output.iterdir() if p.name != ".training.lock"]
@@ -211,9 +218,18 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
             torch.cuda.reset_peak_memory_stats(config.device)
         generator = np.random.Generator(np.random.PCG64())
         generator.bit_generator.state = deepcopy(seeds["shuffle"]["PCG64_initial_state"])
-        model = TransformerNLC(config.model).to(config.device)
-        optimizer = torch.optim.Adam(model.parameters(), lr=config.max_lr, betas=config.adam_betas,
-                                     eps=config.adam_eps, weight_decay=config.weight_decay)
+        try:
+            model = TransformerNLC(config.model).to(config.device)
+            optimizer = torch.optim.Adam(model.parameters(), lr=config.max_lr, betas=config.adam_betas,
+                                         eps=config.adam_eps, weight_decay=config.weight_decay)
+        except BaseException as exc:
+            path = output / "initialization-failures.json"
+            failures = json.loads(path.read_text()) if path.exists() else []
+            failures.append({"status": "failed", "stage": "model_optimizer_initialization", "config": config.to_dict(),
+                "identities": identities, "runtime": runtime, "exception": type(exc).__name__, "message": str(exc),
+                "oom": isinstance(exc, torch.OutOfMemoryError), "time_unix": time.time()})
+            atomic_json(path, failures)
+            raise
         scheduler = {"step": 0, "warmup_steps": plan["warmup_steps"], "max_lr": config.max_lr}
         history, best, stale, epoch = [], None, 0, 0
         progress = {"epoch_in_progress": None, "optimizer_step": 0, "sampler_cursor": 0, "microbatch_position": 0}
@@ -226,9 +242,26 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
                                        "GPU_rtol": config.gpu_resume_rtol, "GPU_verification": "not_run"}}
         if resume:
             state = load_checkpoint(output / "latest.pt")
-            if state["identities"] != identities:
-                raise ValueError("Resume config/data/code/runtime identity mismatch")
             record = json.loads(run_path.read_text())
+            adjusted_microbatch = False
+            if state["identities"] != identities:
+                previous_config = dict(state["config"])
+                requested_config = config.to_dict()
+                old_micro = previous_config.pop("microbatch_blocks")
+                new_micro = requested_config.pop("microbatch_blocks")
+                matching_environment = {k: v for k, v in state["identities"].items() if k != "config_sha256"} == {
+                    k: v for k, v in identities.items() if k != "config_sha256"}
+                previous_oom = bool(record.get("attempts") and record["attempts"][-1].get("oom"))
+                adjusted_microbatch = bool(microbatch_change_reason and previous_oom and new_micro < old_micro
+                    and canonical_hash(previous_config) == canonical_hash(requested_config) and matching_environment)
+                if not adjusted_microbatch:
+                    raise ValueError("Resume config/data/code/runtime identity mismatch")
+            elif microbatch_change_reason is not None:
+                raise ValueError("Microbatch change reason supplied but no configuration change occurred")
+            for old_attempt in record["attempts"]:
+                if old_attempt["status"] == "running":
+                    old_attempt.update(status="interrupted", detected_on_resume_unix=time.time(),
+                                       reason="previous_process_ended_without_final_status")
             model.load_state_dict(state["model"])
             optimizer.load_state_dict(state["optimizer"])
             scheduler = state["scheduler"]
@@ -238,7 +271,13 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
             record.setdefault("resume_events", []).append({"from_completed_epoch": epoch,
                 "discarded_partial_epoch": prior.get("epoch_in_progress"),
                 "discarded_optimizer_steps": max(0, prior.get("optimizer_step", scheduler["step"]) - scheduler["step"]),
+                "discarded_step_count_scope": "exact_at_caught_exception" if record.get("progress_durability") == "caught_exception" else "lower_bound_from_last_durable_optimizer_boundary",
                 "policy": "rollback_to_last_completed_epoch", "time_unix": time.time()})
+            if adjusted_microbatch:
+                record["resume_events"][-1].update(microbatch_change={"from": old_micro, "to": new_micro,
+                    "reason": microbatch_change_reason, "effective_batch_blocks": config.effective_batch_blocks,
+                    "cause": "recorded_OOM", "CPU_bitwise_equivalence_claim": False})
+                record.update(config=config.to_dict(), plan=plan, identities=identities)
             if best is not None and not (output / "best.pt").is_file():
                 if history[-1]["improved"]:
                     save_checkpoint(output / "best.pt", state)
@@ -257,7 +296,7 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
             progress.update(optimizer_step=scheduler["step"])
         attempt = {"started_unix": time.time(), "from_epoch": epoch, "from_optimizer_step": scheduler["step"], "status": "running"}
         record["attempts"].append(attempt)
-        record.update(status="in_progress", history=history, progress=progress)
+        record.update(status="in_progress", history=history, progress=progress, progress_durability="completed_optimizer_boundary")
         atomic_json(run_path, record)
         def snapshot(order=None):
             return {"schema": "transformer-checkpoint-v1", "model": model.state_dict(),
@@ -283,7 +322,8 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
                 atomic_json(run_path, record)
                 started = time.perf_counter()
                 order = generator.permutation(len(train_data))
-                train_loss = _train_epoch(model, optimizer, train_data, order, config, scheduler, progress)
+                train_loss = _train_epoch(model, optimizer, train_data, order, config, scheduler, progress,
+                                         progress_callback=lambda: atomic_json(run_path, record))
                 validation_loss = _validate(model, validation_data, config)
                 if config.device.startswith("cuda"):
                     torch.cuda.synchronize(config.device)
@@ -320,8 +360,9 @@ def train(config: TrainingConfig, data_manifest: str | Path, output_dir: str | P
         except BaseException as exc:
             attempt.update(status="interrupted" if isinstance(exc, KeyboardInterrupt) else "failed",
                            ended_unix=time.time(), exception=type(exc).__name__, message=str(exc),
-                           traceback=traceback.format_exc(), progress=deepcopy(progress))
-            record.update(status=attempt["status"], stop_reason=attempt["status"], progress=progress, history=history)
+                           traceback=traceback.format_exc(), progress=deepcopy(progress), oom=isinstance(exc, torch.OutOfMemoryError))
+            record.update(status=attempt["status"], stop_reason=attempt["status"], progress=progress, history=history,
+                          progress_durability="caught_exception")
             atomic_json(run_path, record)
             raise
 
@@ -347,15 +388,26 @@ def sweep(data_manifests: list[str | Path], output_dir: str | Path, *, device="c
     with advisory_lock(output / ".sweep.lock"):
         ledger_path = output / "ledger.json"
         identity = {str(key): file_hash(path) for key, path in lookup.items()}
+        execution = {"regime": regime, "device": device, "max_epochs": max_epochs or (500 if regime == "production" else 5),
+                     "microbatch_blocks": microbatch_blocks, "effective_batch_blocks": 512}
+        for entry in plan:
+            config = TrainingConfig(condition=entry["condition"], candidate=entry["candidate"], masked=entry["masked"],
+                device=device, regime=regime, max_epochs=execution["max_epochs"], microbatch_blocks=microbatch_blocks)
+            training_plan(config, lookup[(entry["condition"], entry["replicate"])])
         ledger = {"schema": "transformer-sweep-v1", "regime": regime, "fixed_production_budget": 36,
-                  "data_identities": identity, "trials": [{**entry, "status": "pending"} for entry in plan]}
+                  "execution": execution, "data_identities": identity,
+                  "trials": [{**entry, "status": "pending", "attempts": []} for entry in plan]}
         if ledger_path.exists():
             if not resume:
                 raise FileExistsError("Sweep exists; --resume is required")
             old = json.loads(ledger_path.read_text())
             if old["data_identities"] != identity or [{k: t[k] for k in plan[0]} for t in old["trials"]] != plan:
                 raise ValueError("Sweep data/trial inventory changed")
+            if old.get("execution") != execution:
+                raise ValueError("Sweep resume execution settings changed")
             ledger = old
+        elif any(p.name != ".sweep.lock" for p in output.iterdir()):
+            raise FileExistsError("Sweep output contains files without a ledger")
         atomic_json(ledger_path, ledger)
         for entry in ledger["trials"]:
             if entry["status"] == "complete":
@@ -364,6 +416,27 @@ def sweep(data_manifests: list[str | Path], output_dir: str | Path, *, device="c
                                     device=device, regime=regime, max_epochs=max_epochs or (500 if regime == "production" else 5),
                                     microbatch_blocks=microbatch_blocks)
             directory = output / entry["trial_id"]
+            if resume and (directory / "run.json").exists():
+                recovered = json.loads((directory / "run.json").read_text())
+                before, after = config.to_dict(), dict(recovered["config"])
+                configured_micro, recovered_micro = before.pop("microbatch_blocks"), after.pop("microbatch_blocks")
+                operational_change = configured_micro == recovered_micro or any(
+                    event.get("microbatch_change", {}).get("to") == recovered_micro for event in recovered.get("resume_events", []))
+                if (recovered["status"] == "complete" and canonical_hash(before) == canonical_hash(after) and operational_change
+                    and recovered["identities"]["data_manifest_sha256"] == file_hash(lookup[(entry["condition"], entry["replicate"])])
+                    and recovered["identities"]["code_content_sha256"] == code_identity()["content_sha256"]
+                    and all(file_hash(directory / c["path"]) == c["sha256"] for c in recovered.get("checkpoints", {}).values())):
+                    entry.setdefault("attempts", []).append({"status": "complete", "reconciled_completed_run": True,
+                        "microbatch_blocks": recovered_micro, "time_unix": time.time()})
+                    entry.update(status="complete", output=str(directory), best_validation_mse=recovered["best_validation_mse"],
+                        stop_reason=recovered["stop_reason"], run_sha256=file_hash(directory / "run.json"))
+                    atomic_json(ledger_path, ledger)
+                    continue
+            for old_attempt in entry["attempts"]:
+                if old_attempt["status"] == "running":
+                    old_attempt.update(status="interrupted", detected_on_resume_unix=time.time())
+            attempt = {"status": "running", "started_unix": time.time()}
+            entry["attempts"].append(attempt)
             entry.update(status="running", output=str(directory))
             atomic_json(ledger_path, ledger)
             try:
@@ -371,12 +444,15 @@ def sweep(data_manifests: list[str | Path], output_dir: str | Path, *, device="c
                                resume=resume and (directory / "latest.pt").exists(), command=command)
                 entry.update(status=result["status"], best_validation_mse=result["best_validation_mse"],
                              stop_reason=result["stop_reason"], run_sha256=file_hash(directory / "run.json"))
+                attempt.update(status=result["status"], ended_unix=time.time())
             except KeyboardInterrupt:
                 entry["status"] = "interrupted"
+                attempt.update(status="interrupted", ended_unix=time.time())
                 atomic_json(ledger_path, ledger)
                 raise
             except Exception as exc:
                 entry.update(status="failed", exception=type(exc).__name__, message=str(exc))
+                attempt.update(status="failed", exception=type(exc).__name__, message=str(exc), ended_unix=time.time())
             atomic_json(ledger_path, ledger)
         ledger["status"] = "complete" if all(t["status"] == "complete" for t in ledger["trials"]) else "incomplete"
         atomic_json(ledger_path, ledger)

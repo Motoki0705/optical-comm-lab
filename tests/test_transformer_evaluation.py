@@ -82,3 +82,24 @@ def test_freeze_rejects_paused_run_and_checkpoint_tampering(tmp_path):
     checkpoint.write_bytes(checkpoint.read_bytes() + b"changed")
     with pytest.raises(ValueError, match="Checkpoint hash"):
         evaluate(tmp_path / "freeze.json", tmp_path / "evaluation")
+
+
+def test_primary_uses_all_replicates_and_fixed_table_tie(tmp_path):
+    directories = []
+    scores = []
+    for replicate in range(3):
+        dataset = make_dataset(tmp_path / f"data-{replicate}", replicate=replicate)
+        for candidate in ("A", "B", "C"):
+            # Deliberately identical small pilot architecture/seed across names:
+            # scores and RMPS tie exactly, testing the fixed lower-table rule.
+            config = tiny_training(max_epochs=1, candidate=candidate)
+            directory = tmp_path / f"{candidate}-{replicate}"
+            record = train(config, dataset, directory)
+            directories.append(directory)
+            if candidate == "C":
+                scores.append(record["best_validation_mse"])
+    frozen = freeze_selection(directories, tmp_path / "freeze.json", allow_pilot=True)
+    assert len(frozen["primary"]) == 1
+    selected = frozen["primary"][0]
+    assert selected["candidate"] == "C" and selected["replicates"] == [0, 1, 2]
+    assert selected["mean_validation_mse"] == np.mean(scores)

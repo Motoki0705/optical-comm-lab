@@ -39,6 +39,7 @@ def main(argv=None) -> int:
     train_parser.add_argument("--device")
     train_parser.add_argument("--resume", action="store_true")
     train_parser.add_argument("--stop-after-epochs", type=int, help="Operational pause at completed epoch, without changing cap")
+    train_parser.add_argument("--microbatch-change-reason", help="Explicit reason for smaller microbatch after a recorded OOM; requires resume")
     sweep_parser = sub.add_parser("sweep", help="Finite principal ledger: 36 production trials, no adaptive search")
     _destination(sweep_parser)
     sweep_parser.add_argument("--data-manifest", type=Path, nargs="+", required=True)
@@ -105,11 +106,16 @@ def main(argv=None) -> int:
             config = replace(config, device=args.device)
         if args.seed is not None and read_manifest(args.data_manifest)[2].replicate != args.seed:
             parser.error("--seed must match the fixed dataset replicate; generate its independent dataset first")
+        if args.stop_after_epochs is not None and args.stop_after_epochs < 1:
+            parser.error("--stop-after-epochs must be positive")
+        if args.microbatch_change_reason is not None and (not args.resume or not args.microbatch_change_reason.strip()):
+            parser.error("--microbatch-change-reason requires --resume and a nonempty reason")
         result = training_plan(config, args.data_manifest) | {"output": str(output), "resume": args.resume,
-                                                            "stop_after_epochs": args.stop_after_epochs}
+                                                            "stop_after_epochs": args.stop_after_epochs,
+                                                            "microbatch_change_reason": args.microbatch_change_reason}
         if not args.dry_run:
             record = train(config, args.data_manifest, output, resume=args.resume, command=command,
-                           stop_after_epochs=args.stop_after_epochs)
+                           stop_after_epochs=args.stop_after_epochs, microbatch_change_reason=args.microbatch_change_reason)
             result = {"status": record["status"], "run": str(output / "run.json"), "epochs": record["completed_epochs"],
                       "optimizer_steps": record["optimizer_steps"], "stop_reason": record["stop_reason"]}
     elif args.action == "sweep":

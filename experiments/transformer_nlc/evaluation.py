@@ -47,7 +47,16 @@ def freeze_selection(run_directories: list[str | Path], output_path: str | Path,
             raise ValueError("Training dataset changed before freeze")
         checkpoint = directory / record["checkpoints"]["best"]["path"]
         state = load_checkpoint(checkpoint, expected_sha256=record["checkpoints"]["best"]["sha256"])
-        if state["identities"] != record["identities"] or state["epoch"] != record["best_epoch"]:
+        if canonical_hash(state["config"]) != state["identities"]["config_sha256"] or canonical_hash(record["config"]) != record["identities"]["config_sha256"]:
+            raise ValueError("Training/checkpoint configuration hash mismatch")
+        checkpoint_config, final_config = dict(state["config"]), dict(record["config"])
+        checkpoint_micro, final_micro = checkpoint_config.pop("microbatch_blocks"), final_config.pop("microbatch_blocks")
+        approved_micro_change = checkpoint_micro == final_micro or any(
+            event.get("microbatch_change", {}).get("to") == final_micro for event in record.get("resume_events", []))
+        same_identities = {k: v for k, v in state["identities"].items() if k != "config_sha256"} == {
+            k: v for k, v in record["identities"].items() if k != "config_sha256"}
+        if (not same_identities or not approved_micro_change or canonical_hash(checkpoint_config) != canonical_hash(final_config)
+            or state["epoch"] != record["best_epoch"]):
             raise ValueError("Best checkpoint does not match run identity/selection")
         if state["best_validation_mse"] != record["best_validation_mse"] or not math.isfinite(state["best_validation_mse"]):
             raise ValueError("Nonfinite or inconsistent selection score")
@@ -59,6 +68,8 @@ def freeze_selection(run_directories: list[str | Path], output_path: str | Path,
             "replicate": data_config.replicate, "regime": config.regime, "run_directory": str(directory),
             "run_sha256": file_hash(directory / "run.json"), "checkpoint": str(checkpoint),
             "checkpoint_sha256": file_hash(checkpoint), "config": config.to_dict(),
+            "checkpoint_config": state["config"], "checkpoint_config_sha256": state["identities"]["config_sha256"],
+            "operational_resume_events": record.get("resume_events", []),
             "config_sha256": record["identities"]["config_sha256"], "best_epoch": state["epoch"],
             "validation_mse": state["best_validation_mse"], "data_manifest": str(path),
             "data_manifest_sha256": file_hash(path), "data_config_sha256": data["config_sha256"],
@@ -68,6 +79,11 @@ def freeze_selection(run_directories: list[str | Path], output_path: str | Path,
     keys = [(r["condition"], r["candidate"], r["masked"], r["replicate"]) for r in records]
     if len(keys) != len(set(keys)):
         raise ValueError("Duplicate frozen trial")
+    common_data = defaultdict(set)
+    for record in records:
+        common_data[(record["condition"], record["replicate"])].add(record["data_manifest_sha256"])
+    if any(len(values) != 1 for values in common_data.values()):
+        raise ValueError("Every candidate/mask pair in one condition/replicate must share the same frozen dataset")
     production = all(r["regime"] == "production" for r in records)
     if any(r["regime"] == "production" for r in records) and not production:
         raise ValueError("Cannot mix pilot and production freezes")
@@ -176,6 +192,16 @@ def evaluate(freeze_path: str | Path, output_dir: str | Path, *, device="cpu", c
         raise ValueError("Evaluation requires an explicit immutable selection freeze")
     if freeze["source"]["content_sha256"] != code_identity()["content_sha256"]:
         raise ValueError("Executable code differs from selection freeze")
+    if not freeze.get("trials"):
+        raise ValueError("Freeze contains no trials")
+    # Verify the entire inventory before opening even the first test frame.
+    # A defect in a later candidate must not cause a partial test unsealing.
+    for trial in freeze["trials"]:
+        if file_hash(trial["data_manifest"]) != trial["data_manifest_sha256"] or file_hash(Path(trial["run_directory"]) / "run.json") != trial["run_sha256"]:
+            raise ValueError("Frozen dataset/training run identity changed")
+        if file_hash(trial["checkpoint"]) != trial["checkpoint_sha256"]:
+            raise ValueError("Checkpoint hash mismatch")
+        read_manifest(trial["data_manifest"])
     inputs = [freeze_path] + [t["run_directory"] for t in freeze["trials"]] + [Path(t["data_manifest"]).parent for t in freeze["trials"]]
     output = protect_output(output_dir, inputs)
     ensure_bulk_ignored(output)
@@ -196,7 +222,8 @@ def evaluate(freeze_path: str | Path, output_dir: str | Path, *, device="cpu", c
                     raise ValueError("Frozen dataset/training run identity changed")
                 path, manifest, data_config = read_manifest(trial["data_manifest"])
                 state = load_checkpoint(trial["checkpoint"], expected_sha256=trial["checkpoint_sha256"])
-                if state["identities"]["config_sha256"] != trial["config_sha256"] or canonical_hash(state["config"]) != canonical_hash(trial["config"]):
+                if (state["identities"]["config_sha256"] != trial["checkpoint_config_sha256"]
+                    or canonical_hash(state["config"]) != canonical_hash(trial["checkpoint_config"])):
                     raise ValueError("Frozen checkpoint configuration mismatch")
                 config_values = {**trial["config"], "device": device}
                 config = TrainingConfig.from_dict(config_values)

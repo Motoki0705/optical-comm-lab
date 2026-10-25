@@ -9,7 +9,7 @@ if importlib.util.find_spec("torch") is None:
     pytest.skip("optional torch extra is absent", allow_module_level=True)
 import torch
 
-from experiments.transformer_nlc.checkpoint import advisory_lock, load_checkpoint, protect_output, save_checkpoint
+from experiments.transformer_nlc.checkpoint import advisory_lock, code_identity, load_checkpoint, protect_output, save_checkpoint
 
 
 def _hold_lock(path, ready):
@@ -56,3 +56,15 @@ def test_output_cannot_overwrite_source_or_input(tmp_path):
         protect_output(tmp_path, [tmp_path / "data/manifest.json"])
     with pytest.raises(ValueError, match="protected input"):
         protect_output(tmp_path / "data/evaluation", [tmp_path / "data"])
+
+
+def test_learning_source_identity_rejects_mixed_imported_model(tmp_path, monkeypatch):
+    import experiments.transformer_nlc.model as model
+    identity = code_identity()
+    assert identity["source_layout"]["kind"] == "source_checkout"
+    assert "experiments/transformer_nlc/evaluation.py" in identity["files"]
+    foreign = tmp_path / "model.py"
+    foreign.write_text(Path(model.__file__).read_text())
+    monkeypatch.setattr(model, "__file__", str(foreign))
+    with pytest.raises(ValueError, match="Mixed training imports"):
+        code_identity()

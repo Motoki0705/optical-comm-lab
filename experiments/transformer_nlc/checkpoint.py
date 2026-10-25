@@ -1,18 +1,17 @@
 """Atomic checkpoints and explicit code/runtime identities; torch imports lazily."""
 from contextlib import contextmanager
 import fcntl
-import importlib.util
+import importlib
 import os
 from pathlib import Path
 import platform
-import subprocess
 import sys
 import tempfile
 
 import numpy as np
 import scipy
 
-from .data import NUMERICAL_SOURCE_PATHS, canonical_hash, file_hash
+from .data import canonical_hash, file_hash, source_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -54,35 +53,37 @@ def code_identity() -> dict:
     README/report additions do not change a model's numerical source identity.
     Git/dependency-lock observations remain literal provenance when available.
     """
-    names = ("__init__.py", "__main__.py", "model.py", "model_config.py", "mask.py", "complexity.py",
-             "training_config.py", "training.py", "evaluation.py", "checkpoint.py")
-    paths = sorted(set(NUMERICAL_SOURCE_PATHS) | {f"experiments/transformer_nlc/{name}" for name in names})
-    hashes = {}
-    for relative in paths:
-        if relative.startswith("src/"):
-            module = relative[4:-3].replace("/", ".")
-            spec = importlib.util.find_spec(module)
-            if spec is None or spec.origin is None:
-                raise RuntimeError(f"Source dependency unavailable: {module}")
-            source = Path(spec.origin)
-        else:
-            source = Path(__file__).parent / Path(relative).name
-        hashes[relative] = file_hash(source)
+    base = source_identity()
+    layout = base["source_layout"]
+    anchor = Path(layout["module_paths"]["experiments/transformer_nlc/data.py"]).parent
+    names = ("model", "model_config", "mask", "complexity",
+             "training_config", "training", "evaluation", "checkpoint")
+    hashes = dict(base["files"])
+    paths = dict(layout["module_paths"])
+    for name in ("", *names):
+        module = importlib.import_module(f"experiments.transformer_nlc{'.' + name if name else ''}")
+        actual = Path(module.__file__).resolve()
+        if actual.parent != anchor or actual.suffix != ".py" or not actual.is_file():
+            raise ValueError(f"Mixed training imports: {module.__name__} belongs to a different study tree")
+        logical = f"experiments/transformer_nlc/{name or '__init__'}.py"
+        paths[logical] = str(actual)
+        hashes[logical] = file_hash(actual)
     result = {"scope_version": "transformer-training-source-v1", "files": hashes,
               "content_sha256": canonical_hash({"scope_version": "transformer-training-source-v1", "files": hashes}),
-              "dependency_locks": {p.name: file_hash(p) for p in (ROOT / "pyproject.toml", ROOT / "uv.lock") if p.is_file()}}
-    try:
-        result.update(commit=subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).strip(),
-                      dirty_status=subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True, stderr=subprocess.DEVNULL).splitlines(),
-                      provenance_kind="git_checkout")
-    except (subprocess.CalledProcessError, FileNotFoundError):
-        result.update(commit=None, dirty_status=None, provenance_kind="installed_source_without_git_metadata")
+              "source_layout": {**layout, "module_paths": paths},
+              "observed_provenance": base["observed_provenance"],
+              "guard_exclusions": "CLI dispatch, prose, report modules; observed hashes retained, resolved configs guarded",
+              "dependency_locks": {name: digest for name, digest in base["observed_provenance"]["files"].items()
+                                   if name in ("pyproject.toml", "uv.lock")},
+              "commit": base["commit"], "dirty_status": base["dirty_status"], "provenance_kind": layout["kind"]}
     return result
 
 
 def configure_runtime(config) -> dict:
     import torch
     torch.set_num_threads(config.cpu_threads)
+    torch.set_default_dtype(torch.float32)
+    torch.set_float32_matmul_precision("highest")
     torch.use_deterministic_algorithms(config.deterministic)
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
@@ -101,10 +102,13 @@ def runtime_identity(device: str) -> dict:
     result = {"python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__, "torch": torch.__version__,
               "device": device, "dtype": "float32", "physical_dtype": "complex128",
               "cpu_threads": torch.get_num_threads(), "deterministic": torch.are_deterministic_algorithms_enabled(),
+              "default_dtype": str(torch.get_default_dtype()), "float32_matmul_precision": torch.get_float32_matmul_precision(),
               "cuda_build": torch.version.cuda, "cudnn": torch.backends.cudnn.version(),
               "tf32": torch.backends.cuda.matmul.allow_tf32,
               "CUBLAS_WORKSPACE_CONFIG": os.environ.get("CUBLAS_WORKSPACE_CONFIG"),
               "attention_backend": "torch.scaled_dot_product_attention dense dispatcher",
+              "SDPA_backends": {"flash": torch.backends.cuda.flash_sdp_enabled(), "math": torch.backends.cuda.math_sdp_enabled(),
+                                "memory_efficient": torch.backends.cuda.mem_efficient_sdp_enabled()},
               "platform": platform.platform(), "byteorder": sys.byteorder}
     if device.startswith("cuda"):
         properties = torch.cuda.get_device_properties(device)
