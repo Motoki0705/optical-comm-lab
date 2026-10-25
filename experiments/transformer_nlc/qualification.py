@@ -16,9 +16,9 @@ import numpy as np
 from optical_comm.channel import ase_noise, edfa_ase_psd, propagate_link_adaptive
 from optical_comm.dsp import apply_dispersion, pulse_shape, receiver_dsp
 from optical_comm.metrics import bits_to_symbols, symbols_to_bits, compute_metrics, gray_qam_awgn_ber, ber_interval
-from experiments.transformer_nlc.data_config import DataConfig, main16, main64
+from experiments.transformer_nlc.data_config import DataConfig, main16, main64, scientific_contract
 from experiments.transformer_nlc.data import (PhysicalFrame, atomic_json, atomic_npz, canonical_hash,
-    file_hash, load_frame, seed_sequence, simulate_physical_frame, source_identity, run_lock, environment_identity, ensure_bulk_ignored)
+    file_hash, load_frame, seed_sequence, simulate_physical_frame, source_identity, run_lock, environment_identity, ensure_bulk_ignored, numeric_runtime, SOURCE_SCOPE_VERSION, QUALIFICATION_SCHEMA_VERSION)
 from experiments.transformer_nlc.receiver import fit_receiver, select_receiver_window
 
 CASES = ("baseline", "phase", "sps", "frame", "guard", "rrc")
@@ -154,18 +154,29 @@ def _run_qualification(condition: int, output_dir: str | Path, *, backend: str =
     report_path = output/"qualification.json"
     source = source_identity()
     configs = qualification_cases(condition)
+    contract = scientific_contract(configs["baseline"])
+    environment = environment_identity(backend)
+    runtime = numeric_runtime(environment, backend)
     if report_path.exists():
         if not resume:
             raise FileExistsError("Qualification exists; use --resume for additional cases")
         report = json.loads(report_path.read_text())
-        if report["source_content_sha256"] != source["content_sha256"] or report["condition"] != condition or report["backend"] != backend:
-            raise ValueError("Qualification resume source/condition/backend mismatch")
+        if (report.get("schema") != QUALIFICATION_SCHEMA_VERSION
+            or report.get("source_scope_version") != SOURCE_SCOPE_VERSION
+            or report["source_content_sha256"] != source["content_sha256"] or report["condition"] != condition
+            or report.get("scientific_contract") != contract
+            or report.get("scientific_contract_sha256") != canonical_hash(contract)
+            or report.get("numeric_runtime") != runtime):
+            raise ValueError("Qualification resume schema/source/scientific contract/numeric runtime/backend mismatch")
     else:
-        report = {"schema":"transformer-qualification-v1","status":"incomplete","condition":condition,
-            "source_content_sha256":source["content_sha256"],"source":source,"backend":backend,"environment":environment_identity(backend),
+        report = {"schema":QUALIFICATION_SCHEMA_VERSION,"status":"incomplete","condition":condition,
+            "source_scope_version":SOURCE_SCOPE_VERSION,
+            "source_content_sha256":source["content_sha256"],"source":source,"backend":backend,"environment":environment,
+            "numeric_runtime":runtime,"scientific_contract":contract,"scientific_contract_sha256":canonical_hash(contract),
             "physical_config_sha256":canonical_hash(configs["baseline"].link.to_dict()),
             "phase_max_deg":configs["baseline"].phase_max_deg,"plan":qualification_plan((condition,),frames),
             "analytic_controls":analytic_controls(condition,backend=backend),"frames":{},"comparisons":{}}
+    atomic_json(report_path,report)
     bulk = output/"bulk"; bulk.mkdir(exist_ok=True)
     # All cases use the complete reference geometry, even when executing a subset.
     for case in cases:

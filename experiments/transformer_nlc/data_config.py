@@ -124,3 +124,28 @@ def pilot_config(condition: int = 16, *, scored_symbols: int = 4096,
         guard_symbols=guard_symbols, pilot_symbols=pilot_symbols,
         train_frames=1, validation_frames=1, test_frames=1,
         link=replace(reference.link, guard_symbols=guard_symbols))
+
+
+SCIENTIFIC_CONTRACT_VERSION = "transformer-data-science-v1"
+
+
+def scientific_contract(config: DataConfig) -> dict[str, Any]:
+    """Numerical/receiver geometry qualified before production generation.
+
+    Regime, split counts, replicate/seed, storage choices and output locations
+    are excluded: independent production streams legitimately differ from the
+    dedicated qualification streams. Every physical or fitted-DSP input is
+    included, including the full LinkConfig and maximum/minimum SSFM bounds.
+    """
+    return {"schema": SCIENTIFIC_CONTRACT_VERSION,
+        "condition": config.condition, "launch_power_dbm_XY_total": config.launch_power_dbm,
+        "link": config.link.to_dict(),
+        "geometry": {"scored_symbols": config.scored_symbols, "guard_symbols_per_side": config.guard_symbols,
+            "pilot_symbols_per_side": config.pilot_symbols, "context_symbols_per_side": config.context_symbols,
+            "regions": ["guard", "pilot", "context", "scored", "context", "pilot", "guard"]},
+        "adaptive_SSFM": {"phase_max_deg": config.phase_max_deg, "min_step_km": config.min_step_km,
+            "max_step_km": config.link.step_km},
+        "receiver": {"equalizer_taps": config.equalizer_taps, "ridge_relative": config.ridge_relative,
+            "bps_windows": list(config.bps_windows), "bps_phases": config.bps_phases,
+            "FIR_fit": "dedicated_train_pilots_only", "CR_selection": "validation_BER_then_MSE",
+            "frame_calibration": "dedicated_pilot_gain_before_and_after_blind_phase_search"}}

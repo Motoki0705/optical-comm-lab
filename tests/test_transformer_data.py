@@ -117,9 +117,10 @@ def test_production_gate_and_duplicate_job_lock(tmp_path):
     with pytest.raises(ValueError,match="qualification"):
         generate(main16(),tmp_path/"production")
     output = tmp_path/"locked"; output.mkdir()
-    (output/".generation.lock").write_text("123")
-    with pytest.raises(FileExistsError):
-        generate(tiny_config(),output,resume=True)
+    from experiments.transformer_nlc.data import run_lock
+    with run_lock(output):
+        with pytest.raises(FileExistsError):
+            generate(tiny_config(),output,resume=True)
 
 
 def test_qualification_is_separate_one_factor_plan_and_common_noise():
@@ -144,3 +145,167 @@ def test_reproducible_analytic_qualification_controls(condition):
     result = analytic_controls(condition)
     assert result["status"] == "passed"
     assert result["CPU_GPU"]["status"] == "not_run"
+
+
+
+def test_numerical_fingerprint_ignores_unrelated_model_reports_and_locks(tmp_path):
+    from pathlib import Path
+    from experiments.transformer_nlc.data import numerical_source_identity, NUMERICAL_SOURCE_PATHS
+    root = Path(__file__).resolve().parents[1]
+    for relative in NUMERICAL_SOURCE_PATHS:
+        path = tmp_path / relative
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_bytes((root/relative).read_bytes())
+    before = numerical_source_identity(tmp_path)
+    for relative in ("experiments/transformer_nlc/model.py", "experiments/transformer_nlc/training.py",
+                     "experiments/transformer_nlc/docs/report.md", "pyproject.toml", "uv.lock"):
+        path = tmp_path/relative
+        path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text("unrelated addition or optional Torch dependency change\n")
+    assert numerical_source_identity(tmp_path) == before
+    # Every declared contributor affects the fingerprint, including config.
+    for relative in NUMERICAL_SOURCE_PATHS:
+        path = tmp_path/relative
+        original = path.read_bytes()
+        path.write_bytes(original+b"\n# actual contributing source change\n")
+        assert numerical_source_identity(tmp_path)["content_sha256"] != before["content_sha256"]
+        path.write_bytes(original)
+    assert numerical_source_identity(tmp_path) == before
+
+
+def passing_gate_fixture(config):
+    from experiments.transformer_nlc.data import (source_identity, canonical_hash,
+        QUALIFICATION_SCHEMA_VERSION, SOURCE_SCOPE_VERSION)
+    from experiments.transformer_nlc.data_config import scientific_contract
+    contract = scientific_contract(config)
+    return {"schema":QUALIFICATION_SCHEMA_VERSION,"status":"passed","condition":config.condition,
+        "source_scope_version":SOURCE_SCOPE_VERSION,"source_content_sha256":source_identity()["content_sha256"],
+        "scientific_contract":contract,"scientific_contract_sha256":canonical_hash(contract)}
+
+
+def test_complete_qualification_contract_and_prewrite_production_gate(tmp_path):
+    from experiments.transformer_nlc.data import validate_qualification, source_identity
+    from experiments.transformer_nlc.data_config import scientific_contract
+    config = main16()
+    gate = passing_gate_fixture(config)  # Synthetic policy fixture; never saved as measured qualification.
+    validate_qualification(config,gate,source_identity())
+    qualification = replace(config,regime="qualification",replicate=2,master_entropy=42,
+        train_frames=1,validation_frames=1,test_frames=1,save_rx_field=True)
+    assert scientific_contract(qualification) == scientific_contract(config)
+    # Receiver changes are scientifically meaningful even though LinkConfig is identical.
+    changed = replace(config,ridge_relative=1e-4)
+    gate_path = tmp_path/"synthetic-gate.json";gate_path.write_text(json.dumps(gate))
+    with pytest.raises(ValueError,match="scientific contract"):
+        generate(changed,tmp_path/"must-not-be-created",qualification=gate_path)
+    assert not (tmp_path/"must-not-be-created").exists()
+    # Geometry changes are constrained in production and also bound by the gate.
+    pilot = tiny_config()
+    pilot_gate = passing_gate_fixture(pilot)
+    variants = [replace(pilot,scored_symbols=512),replace(pilot,pilot_symbols=128),
+        replace(pilot,context_symbols=64),replace(pilot,launch_power_dbm=2.5),
+        replace(pilot,phase_max_deg=.025),replace(pilot,min_step_km=2e-6),
+        replace(pilot,equalizer_taps=9),replace(pilot,bps_phases=32),
+        replace(pilot,bps_windows=(33,65)),
+        replace(pilot,guard_symbols=256,link=replace(pilot.link,guard_symbols=256))]
+    for variant in variants:
+        with pytest.raises(ValueError,match="scientific contract"):
+            validate_qualification(variant,pilot_gate,source_identity())
+
+
+def test_resume_checks_numeric_versions_but_not_optional_torch(tmp_path,monkeypatch):
+    import experiments.transformer_nlc.data as module
+    config=tiny_config();output=tmp_path/"run"
+    generate(config,output)
+    original=module.environment_identity
+    def with_torch(backend):
+        return {**original(backend),"torch":"unrelated-optional-version"}
+    monkeypatch.setattr(module,"environment_identity",with_torch)
+    assert generate(config,output,resume=True)["status"]=="complete"
+    for dependency in ("python","numpy","scipy","physical_dtype"):
+        def changed(backend,dependency=dependency):
+            return {**original(backend),dependency:"changed-numeric-runtime"}
+        monkeypatch.setattr(module,"environment_identity",changed)
+        with pytest.raises(ValueError,match="numeric runtime"):
+            generate(config,output,resume=True)
+    # GPU runtime/version fields participate without requiring CUDA for this unit control.
+    environment={**original("numpy"),"cupy":"14","cuda_runtime":13020,"cuda_driver":13030,"gpu_name":"example"}
+    before=module.numeric_runtime(environment,"cupy")
+    for key in ("cupy","cuda_runtime","cuda_driver","gpu_name"):
+        assert module.numeric_runtime({**environment,key:"changed"},"cupy") != before
+
+
+def test_qualification_resume_rejects_runtime_and_receiver_changes(tmp_path,monkeypatch):
+    import experiments.transformer_nlc.qualification as module
+    monkeypatch.setattr(module,"analytic_controls",lambda *a,**k:{"status":"passed","CPU_GPU":{"status":"not_run"}})
+    def stop(*args,**kwargs):
+        raise RuntimeError("bounded fixture stops before full-link propagation")
+    monkeypatch.setattr(module,"simulate_physical_frame",stop)
+    output=tmp_path/"qualification"
+    with pytest.raises(RuntimeError,match="bounded fixture"):
+        module.run_qualification(16,output,cases=("phase",))
+    original=module.environment_identity
+    monkeypatch.setattr(module,"environment_identity",lambda backend:{**original(backend),"numpy":"changed"})
+    with pytest.raises(ValueError,match="numeric runtime"):
+        module.run_qualification(16,output,cases=("phase",),resume=True)
+    monkeypatch.setattr(module,"environment_identity",original)
+    original_cases=module.qualification_cases
+    monkeypatch.setattr(module,"qualification_cases",lambda condition:{k:replace(v,bps_phases=32) for k,v in original_cases(condition).items()})
+    with pytest.raises(ValueError,match="scientific contract"):
+        module.run_qualification(16,output,cases=("phase",),resume=True)
+
+
+@pytest.mark.parametrize("kind",["generation","qualification"])
+def test_sigkill_releases_run_flock_and_resume_works(tmp_path,monkeypatch,kind):
+    import os
+    import select
+    import subprocess
+    import sys
+    from pathlib import Path
+    import experiments.transformer_nlc.qualification as qualifier
+    script = r"""
+import signal,sys
+from pathlib import Path
+from dataclasses import replace
+from experiments.transformer_nlc.data_config import pilot_config
+import experiments.transformer_nlc.data as data
+import experiments.transformer_nlc.qualification as qualifier
+output=Path(sys.argv[1]);kind=sys.argv[2]
+config=pilot_config(16,scored_symbols=256,guard_symbols=128,pilot_symbols=64)
+config=replace(config,link=replace(config.link,n_spans=1,span_km=.5))
+def pause(*args,**kwargs):
+    print('LOCKED',flush=True)
+    signal.pause()
+if kind=='generation':
+    data.fit_receiver=pause
+    data.generate(config,output)
+else:
+    qualifier.analytic_controls=lambda *a,**k:{'status':'passed','CPU_GPU':{'status':'not_run'}}
+    qualifier.simulate_physical_frame=pause
+    qualifier.run_qualification(16,output,cases=('phase',))
+"""
+    output=tmp_path/kind
+    process=subprocess.Popen([sys.executable,"-c",script,str(output),kind],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)
+    try:
+        ready,_,_=select.select([process.stdout],[],[],15)
+        assert ready and process.stdout.readline().strip()=="LOCKED"
+        inode=(output/".generation.lock").stat().st_ino
+        # Both entrypoints must reject a concurrent writer on the same inode.
+        with pytest.raises(FileExistsError,match="writer"):
+            generate(tiny_config(),output,resume=True)
+        with pytest.raises(FileExistsError,match="writer"):
+            qualifier.run_qualification(16,output,cases=("phase",),resume=True)
+        process.kill();process.wait(timeout=5)
+        if kind=="generation":
+            assert generate(tiny_config(),output,resume=True)["status"]=="complete"
+        else:
+            # Tiny transport fixtures exercise resumed orchestration only;
+            # these three partial-case outputs can never qualify production.
+            actual=qualifier.simulate_physical_frame
+            monkeypatch.setattr(qualifier,"simulate_physical_frame",lambda *a,**k:actual(tiny_config(),"pilot",0))
+            result=qualifier.run_qualification(16,output,cases=("phase",),resume=True)
+            assert result["status"]=="incomplete" and len(result["frames"])==3
+        assert (output/".generation.lock").stat().st_ino==inode
+    finally:
+        if process.poll() is None:
+            process.kill();process.wait(timeout=5)
+        process.stdout.close();process.stderr.close()
