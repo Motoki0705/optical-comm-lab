@@ -43,7 +43,9 @@ symlink target, so documentation links point to the canonical files. The old
 ## Historical source provenance
 
 New runs hash the actual shared and study source files, with their new paths.
-Moving code changes the manifest, so strict audit and resume reject runs from
+A checkout additionally records its root runner compatibility adapter; a wheel
+records its installed package sources. Crossing these layouts requires a new run
+ID even when the numerical methods agree. Moving code changes the manifest, so strict audit and resume reject runs from
 the previous source layout. No old hash is synthesized and no historical
 manifest, model, output, denominator, report, or generation SHA is rewritten.
 JSON/NPZ checkpoints contain arrays and metadata, not pickled Python import paths.

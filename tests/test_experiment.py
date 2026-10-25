@@ -100,3 +100,27 @@ def test_final_counting_budget_and_pilot_names_are_explicit(tmp_path):
         replace(small_config(), mode="final")
     with pytest.raises(ValueError, match="pilot-"):
         experiment.run_experiment(small_config(), tmp_path, "final-mislabelled")
+
+
+def test_legacy_imports_resolve_to_study_implementations():
+    from experiments.esn_longhaul import experiment as canonical
+    from experiments.esn_longhaul import reservoir
+    import optical_comm.reservoir as legacy_reservoir
+    assert experiment is canonical
+    assert legacy_reservoir is reservoir
+
+
+def test_source_change_rejects_resume_before_outputs_change(tmp_path, monkeypatch):
+    import hashlib
+    config = small_config()
+    monkeypatch.setattr(experiment, "simulate_frame", fake_simulate)
+    monkeypatch.setattr(experiment, "dbp_symbols", lambda frame, **kwargs: frame.rx_symbols.copy())
+    run = experiment.run_experiment(config, tmp_path, "pilot-source-integrity")
+    before = {str(p.relative_to(run)): hashlib.sha256(p.read_bytes()).hexdigest()
+              for p in run.rglob("*") if p.is_file()}
+    actual = experiment.software_manifest()
+    monkeypatch.setattr(experiment, "software_manifest", lambda: {**actual, "source_hash": "0" * 64})
+    with pytest.raises(ValueError, match="resume rejected"):
+        experiment.run_experiment(config, tmp_path, "pilot-source-integrity", resume=True)
+    assert before == {str(p.relative_to(run)): hashlib.sha256(p.read_bytes()).hexdigest()
+                      for p in run.rglob("*") if p.is_file()}

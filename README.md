@@ -2,6 +2,12 @@
 
 長距離の光ファイバ伝送を数値シミュレーションで再現し、ソフトウェアのリザバー（ESN）が受信品質を改善できるかを、未学習データのビット誤り率（BER）で調べる研究リポジトリです。1600 km、単一波長・DP-16QAM・32 GBd、理想的な送受信器を対象にします。各送信電力で別モデルを学習し、通常補償、線形学習、ESN、数値逆伝搬（DBP）を同じフレームで比較します。改善が得られない結果もそのまま報告します。
 
+共通の物理・DSP・指標は `src/optical_comm/`、研究ごとの実装・設定・方法は
+[`experiments/`](experiments/README.md) に分けます。既存研究は
+[`esn_longhaul`](experiments/esn_longhaul/README.md)、次の Transformer 再現は
+[`transformer_nlc`](experiments/transformer_nlc/README.md) で独立に管理します。
+Transformer の科学的実装はこの構成変更に含めません。
+
 結果と図は [日本語レポート](reports/final_report.md)、オフラインで読める [画像埋め込みHTML](reports/final_report.html) に保存します。HTMLはブラウザの印刷機能でPDFにできます。
 
 光ファイバ内部の変化は、[3本の物理シミュレーション映像と日本語解説](reports/animations/kerr_physics/index.html)で見られます。自己位相変調、波長分散、両者の同時作用を、計算した電場からBlenderで映像化しました。各12秒・1080pのMP4と編集できるシーン、[再生成記録](reports/animations/kerr_physics/README.md)を保存しています。80 kmの単独パルスによる説明用実験で、1600 kmの学習評価とは別のデータです。
@@ -46,41 +52,46 @@ uv pip install 'cupy-cuda13x[ctk]==14.2.0'
 リポジトリ直下で実行します。小さなpilotは探索・動作確認で、最終BERに合算しません。CPUのみなら次のように明示します。
 
 ```bash
-.venv/bin/python scripts/run_experiment.py --config configs/pilot.json --run-id pilot-cpu --powers 0 --backend numpy
+.venv/bin/python -m experiments.esn_longhaul --config experiments/esn_longhaul/configs/pilot.json --run-id pilot-cpu --powers 0 --backend numpy
 ```
 
 GPUでのpilotと、設定した評価数を表示する確認は次のとおりです。
 
 ```bash
-.venv/bin/python scripts/run_experiment.py --config configs/pilot.json --run-id pilot-check --powers 0
-.venv/bin/python scripts/run_experiment.py --config configs/full.json --run-id final-qualified --dry-run
+.venv/bin/python -m experiments.esn_longhaul --config experiments/esn_longhaul/configs/pilot.json --run-id pilot-check --powers 0
+.venv/bin/python -m experiments.esn_longhaul --config experiments/esn_longhaul/configs/full.json --run-id final-qualified --dry-run
 ```
 
-本評価は、[数値条件の確認](docs/numerical-qualification.md)で伝搬刻み・サンプル数・フレーム長・境界の扱いを確定してから行います。`configs/full.json` はその研究用設定です。生の伝搬・学習計算からやり直すコマンドは次のとおりです。
+本評価は、[数値条件の確認](docs/numerical-qualification.md)で伝搬刻み・サンプル数・フレーム長・境界の扱いを確定してから行います。[`full.json`](experiments/esn_longhaul/configs/full.json) はその研究用設定です。生の伝搬・学習計算からやり直すコマンドは次のとおりです。
 
 ```bash
-.venv/bin/python scripts/run_experiment.py --config configs/full.json --run-id final-reproduction
-.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-reproduction
+.venv/bin/python -m experiments.esn_longhaul --config experiments/esn_longhaul/configs/full.json --run-id final-reproduction
+.venv/bin/python -m experiments.esn_longhaul.export_waveform_diagnostics --run artifacts/final-reproduction
 ```
 
 CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使います。長い実行を再開する場合は同じ設定とrun IDで `--resume` を付けます。設定・実行ソース・環境・完成artifactのハッシュが一致する条件だけを再利用します。`--powers -6 -4` で条件を分けて実行できますが、最終図とレポートの生成には7電力すべてが必要です。結果は `artifacts/<run-id>/` に保存します。
 
-[連続診断波形の保存CLI](scripts/export_waveform_diagnostics.py)は、本評価完了後に同じ既存テストフレームのseedから短いXYの2-sps波形（1シンボル当たり2サンプル）を保存します。既定は各電力の最初のテストフレームから512シンボルの連続区間で、送信bits/symbols、mask、開始位置とフレーム境界を含みます。`waveform_diagnostics/manifest.json`に来歴とハッシュを記録し、新しいBER評価や再学習は加えません。既存出力を上書きしないため、保存済みrunから再生成するときは空の出力先を指定します。
+[連続診断波形の保存CLI](experiments/esn_longhaul/export_waveform_diagnostics.py)は、本評価完了後に同じ既存テストフレームのseedから短いXYの2-sps波形（1シンボル当たり2サンプル）を保存します。既定は各電力の最初のテストフレームから512シンボルの連続区間で、送信bits/symbols、mask、開始位置とフレーム境界を含みます。`waveform_diagnostics/manifest.json`に来歴とハッシュを記録し、新しいBER評価や再学習は加えません。既存出力を上書きしないため、保存済みrunから再生成するときは空の出力先を指定します。
 
 ```bash
-.venv/bin/python scripts/export_waveform_diagnostics.py --run artifacts/final-1600km-20261012 --output-dir .work/waveform-diagnostics-reproduction
+.venv/bin/python -m experiments.esn_longhaul.export_waveform_diagnostics --run artifacts/final-reproduction --output-dir .work/waveform-diagnostics-reproduction
 ```
 
 ## 図とレポートの再生成
 
-保存済みの最終runを指定すれば、学習をやり直さずに図とレポートを再生成できます。今回の実行IDは `final-1600km-20261012` です。
+保存済みの最終run `final-1600km-20261012` と公開レポートは変更しません。
+ソース移動後は実際の新しいパス・内容をハッシュ化するため、旧runの厳密な監査・resumeは
+新しいソースでは拒否します。旧成果物の監査・波形・図・レポートの再生成には
+[元版の隔離worktree手順](experiments/esn_longhaul/README.md#historical-source-provenance)
+で固定した `8a1475620fa5fa61e843f03bdbce48e1ce54419a` を使い、出力は `.work/` に分離します。
+Kerrの厳密なソース検証も同じ元版を使います。
+
+新しいソースから得たrunには、対応するモジュール入口を使えます。
 
 ```bash
-.venv/bin/python scripts/visualize_concepts.py
-.venv/bin/python scripts/visualize_results.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification
-.venv/bin/python scripts/build_report.py --run artifacts/final-1600km-20261012 --qualification artifacts/numerical-qualification --verification-record artifacts/verification/ordinary_checks.json --review-record artifacts/verification/independent_review.json
-.venv/bin/python scripts/build_kerr_explanation.py
-.venv/bin/python scripts/build_spatial_kerr_report.py
+.venv/bin/python -m experiments.esn_longhaul.visualize_concepts --output-dir .work/new-concepts
+.venv/bin/python -m experiments.esn_longhaul.visualize_results --run artifacts/final-reproduction --qualification artifacts/numerical-qualification --output-dir .work/new-results
+.venv/bin/python -m experiments.esn_longhaul.build_report --run artifacts/final-reproduction --figures-dir .work/new-results --output-dir .work/new-report
 ```
 
 空間Kerrの解説は、保存済みの数値場と完成した3動画から図・HTMLを再生成します。
@@ -96,6 +107,7 @@ CPUで本評価するなら `--backend numpy` を付け、新しいrun IDを使�
 
 - [要件](docs/requirements.md)と[実験計画](docs/experiment-plan.md)：採用条件、比較、完了基準。
 - [通信路](docs/channel-methods.md)、[学習・評価](docs/learning-methods.md)、[数値条件の確認](docs/numerical-qualification.md)：実装方法と測定の限界。
+- [experiments](experiments/README.md)：実験ごとの責任と第三の実験の追加手順。
 - [scripts](scripts/README.md)、[configs](configs/README.md)、[artifacts](artifacts/README.md)、[reports](reports/README.md)：再実行入口と保存物の役割。
 
-作業は[ルートのAGENTS.md](AGENTS.md)に従い、Issueを先に作り、feature branchと[管理PR #7](https://github.com/Motoki0705/optical-comm-lab/pull/7)で管理します。実機での性能、多波長伝送、未学習条件への汎化やFEC後の性能は今回の結論に含めません。開発開始・構成変更・PRレビュー前には[scoutで構造を点検](docs/repository-maintenance.md)し、根拠を伴う問題を重複確認してIssue化します。この保守点検は、成果物への1回の独立validator評価とは別です。
+作業は[ルートのAGENTS.md](AGENTS.md)に従い、Issueを先に作り、feature branchと機能ごとのPRで管理します。元のESN研究は[PR #7](https://github.com/Motoki0705/optical-comm-lab/pull/7)、並列実験構成への移行は[Issue #42](https://github.com/Motoki0705/optical-comm-lab/issues/42)に記録します。実機での性能、多波長伝送、未学習条件への汎化やFEC後の性能は今回の結論に含めません。開発開始・構成変更・PRレビュー前には[scoutで構造を点検](docs/repository-maintenance.md)し、根拠を伴う問題を重複確認してIssue化します。この保守点検は独立validator評価とは別です。元のESN研究の1回は消費済みで、構成変更の評価指定は0回です。

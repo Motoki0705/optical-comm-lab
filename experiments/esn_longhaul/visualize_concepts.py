@@ -400,7 +400,7 @@ def main() -> None:
         "regeneration_command": shlex.join(command),
         "source_documents": [
             {"path": path, "sha256": sha256(ROOT / path)}
-            for path in ("docs/requirements.md", "docs/experiment-plan.md")
+            for path in ("docs/requirements.md", "experiments/esn_longhaul/docs/experiment-plan.md")
         ],
         "runtime": {"python": platform.python_version(), "matplotlib": matplotlib.__version__},
         "font": {

@@ -1,6 +1,5 @@
 """Continuous timing, original masks, whole-frame reproduction and write safety."""
 
-import importlib.util
 import json
 from pathlib import Path
 import shutil
@@ -20,12 +19,9 @@ REPOSITORY = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture
-def exporter(monkeypatch):
-    monkeypatch.syspath_prepend(str(REPOSITORY / "scripts"))
-    spec = importlib.util.spec_from_file_location("waveform_export_test", REPOSITORY / "scripts/export_waveform_diagnostics.py")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+def exporter():
+    from experiments.esn_longhaul import export_waveform_diagnostics
+    return export_waveform_diagnostics
 
 
 @pytest.fixture(scope="module")
@@ -134,7 +130,8 @@ def test_invalid_arguments_do_not_create_output(exporter, saved_run, tmp_path, o
 
 def test_output_cannot_overwrite_input_or_existing_diagnostics(exporter, saved_run, tmp_path):
     run, _ = saved_run
-    for output in (run, run / "power_p0000p000", REPOSITORY / "src/diagnostics"):
+    for output in (run, run / "power_p0000p000", REPOSITORY / "src/diagnostics",
+                   REPOSITORY / "experiments/esn_longhaul/diagnostics"):
         with pytest.raises(ValueError, match="read-only|overwrite"):
             exporter.export_diagnostics(run, output, symbols=32)
     output = tmp_path / "existing"

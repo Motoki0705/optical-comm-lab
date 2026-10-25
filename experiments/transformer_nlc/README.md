@@ -14,7 +14,12 @@ The execution roadmap is tracked by [parent Issue #40](https://github.com/Motoki
    its source method, scientific settings, data isolation, and acceptance criteria
    before experiments. The currently authorized scope is the main 16QAM/64QAM
    reproduction; this refactor does not choose new scientific settings.
-3. Report measured results, uncertainty and deviations with reproducible configs,
+3. Deliver [physics/data #44](https://github.com/Motoki0705/optical-comm-lab/issues/44),
+   [model/mask #45](https://github.com/Motoki0705/optical-comm-lab/issues/45),
+   [training/evaluation #46](https://github.com/Motoki0705/optical-comm-lab/issues/46),
+   and [main runs/report #47](https://github.com/Motoki0705/optical-comm-lab/issues/47)
+   as separately scoped work after the refactor. Report measured results,
+   uncertainty and deviations with reproducible configs,
    checkpoints, figures and source/input hashes. PMD/rate expansion, CNN-LSTM
    comparisons and additional ablations require later consultation.
 

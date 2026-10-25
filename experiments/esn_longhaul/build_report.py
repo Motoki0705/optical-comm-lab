@@ -375,7 +375,7 @@ def build(args):
     htm = output / "final_report.html"
     md.write_text("\n".join(report.md), encoding="utf-8")
     htm.write_text('<!doctype html>\n<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="1600 km光伝送のリザバー補償を独立テストフレームのBERで比較した日本語レポート"><title>光伝送リザバー補償・結果レポート</title><style>' + CSS + '</style></head><body><main>' + "\n".join(report.htm) + '<footer>optical-comm-lab · ' + e(run.manifest['run_id']) + ' · 保存済み計数結果から生成</footer></main></body></html>\n', encoding="utf-8")
-    inputs = set(run.inputs + report.inputs + [Path(__file__).with_name("visualize_results.py"), Path(__file__).with_name("visualize_concepts.py"), ROOT / "reports/figures/concepts_manifest.json", ROOT / "docs/repository-maintenance.md", figures_dir / "results_manifest.json", ROOT / "docs/requirements.md", ROOT / "docs/experiment-plan.md", ROOT / "docs/channel-methods.md", ROOT / "docs/learning-methods.md", ROOT / "docs/numerical-qualification.md"])
+    inputs = set(run.inputs + report.inputs + [Path(__file__).with_name("visualize_results.py"), Path(__file__).with_name("visualize_concepts.py"), ROOT / "reports/figures/concepts_manifest.json", ROOT / "docs/repository-maintenance.md", figures_dir / "results_manifest.json", ROOT / "docs/requirements.md", ROOT / "experiments/esn_longhaul/docs/experiment-plan.md", ROOT / "docs/channel-methods.md", ROOT / "experiments/esn_longhaul/docs/learning-methods.md", ROOT / "docs/numerical-qualification.md"])
     if hardware_record:
         inputs.add(hardware_path)
     if args.qualification:
