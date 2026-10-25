@@ -165,7 +165,14 @@ def protect_output(output: str | Path, inputs: list[str | Path]) -> Path:
         source = Path(item).resolve()
         if source.is_relative_to(output) or output.is_relative_to(source):
             raise ValueError(f"Output overlaps protected input: {source}")
-    for source in (ROOT / "src", ROOT / "experiments", ROOT / "configs", ROOT / "tests", ROOT / "docs", ROOT / "reports"):
+    layout = source_identity()["source_layout"]
+    executing_directories = {Path(location).resolve().parent for location in layout["module_paths"].values()}
+    # Checkout shared modules live under src/optical_comm; wheels place them
+    # directly under optical_comm. Guard the actual imported directories in
+    # both layouts before callers create any output directory or lock.
+    protected = executing_directories | {
+        ROOT / name for name in ("src", "experiments", "configs", "tests", "docs", "reports")}
+    for source in protected:
         if output.is_relative_to(source) or source.is_relative_to(output):
             raise ValueError("Output overlaps repository source/report paths")
     return output
