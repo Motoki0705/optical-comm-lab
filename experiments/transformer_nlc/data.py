@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from contextlib import contextmanager
+import fcntl
 import hashlib
 import json
 import os
@@ -18,10 +19,23 @@ import scipy
 from optical_comm.channel import edfa_ase_psd, propagate_link_adaptive
 from optical_comm.dsp import apply_dispersion, pulse_shape, receiver_dsp
 from optical_comm.metrics import bits_to_symbols
-from experiments.transformer_nlc.data_config import DataConfig, PURPOSE_KEYS, SPLIT_KEYS
+from experiments.transformer_nlc.data_config import DataConfig, PURPOSE_KEYS, SPLIT_KEYS, scientific_contract
 from experiments.transformer_nlc.receiver import PilotFrame, ReceiverFit, fit_receiver, select_receiver_window
 
-SCHEMA_VERSION = "transformer-data-v1"
+SCHEMA_VERSION = "transformer-data-v2"
+QUALIFICATION_SCHEMA_VERSION = "transformer-qualification-v2"
+SOURCE_SCOPE_VERSION = "transformer-numerical-source-v1"
+# Deliberate dependency boundary: direct numerical algorithms, study policy,
+# recipe parsing and qualification decisions. Model/training/report files,
+# prose and dependency lockfiles remain observed provenance, not physics guards.
+NUMERICAL_SOURCE_PATHS = (
+    "src/optical_comm/config.py", "src/optical_comm/channel.py",
+    "src/optical_comm/dsp.py", "src/optical_comm/metrics.py",
+    "experiments/transformer_nlc/data_config.py", "experiments/transformer_nlc/data.py",
+    "experiments/transformer_nlc/receiver.py", "experiments/transformer_nlc/data_cli.py",
+    "experiments/transformer_nlc/qualification.py",
+)
+RUNTIME_SCOPE_VERSION = "transformer-numerical-runtime-v1"
 
 
 def canonical_hash(value: Any) -> str:
@@ -42,15 +56,26 @@ def array_hash(array: np.ndarray) -> str:
 
 @contextmanager
 def run_lock(output: Path):
-    """Reject concurrent writers; Python interruptions release the run lock."""
-    lock = output / ".generation.lock"
-    descriptor = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+    """Nonblocking advisory flock, released by the OS even after SIGKILL.
+
+    The lock inode is persistent and never unlinked: removing a flock path can
+    let two writers lock different inodes. A stale PID is informational only.
+    """
+    descriptor = os.open(output / ".generation.lock", os.O_CREAT | os.O_RDWR, 0o600)
+    acquired = False
     try:
+        try:
+            fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise FileExistsError("Another writer holds the run lock") from exc
+        acquired = True
+        os.ftruncate(descriptor, 0)
         os.write(descriptor, str(os.getpid()).encode())
         yield
     finally:
+        if acquired:
+            fcntl.flock(descriptor, fcntl.LOCK_UN)
         os.close(descriptor)
-        lock.unlink(missing_ok=True)
 
 
 def ensure_bulk_ignored(output: Path) -> None:
@@ -64,7 +89,7 @@ def ensure_bulk_ignored(output: Path) -> None:
 
 
 def environment_identity(backend: str) -> dict[str, Any]:
-    result = {"python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__, "platform": platform.platform()}
+    result = {"python": platform.python_version(), "numpy": np.__version__, "scipy": scipy.__version__, "platform": platform.platform(), "machine": platform.machine(), "physical_dtype": "complex128"}
     if backend == "cupy":
         import cupy as cp
         device = cp.cuda.runtime.getDeviceProperties(cp.cuda.Device().id)
@@ -73,6 +98,35 @@ def environment_identity(backend: str) -> dict[str, Any]:
             cuda_runtime=cp.cuda.runtime.runtimeGetVersion(), cuda_driver=cp.cuda.runtime.driverGetVersion(),
             gpu_total_bytes=device["totalGlobalMem"], physical_dtype="complex128")
     return result
+
+
+def numeric_runtime(environment: dict[str, Any], backend: str) -> dict[str, Any]:
+    """Strict resume guard for numerical dependencies; optional Torch excluded."""
+    keys = ["python", "numpy", "scipy", "machine", "physical_dtype"]
+    if backend == "cupy":
+        keys += ["cupy", "cuda_runtime", "cuda_driver", "gpu_name"]
+    return {"scope_version": RUNTIME_SCOPE_VERSION, "backend": backend,
+            **{key: environment[key] for key in keys}}
+
+
+def numerical_source_identity(root: Path | None = None) -> dict[str, Any]:
+    """Versioned exact dependency set; missing contributing files fail closed."""
+    root = Path(__file__).resolve().parents[2] if root is None else Path(root)
+    hashes = {relative: file_hash(root / relative) for relative in NUMERICAL_SOURCE_PATHS}
+    return {"scope_version": SOURCE_SCOPE_VERSION, "scope_paths": list(NUMERICAL_SOURCE_PATHS),
+            "content_sha256": canonical_hash({"scope_version": SOURCE_SCOPE_VERSION, "files": hashes}), "files": hashes}
+
+
+def validate_qualification(config: DataConfig, gate: dict[str, Any], source: dict[str, Any]) -> None:
+    """Validate the complete scientific contract before creating output paths."""
+    contract = scientific_contract(config)
+    if (gate.get("schema") != QUALIFICATION_SCHEMA_VERSION or gate.get("status") != "passed"
+        or gate.get("condition") != config.condition
+        or gate.get("source_scope_version") != SOURCE_SCOPE_VERSION
+        or gate.get("source_content_sha256") != source["content_sha256"]
+        or gate.get("scientific_contract") != contract
+        or gate.get("scientific_contract_sha256") != canonical_hash(contract)):
+        raise ValueError("Qualification does not match the production scientific contract/source or did not pass")
 
 
 def atomic_json(path: Path, value: Any) -> None:
@@ -102,7 +156,9 @@ def source_identity() -> dict[str, Any]:
         paths.extend(p for p in directory.rglob("*") if p.is_file() and p.suffix in (".py", ".json", ".toml", ".md") and "__pycache__" not in p.parts)
     paths.extend(p for p in (root / "pyproject.toml", root / "uv.lock") if p.is_file())
     hashes = {str(p.relative_to(root)): file_hash(p) for p in sorted(paths)}
-    return {"commit": commit, "content_sha256": canonical_hash(hashes), "files": hashes,
+    return {**numerical_source_identity(root), "commit": commit,
+            "observed_provenance": {"scope": "shared_and_study_tree_plus_pyproject_lock",
+                "content_sha256": canonical_hash(hashes), "files": hashes},
             "dirty_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).splitlines()}
 
 
@@ -297,110 +353,110 @@ def generate(config: DataConfig, output_dir: str | Path, *, backend: str = "nump
         if qualification is None:
             raise ValueError("Production blocked: full numerical qualification evidence is required")
         gate = json.loads(Path(qualification).read_text())
-        if (gate.get("schema") != "transformer-qualification-v1" or gate.get("status") != "passed"
-            or gate.get("condition") != config.condition or gate.get("physical_config_sha256") != canonical_hash(config.link.to_dict())
-            or gate.get("phase_max_deg") != config.phase_max_deg
-            or gate.get("source_content_sha256") != source["content_sha256"]):
-            raise ValueError("Qualification does not match production physical config/phase/source or did not pass")
+        validate_qualification(config, gate, source)
+    environment = environment_identity(backend)
+    runtime = numeric_runtime(environment, backend)
     if output.exists() and any(output.iterdir()) and not resume:
         raise FileExistsError("Run directory exists; choose a new run ID or --resume")
     output.mkdir(parents=True, exist_ok=True)
-    lock_path = output / ".generation.lock"
-    descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-    os.write(descriptor, str(os.getpid()).encode())
-    os.close(descriptor)
-    can_record_failure = False
-    try:
-        bulk = output / "bulk"
-        bulk.mkdir(exist_ok=True)
-        manifest_path = output / "manifest.json"
-        if manifest_path.exists():
-            manifest = json.loads(manifest_path.read_text())
-            if manifest["config_sha256"] != config_hash or manifest["source"]["content_sha256"] != source["content_sha256"] or manifest["backend"] != backend:
-                raise ValueError("Resume config/source/backend mismatch")
-        else:
-            manifest = {"schema": SCHEMA_VERSION, "status": "in_progress", "plan": generation_plan(config),
-                "config": config.to_dict(), "config_sha256": config_hash, "source": source,
-                "backend": backend, "command": command, "qualification": gate,
-                "environment": environment_identity(backend),
-                "frames": [], "test_metrics": "not_computed", "learning_seeds": learning_seed_recipe(config),
-                "stages": ["TX_unit_Es_Gray_QAM", "TX_RRC_sqrtW", "TX_inverse_CDC_half",
-                    "Manakov_EDFA_ASE", "ideal_resampling_clock_frequency_identity", "RX_inverse_CDC_half",
-                    "RX_matched_RRC_unit_Es", "train_pilot_2x2_FIR", "frame_pilot_gain",
-                    "blind_phase_search", "frame_pilot_ambiguity_gain", "rx_nlc_unit_Es"],
-                "feature_order": ["XI", "XQ", "YI", "YQ"],
-                "seed_convention": {"production": "(condition,replicate,split,frame,purpose)",
-                    "dedicated_pilot": "split=3; frame=split_id*1000000+frame (pilot named split adds3000000)",
-                    "bits_regions": "purpose_bits child region=0..6", "ase": "purpose_ase child span=0..n_spans-1"}}
-        can_record_failure = True
-        frames = {}
-        by_key = {(entry["split"], entry["frame"]): entry for entry in manifest["frames"]}
-        for split, count in config.frame_counts.items():
-            for index in range(count):
-                key = (split, index)
-                path = bulk / f"{split}-{index:03d}-physical.npz"
-                if key in by_key:
-                    entry = by_key[key]
-                    path = output / entry["path"]
-                    frame = load_frame(path, expected_sha256=entry["file_sha256"])
-                    frame.metadata = entry["metadata"]
-                else:
-                    frame = simulate_physical_frame(config, split, index, backend=backend)
-                    atomic_npz(path, frame.arrays)
-                    entry = {"split": split, "frame": index, "path": str(path.relative_to(output)),
-                        "file_sha256": file_hash(path), "metadata": frame.metadata, "arrays": _schema(frame.arrays)}
-                    manifest["frames"].append(entry)
-                    by_key[key] = entry
-                    atomic_json(manifest_path, manifest)
-                frames[key] = frame
-        fit = fit_receiver(config, [frames[("train", i)].pilots for i in range(config.train_frames)])
-        validation = []
-        for i in range(config.validation_frames):
-            frame = frames[("validation", i)]
-            validation.append((frame.pilots, frame.arrays["tx_symbols"], frame.arrays["tx_bits"], frame.arrays["scoring_mask"]))
-        fit = select_receiver_window(fit, config, validation)
-        receiver_path = output / "receiver.npz"
-        receiver_metadata = {"order": fit.order, "bps_window": fit.bps_window, "bps_phases": fit.bps_phases,
-            "fit_metadata": fit.fit_metadata, "validation_selection": fit.validation_selection,
-            "weights_sha256": array_hash(fit.weights)}
-        if "receiver" in manifest:
-            if file_hash(receiver_path) != manifest["receiver"]["file_sha256"]:
-                raise ValueError("Receiver file hash mismatch on resume")
-            if manifest["receiver"]["weights_sha256"] != receiver_metadata["weights_sha256"]:
-                raise ValueError("Deterministic receiver fit changed on resume")
-        else:
-            atomic_npz(receiver_path, {"weights": fit.weights})
-        manifest["receiver"] = {**receiver_metadata, "path": "receiver.npz", "file_sha256": file_hash(receiver_path)}
-        for key, frame in frames.items():
-            rx, valid, calibration = fit.apply(frame.pilots)
-            if np.any(frame.arrays["scoring_mask"] & ~valid):
-                raise ValueError("Scoring outside DSP-valid mask")
-            frame.arrays["rx_nlc"] = rx
-            frame.arrays["dsp_valid_mask"] &= valid
-            path = bulk / f"{key[0]}-{key[1]:03d}-nlc.npz"
-            if by_key[key]["path"] == str(path.relative_to(output)):
-                # Already committed final output: unchanged arrays need no rewrite.
-                if any(_schema(frame.arrays)[name]["sha256"] != by_key[key]["arrays"][name]["sha256"] for name in frame.arrays):
-                    raise ValueError("Receiver outputs changed on resume")
+    with run_lock(output):
+        can_record_failure = False
+        try:
+            bulk = output / "bulk"
+            bulk.mkdir(exist_ok=True)
+            manifest_path = output / "manifest.json"
+            if manifest_path.exists():
+                manifest = json.loads(manifest_path.read_text())
+                if (manifest.get("schema") != SCHEMA_VERSION or manifest["config_sha256"] != config_hash
+                    or manifest["source"].get("scope_version") != SOURCE_SCOPE_VERSION
+                    or manifest["source"]["content_sha256"] != source["content_sha256"]
+                    or manifest.get("numeric_runtime") != runtime):
+                    raise ValueError("Resume schema/config/source/numeric runtime/backend mismatch")
             else:
-                atomic_npz(path, frame.arrays)
-            by_key[key].update(path=str(path.relative_to(output)), file_sha256=file_hash(path), arrays=_schema(frame.arrays), calibration=calibration)
+                manifest = {"schema": SCHEMA_VERSION, "status": "in_progress", "plan": generation_plan(config),
+                    "config": config.to_dict(), "config_sha256": config_hash, "source": source,
+                    "backend": backend, "command": command, "qualification": gate,
+                    "environment": environment, "numeric_runtime": runtime,
+                    "scientific_contract": scientific_contract(config),
+                    "scientific_contract_sha256": canonical_hash(scientific_contract(config)),
+                    "frames": [], "test_metrics": "not_computed", "learning_seeds": learning_seed_recipe(config),
+                    "stages": ["TX_unit_Es_Gray_QAM", "TX_RRC_sqrtW", "TX_inverse_CDC_half",
+                        "Manakov_EDFA_ASE", "ideal_resampling_clock_frequency_identity", "RX_inverse_CDC_half",
+                        "RX_matched_RRC_unit_Es", "train_pilot_2x2_FIR", "frame_pilot_gain",
+                        "blind_phase_search", "frame_pilot_ambiguity_gain", "rx_nlc_unit_Es"],
+                    "feature_order": ["XI", "XQ", "YI", "YQ"],
+                    "seed_convention": {"production": "(condition,replicate,split,frame,purpose)",
+                        "dedicated_pilot": "split=3; frame=split_id*1000000+frame (pilot named split adds3000000)",
+                        "bits_regions": "purpose_bits child region=0..6", "ase": "purpose_ase child span=0..n_spans-1"}}
+            can_record_failure = True
             atomic_json(manifest_path, manifest)
-        manifest["status"] = "complete"
-        manifest["receiver_fixed_before_test_metrics"] = True
-        atomic_json(manifest_path, manifest)
-        return manifest
-    except BaseException as exc:
-        if can_record_failure:
-            manifest["status"] = "interrupted" if isinstance(exc, KeyboardInterrupt) else "failed"
-            manifest.setdefault("failed_attempts", []).append({"exception": type(exc).__name__, "message": str(exc)})
-            try:
+            frames = {}
+            by_key = {(entry["split"], entry["frame"]): entry for entry in manifest["frames"]}
+            for split, count in config.frame_counts.items():
+                for index in range(count):
+                    key = (split, index)
+                    path = bulk / f"{split}-{index:03d}-physical.npz"
+                    if key in by_key:
+                        entry = by_key[key]
+                        path = output / entry["path"]
+                        frame = load_frame(path, expected_sha256=entry["file_sha256"])
+                        frame.metadata = entry["metadata"]
+                    else:
+                        frame = simulate_physical_frame(config, split, index, backend=backend)
+                        atomic_npz(path, frame.arrays)
+                        entry = {"split": split, "frame": index, "path": str(path.relative_to(output)),
+                            "file_sha256": file_hash(path), "metadata": frame.metadata, "arrays": _schema(frame.arrays)}
+                        manifest["frames"].append(entry)
+                        by_key[key] = entry
+                        atomic_json(manifest_path, manifest)
+                    frames[key] = frame
+            fit = fit_receiver(config, [frames[("train", i)].pilots for i in range(config.train_frames)])
+            validation = []
+            for i in range(config.validation_frames):
+                frame = frames[("validation", i)]
+                validation.append((frame.pilots, frame.arrays["tx_symbols"], frame.arrays["tx_bits"], frame.arrays["scoring_mask"]))
+            fit = select_receiver_window(fit, config, validation)
+            receiver_path = output / "receiver.npz"
+            receiver_metadata = {"order": fit.order, "bps_window": fit.bps_window, "bps_phases": fit.bps_phases,
+                "fit_metadata": fit.fit_metadata, "validation_selection": fit.validation_selection,
+                "weights_sha256": array_hash(fit.weights)}
+            if "receiver" in manifest:
+                if file_hash(receiver_path) != manifest["receiver"]["file_sha256"]:
+                    raise ValueError("Receiver file hash mismatch on resume")
+                if manifest["receiver"]["weights_sha256"] != receiver_metadata["weights_sha256"]:
+                    raise ValueError("Deterministic receiver fit changed on resume")
+            else:
+                atomic_npz(receiver_path, {"weights": fit.weights})
+            manifest["receiver"] = {**receiver_metadata, "path": "receiver.npz", "file_sha256": file_hash(receiver_path)}
+            for key, frame in frames.items():
+                rx, valid, calibration = fit.apply(frame.pilots)
+                if np.any(frame.arrays["scoring_mask"] & ~valid):
+                    raise ValueError("Scoring outside DSP-valid mask")
+                frame.arrays["rx_nlc"] = rx
+                frame.arrays["dsp_valid_mask"] &= valid
+                path = bulk / f"{key[0]}-{key[1]:03d}-nlc.npz"
+                if by_key[key]["path"] == str(path.relative_to(output)):
+                    # Already committed final output: unchanged arrays need no rewrite.
+                    if any(_schema(frame.arrays)[name]["sha256"] != by_key[key]["arrays"][name]["sha256"] for name in frame.arrays):
+                        raise ValueError("Receiver outputs changed on resume")
+                else:
+                    atomic_npz(path, frame.arrays)
+                by_key[key].update(path=str(path.relative_to(output)), file_sha256=file_hash(path), arrays=_schema(frame.arrays), calibration=calibration)
                 atomic_json(manifest_path, manifest)
-            except OSError:
-                pass  # Preserve the original exception if storage itself failed.
-        raise
-    finally:
-        lock_path.unlink(missing_ok=True)
+            manifest["status"] = "complete"
+            manifest["receiver_fixed_before_test_metrics"] = True
+            atomic_json(manifest_path, manifest)
+            return manifest
+        except BaseException as exc:
+            if can_record_failure:
+                manifest["status"] = "interrupted" if isinstance(exc, KeyboardInterrupt) else "failed"
+                manifest.setdefault("failed_attempts", []).append({"exception": type(exc).__name__, "message": str(exc)})
+                try:
+                    atomic_json(manifest_path, manifest)
+                except OSError:
+                    pass  # Preserve the original exception if storage itself failed.
+            raise
+
 
 
 def load_receiver(output_dir: str | Path) -> ReceiverFit:
