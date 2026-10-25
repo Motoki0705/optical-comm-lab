@@ -505,11 +505,141 @@ class CliHeartbeatTests(unittest.TestCase):
         self.assertEqual(self.state()["deliveries"][-1]["phase"], "started")
         self.assertEqual(len(self.queue_calls), 1)
 
+    def test_paused_interrupted_delivery_recovers_then_resumes_hourly(self) -> None:
+        self.create()
+        helper.tick(self.task_dir)
+        marker = self.start_delivery()
+        self.event("turn_aborted", turn_id="delivery-turn")
+        failed = helper.status(self.task_dir)["delivery"]
+        self.assertEqual(failed["phase"], "failed")
+        helper.pause(self.task_dir)
+        with self.assertRaisesRegex(ValueError, "Recover"):
+            helper.resume(self.task_dir, interval_minutes=60, prompt_file=None)
+
+        self.command_mock.reset_mock()
+        recovered = helper.recover(
+            self.task_dir,
+            marker=marker,
+            reason="User requested hourly follow-ups after interrupting the turn",
+            allow_duplicate=True,
+        )
+        self.assertFalse(self.command_mock.called)
+        self.assertTrue(recovered["recovered"])
+        self.assertFalse(recovered["enqueued"])
+        self.assertFalse(recovered["execution_verified"])
+        self.assertEqual(recovered["status"], "paused")
+        self.assertEqual(recovered["interval_minutes"], 30)
+        self.assertFalse(self.active)
+        self.assertEqual(recovered["delivery"]["phase"], "superseded")
+        self.assertEqual(recovered["delivery"]["recovery"]["previous_phase"], "failed")
+        for key, value in failed.items():
+            if key != "phase":
+                self.assertEqual(recovered["delivery"][key], value)
+        self.assertFalse(helper.tick(self.task_dir)["enqueued"])
+
+        resumed = helper.resume(self.task_dir, interval_minutes=60, prompt_file=None)
+        self.assertEqual(resumed["status"], "active")
+        self.assertEqual(resumed["interval_minutes"], 60)
+        self.assertTrue(resumed["registration_verified"])
+        self.assertEqual(self.state()["deliveries"], [recovered["delivery"]])
+        self.assertEqual(len(self.queue_calls), 1)
+        register = next(
+            call.args[0]
+            for call in self.command_mock.call_args_list
+            if call.args[0][0] == "systemd-run"
+        )
+        self.assertIn("--on-active=60min", register)
+        self.assertIn("--on-unit-active=60min", register)
+        self.assertIn("--unit=" + resumed["unit"], register)
+        next_delivery = helper.tick(self.task_dir)
+        self.assertTrue(next_delivery["enqueued"])
+        self.assertNotEqual(next_delivery["delivery"]["marker"], marker)
+        self.assertEqual(self.state()["deliveries"][0], recovered["delivery"])
+        self.assertEqual(len(self.queue_calls), 2)
+
+    def test_paused_recovery_keeps_authorization_marker_and_phase_guards(self) -> None:
+        self.create()
+        self.queue_failure = subprocess.TimeoutExpired("codex", 45)
+        marker = helper.tick(self.task_dir)["delivery"]["marker"]
+        helper.pause(self.task_dir)
+        self.command_mock.reset_mock()
+        for candidate, reason, allow in (
+            (marker, "authorized recovery", False),
+            (marker, "", True),
+            ("wrong", "authorized recovery", True),
+        ):
+            with self.subTest(marker=candidate, reason=reason, allow=allow):
+                with self.assertRaises(ValueError):
+                    helper.recover(
+                        self.task_dir,
+                        marker=candidate,
+                        reason=reason,
+                        allow_duplicate=allow,
+                    )
+        self.start_delivery()
+        with self.assertRaisesRegex(ValueError, "must wait"):
+            helper.recover(
+                self.task_dir,
+                marker=marker,
+                reason="authorized recovery",
+                allow_duplicate=True,
+            )
+        self.assertEqual(self.state()["deliveries"][-1]["phase"], "started")
+        self.assertEqual(self.state()["status"], "paused")
+        self.assertFalse(self.command_mock.called)
+        self.assertEqual(len(self.queue_calls), 1)
+
+    def test_recovery_refuses_unregistered_task_state(self) -> None:
+        self.create()
+        self.queue_failure = subprocess.TimeoutExpired("codex", 45)
+        marker = helper.tick(self.task_dir)["delivery"]["marker"]
+        helper.pause(self.task_dir)
+        task = self.state()
+        task["status"] = "registration_failed"
+        helper.save(self.task_dir, task)
+        with self.assertRaisesRegex(ValueError, "registration"):
+            helper.recover(
+                self.task_dir,
+                marker=marker,
+                reason="authorized recovery",
+                allow_duplicate=True,
+            )
+        self.assertEqual(self.state()["deliveries"][-1]["phase"], "uncertain")
+        self.assertFalse(self.active)
+        self.assertEqual(len(self.queue_calls), 1)
+
+    def test_recovered_paused_delivery_still_checks_history_before_resume(self) -> None:
+        self.create()
+        self.queue_failure = subprocess.TimeoutExpired("codex", 45)
+        marker = helper.tick(self.task_dir)["delivery"]["marker"]
+        helper.pause(self.task_dir)
+        helper.recover(
+            self.task_dir,
+            marker=marker,
+            reason="authorized recovery",
+            allow_duplicate=True,
+        )
+        self.rollout.unlink()
+        with self.assertRaisesRegex(ValueError, "history"):
+            helper.resume(self.task_dir, interval_minutes=60, prompt_file=None)
+        self.assertTrue(self.state()["blocked_reason"])
+        self.assertEqual(self.state()["deliveries"][-1]["phase"], "superseded")
+        self.assertFalse(self.active)
+        self.assertEqual(len(self.queue_calls), 1)
+
     def test_recovery_cannot_bypass_a_changed_rollout(self) -> None:
         self.create()
         self.queue_failure = subprocess.TimeoutExpired("codex", 45)
         marker = helper.tick(self.task_dir)["delivery"]["marker"]
         self.rollout.unlink()
+        with self.assertRaisesRegex(ValueError, "history"):
+            helper.recover(
+                self.task_dir,
+                marker=marker,
+                reason="operator requested",
+                allow_duplicate=True,
+            )
+        helper.pause(self.task_dir)
         with self.assertRaisesRegex(ValueError, "history"):
             helper.recover(
                 self.task_dir,

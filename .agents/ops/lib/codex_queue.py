@@ -118,7 +118,10 @@ def reconcile(
         if snapshot["offset"] < observed["offset"]:
             raise ValueError("Rollout truncated during receipt inspection")
         task["observed_boundary"] = snapshot
-        if delivery is not None:
+        # Recovery is an operator decision, not another rollout receipt. Keep
+        # verifying its history above, but do not replay an old interrupted
+        # turn over the durable superseded phase on status/resume/next tick.
+        if delivery is not None and delivery["phase"] != "superseded":
             current_turn = None
             matched_turn = None
             for record in records:

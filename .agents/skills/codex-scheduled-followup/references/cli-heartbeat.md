@@ -94,7 +94,7 @@ For a user-authorized restoration where the remaining duplicate risk is accepted
   --acknowledge-possible-duplicate
 ```
 
-`recover` reconciles late receipts first and refuses queued/started deliveries, mismatched markers or a blocked history. It marks the attempt `superseded` with the reason and keeps its logs. It does not delete a queue item, send a message, or change the timer. The next tick sends once with a new marker. The receiving session must check durable job identities from its context before acting on a late heartbeat, so an old message cannot start duplicate work. Do not recover/resend an unresolved failure repeatedly.
+`recover` accepts active or paused tasks, reconciles late receipts first and refuses queued/started deliveries, mismatched markers or a blocked history. It marks the attempt `superseded` with the reason and keeps its logs. It does not delete a queue item, send a message, or change the timer. A paused task remains paused; use `resume` after recovery to restore its clock or change the interval. The next active tick sends once with a new marker. The receiving session must check durable job identities from its context before acting on a late heartbeat, so an old message cannot start duplicate work. Do not recover/resend an unresolved failure repeatedly.
 
 ## Tests
 

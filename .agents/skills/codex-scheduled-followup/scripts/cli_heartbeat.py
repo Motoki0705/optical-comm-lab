@@ -360,14 +360,14 @@ def create_task(args: argparse.Namespace) -> dict[str, Any]:
 def recover(
     task_dir: Path, *, marker: str, reason: str, allow_duplicate: bool
 ) -> dict[str, Any]:
-    """Operator-authorized recovery; preserve the uncertain attempt without claiming it failed."""
+    """Recover an active or paused task's delivery without starting its clock."""
     if not allow_duplicate or not reason.strip():
         raise ValueError(
             "Recovery requires a reason and --acknowledge-possible-duplicate"
         )
     with locked(task_dir) as task:
         delivery = reconcile(task_dir, task)
-        if task.get("blocked_reason") or task["status"] != "active":
+        if task.get("blocked_reason") or task["status"] not in {"active", "paused"}:
             raise ValueError(
                 "Resolve the history/registration problem before delivery recovery"
             )
@@ -390,7 +390,7 @@ def recover(
             **result(task_dir, task),
             "recovered": True,
             "enqueued": False,
-            "notice": "Old receipt retained. A late delivery remains possible; tick may now submit a new marker.",
+            "notice": "Old receipt retained. A late delivery remains possible; no timer or delivery was started.",
         }
 
 

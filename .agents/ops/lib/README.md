@@ -17,5 +17,5 @@ records completion, and blocks replaced, truncated or locally rewritten history.
 Recovery and permission decisions remain with the caller.
 
 Run the skill's `scripts/test_cli_heartbeat.py` to exercise these shared paths with
-temporary rollouts and mocked commands. Source hashes and the unchanged runtime
-files are recorded in the skill's [provenance](../../skills/codex-scheduled-followup/README.md).
+temporary rollouts and mocked commands. Source hashes and local runtime
+adaptations are recorded in the skill's [provenance](../../skills/codex-scheduled-followup/README.md).
