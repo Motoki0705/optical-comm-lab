@@ -5,6 +5,7 @@ from dataclasses import asdict, dataclass
 from contextlib import contextmanager
 import fcntl
 import hashlib
+import importlib
 import json
 import os
 from pathlib import Path
@@ -79,11 +80,17 @@ def run_lock(output: Path):
 
 
 def ensure_bulk_ignored(output: Path) -> None:
-    """Keep in-repository bulk beneath an actually ignored path."""
-    root = Path(__file__).resolve().parents[2]
+    """Protect actual output repositories and installed source, without Git assumptions."""
+    _, layout = _executing_source_files()
     target = (output / "bulk" / "recipe-placeholder.npz").resolve()
-    if target.is_relative_to(root):
-        result = subprocess.run(["git", "check-ignore", "--quiet", str(target.relative_to(root))], cwd=root)
+    source_root = Path(layout["root"])
+    if layout["kind"] == "installed_package" and target.is_relative_to(source_root):
+        raise ValueError("Bulk output must not be written inside installed package sources")
+    # An installed wheel can write into a separate checkout. Inspect the output
+    # location's own repository rather than attributing it to the package root.
+    repository = next((parent for parent in target.parents if (parent / ".git").exists()), None)
+    if repository is not None:
+        result = subprocess.run(["git", "check-ignore", "--quiet", str(target.relative_to(repository))], cwd=repository)
         if result.returncode != 0:
             raise ValueError("Bulk output must be ignored; use .work/ or artifacts/<run>/bulk")
 
@@ -109,10 +116,52 @@ def numeric_runtime(environment: dict[str, Any], backend: str) -> dict[str, Any]
             **{key: environment[key] for key in keys}}
 
 
+def _executing_source_files() -> tuple[dict[str, Path], dict[str, Any]]:
+    """Resolve the bytes of imported modules and reject mixed shared/study trees.
+
+    Checkout imports pair <root>/src/optical_comm with <root>/experiments.
+    Wheel imports pair optical_comm and experiments under one installation root.
+    Git availability never decides which code was executed.
+    """
+    paths = {}
+    for logical in NUMERICAL_SOURCE_PATHS:
+        module_name = logical.removeprefix("src/").removesuffix(".py").replace("/", ".")
+        module = importlib.import_module(module_name)
+        location = getattr(module, "__file__", None)
+        if location is None:
+            raise ValueError(f"Cannot identify executing numerical source: {module_name}")
+        path = Path(location).resolve()
+        if path.suffix != ".py" or not path.is_file():
+            raise ValueError(f"Executing numerical source must be an available .py file: {module_name}")
+        paths[logical] = path
+    shared = {path.parent for logical, path in paths.items() if logical.startswith("src/")}
+    study = {path.parent for logical, path in paths.items() if logical.startswith("experiments/")}
+    if len(shared) != 1 or len(study) != 1:
+        raise ValueError("Mixed numerical imports: modules belong to different shared or study checkouts")
+    shared_root = next(iter(shared)).parent
+    study_root = next(iter(study)).parents[1]
+    if shared_root == study_root / "src":
+        kind = "source_checkout" if (study_root / ".git").exists() else "source_tree"
+    elif shared_root == study_root:
+        kind = "installed_package"
+    else:
+        raise ValueError("Mixed numerical imports: shared and study code belong to different checkouts/installations")
+    return paths, {"schema": "transformer-import-layout-v1", "kind": kind, "root": str(study_root),
+                   "module_paths": {key: str(path) for key, path in paths.items()}}
+
+
 def numerical_source_identity(root: Path | None = None) -> dict[str, Any]:
-    """Versioned exact dependency set; missing contributing files fail closed."""
-    root = Path(__file__).resolve().parents[2] if root is None else Path(root)
-    hashes = {relative: file_hash(root / relative) for relative in NUMERICAL_SOURCE_PATHS}
+    """Hash nine logical source keys, independently of checkout/wheel location.
+
+    The optional root supports explicit source-tree inspection in controls. The
+    production path always resolves actual imported modules, never an inferred
+    checkout. Missing contributing bytes or mixed executing trees fail closed.
+    """
+    if root is None:
+        paths, _ = _executing_source_files()
+    else:
+        paths = {relative: Path(root) / relative for relative in NUMERICAL_SOURCE_PATHS}
+    hashes = {relative: file_hash(path) for relative, path in paths.items()}
     return {"scope_version": SOURCE_SCOPE_VERSION, "scope_paths": list(NUMERICAL_SOURCE_PATHS),
             "content_sha256": canonical_hash({"scope_version": SOURCE_SCOPE_VERSION, "files": hashes}), "files": hashes}
 
@@ -149,17 +198,29 @@ def atomic_npz(path: Path, arrays: dict[str, np.ndarray]) -> None:
 
 
 def source_identity() -> dict[str, Any]:
-    root = Path(__file__).resolve().parents[2]
-    commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
-    paths = []
-    for directory in (root / "src/optical_comm", root / "experiments/transformer_nlc"):
-        paths.extend(p for p in directory.rglob("*") if p.is_file() and p.suffix in (".py", ".json", ".toml", ".md") and "__pycache__" not in p.parts)
-    paths.extend(p for p in (root / "pyproject.toml", root / "uv.lock") if p.is_file())
-    hashes = {str(p.relative_to(root)): file_hash(p) for p in sorted(paths)}
-    return {**numerical_source_identity(root), "commit": commit,
-            "observed_provenance": {"scope": "shared_and_study_tree_plus_pyproject_lock",
-                "content_sha256": canonical_hash(hashes), "files": hashes},
-            "dirty_status": subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).splitlines()}
+    paths, layout = _executing_source_files()
+    root = Path(layout["root"])
+    observed = {}
+    directories = {"src/optical_comm": paths["src/optical_comm/config.py"].parent,
+                   "experiments/transformer_nlc": paths["experiments/transformer_nlc/data.py"].parent}
+    for prefix, directory in directories.items():
+        for path in sorted(directory.rglob("*")):
+            if path.is_file() and path.suffix in (".py", ".json", ".toml", ".md") and "__pycache__" not in path.parts:
+                observed[f"{prefix}/{path.relative_to(directory)}"] = file_hash(path)
+    commit, dirty = None, None
+    if layout["kind"] == "source_checkout":
+        actual_root = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], cwd=root, text=True).strip()).resolve()
+        if actual_root != root:
+            raise ValueError("Executing source checkout does not match its Git repository root")
+        commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+        dirty = subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).splitlines()
+        for name in ("pyproject.toml", "uv.lock"):
+            if (root / name).is_file():
+                observed[name] = file_hash(root / name)
+    return {**numerical_source_identity(), "source_layout": layout, "commit": commit,
+            "observed_provenance": {"scope": "actual_shared_and_study_trees_plus_checkout_pyproject_lock_when_present",
+                "content_sha256": canonical_hash(observed), "files": observed},
+            "dirty_status": dirty}
 
 
 def seed_sequence(config: DataConfig, split: str, frame: int, purpose: str) -> np.random.SeedSequence:

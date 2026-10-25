@@ -309,3 +309,97 @@ else:
         if process.poll() is None:
             process.kill();process.wait(timeout=5)
         process.stdout.close();process.stderr.close()
+
+
+def test_mixed_shared_study_checkouts_fail_before_output_writes(tmp_path):
+    from pathlib import Path
+    import os
+    import shutil
+    import subprocess
+    import sys
+    root=Path(__file__).resolve().parents[1]
+    other=tmp_path/"other-checkout"
+    shutil.copytree(root/"src/optical_comm",other/"src/optical_comm",ignore=shutil.ignore_patterns("__pycache__"))
+    env={**os.environ,"PYTHONPATH":os.pathsep.join((str(other/"src"),str(root)))}
+    script=r'''
+import sys
+from pathlib import Path
+from experiments.transformer_nlc.data import generate
+from experiments.transformer_nlc.data_config import pilot_config
+from experiments.transformer_nlc.qualification import run_qualification
+output=Path(sys.argv[1])
+for action in (lambda:generate(pilot_config(),output/'generate'),
+               lambda:run_qualification(16,output/'qualify',cases=('baseline',))):
+    try:
+        action()
+    except ValueError as exc:
+        assert 'Mixed numerical imports' in str(exc),str(exc)
+    else:
+        raise AssertionError('Mixed execution was not rejected')
+assert not output.exists()
+'''
+    subprocess.run([sys.executable,"-c",script,str(tmp_path/"must-not-exist")],cwd=tmp_path,env=env,check=True,capture_output=True,text=True)
+
+
+def test_installed_wheel_data_and_qualification_outside_checkout(tmp_path):
+    """Build actual study wheel, isolate its modules, and execute tiny CPU paths."""
+    from pathlib import Path
+    import os
+    import shutil
+    import subprocess
+    import sys
+    import sysconfig
+    root=Path(__file__).resolve().parents[1]
+    uv=shutil.which("uv")
+    if uv is None:
+        pytest.skip("uv build is required for the installed-wheel integration control")
+    wheel_dir=tmp_path/"wheels"
+    subprocess.run([uv,"build","--wheel","--out-dir",str(wheel_dir)],cwd=root,check=True,capture_output=True,text=True)
+    wheel=next(wheel_dir.glob("*.whl"))
+    environment=tmp_path/"isolated-env"
+    subprocess.run([sys.executable,"-m","venv","--system-site-packages",str(environment)],check=True,capture_output=True,text=True)
+    python=environment/"bin/python"
+    isolated_site=Path(subprocess.check_output([str(python),"-c","import sysconfig;print(sysconfig.get_path('purelib'))"],text=True).strip())
+    # Add only the current dependency directory after this environment's own
+    # wheel. Its .pth files are not executed, preventing editable-source leaks.
+    (isolated_site/"research-control-dependencies.pth").write_text(sysconfig.get_path("purelib")+"\n")
+    subprocess.run([str(python),"-m","pip","install","--no-deps",str(wheel)],check=True,capture_output=True,text=True)
+    env={key:value for key,value in os.environ.items() if key!="PYTHONPATH"}
+    env["PYTHONNOUSERSITE"]="1"
+    env["PATH"]=str(tmp_path/"no-external-commands")  # Installed paths must work without Git.
+    script=r'''
+from dataclasses import replace
+from pathlib import Path
+import json,sys
+from experiments.transformer_nlc.data_config import pilot_config
+from experiments.transformer_nlc.data import generate,load_frame,source_identity,ensure_bulk_ignored
+from experiments.transformer_nlc.qualification import qualification_plan,analytic_controls
+output=Path(sys.argv[1]);own_site=Path(sys.argv[2]).resolve()
+source=source_identity()
+assert source['source_layout']['kind']=='installed_package',source
+assert source['commit'] is None and source['dirty_status'] is None
+assert all(Path(p).is_relative_to(own_site) for p in source['source_layout']['module_paths'].values()),source
+config=pilot_config(16,scored_symbols=256,guard_symbols=128,pilot_symbols=64)
+config=replace(config,link=replace(config.link,n_spans=1,span_km=.5))
+manifest=generate(config,output)
+assert manifest['status']=='complete'
+entry=manifest['frames'][0]
+assert load_frame(output/entry['path'],expected_sha256=entry['file_sha256']).arrays['rx_nlc'].shape==(config.n_symbols,2)
+assert generate(config,output,resume=True)['status']=='complete'
+assert qualification_plan((16,))['full_link_propagations']==18
+assert analytic_controls(16)['status']=='passed'
+try:
+    ensure_bulk_ignored(own_site/'must-not-write')
+except ValueError as exc:
+    assert 'installed package sources' in str(exc)
+else:
+    raise AssertionError('Installed source protection failed')
+print(json.dumps({'fingerprint':source['content_sha256'],'layout':source['source_layout']['kind'],'modules':source['source_layout']['module_paths']}))
+'''
+    result=subprocess.run([str(python),"-c",script,str(tmp_path/"wheel-run"),str(isolated_site)],cwd=tmp_path,env=env,check=True,capture_output=True,text=True)
+    from experiments.transformer_nlc.data import source_identity
+    receipt=json.loads(result.stdout)
+    assert receipt["fingerprint"]==source_identity()["content_sha256"]
+    # The actual installed CLI also plans qualification from outside a checkout.
+    result=subprocess.run([str(python),"-m","experiments.transformer_nlc.data_cli","qualify","--condition","64","--dry-run"],cwd=tmp_path,env=env,check=True,capture_output=True,text=True)
+    assert json.loads(result.stdout)["full_link_propagations"]==18
