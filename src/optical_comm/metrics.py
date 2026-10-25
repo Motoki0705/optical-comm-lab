@@ -12,29 +12,71 @@ from scipy.special import ndtr
 from scipy.stats import beta
 
 
-_GRAY_LEVELS = np.array([-3.0, -1.0, 3.0, 1.0]) / np.sqrt(10.0)
+def qam_axis(order: int = 16) -> tuple[np.ndarray, np.ndarray]:
+    """Ascending normalized PAM levels and binary-reflected Gray labels."""
+    if isinstance(order, bool) or not isinstance(order, int):
+        raise ValueError("QAM order must be an integer square power of two")
+    side = math.isqrt(order)
+    if side < 2 or side * side != order or side & (side - 1):
+        raise ValueError("QAM order must be a square power of two >= 4")
+    positions = np.arange(side, dtype=np.int64)
+    return (2 * positions - side + 1) / math.sqrt(2 * (order - 1) / 3), positions ^ (positions >> 1)
 
 
-def bits_to_symbols(bits: np.ndarray) -> np.ndarray:
-    """Map the last four bits to Re/Im Gray 4PAM: 00,-3; 01,-1; 11,+1; 10,+3."""
+def bits_to_symbols(bits: np.ndarray, order: int = 16) -> np.ndarray:
+    """Uniform square-QAM, Gray bits on I then Q; unit ensemble complex Es."""
+    levels, gray = qam_axis(order)
+    n_axis = int(math.log2(len(levels)))
     bits = np.asarray(bits)
-    if bits.ndim < 1 or bits.shape[-1] != 4 or not np.all((bits == 0) | (bits == 1)):
-        raise ValueError("bits must have a final axis of four binary values")
-    indices_i = 2 * bits[..., 0].astype(np.int64) + bits[..., 1]
-    indices_q = 2 * bits[..., 2].astype(np.int64) + bits[..., 3]
-    return _GRAY_LEVELS[indices_i] + 1j * _GRAY_LEVELS[indices_q]
+    if bits.ndim < 1 or bits.shape[-1] != 2 * n_axis or not np.all((bits == 0) | (bits == 1)):
+        raise ValueError(f"bits must have a final axis of {2 * n_axis} binary values")
+    weights = 2 ** np.arange(n_axis - 1, -1, -1)
+    inverse = np.argsort(gray)
+    i = np.sum(bits[..., :n_axis] * weights, axis=-1, dtype=np.int64)
+    q = np.sum(bits[..., n_axis:] * weights, axis=-1, dtype=np.int64)
+    return levels[inverse[i]] + 1j * levels[inverse[q]]
 
 
-def symbols_to_bits(symbols: np.ndarray) -> np.ndarray:
-    """Nearest-neighbor Gray decisions at fixed, normalized alphabet thresholds."""
+def symbols_to_bits(symbols: np.ndarray, order: int = 16) -> np.ndarray:
+    """Nearest-neighbor fixed-alphabet decisions without fitted calibration."""
     symbols = np.asarray(symbols)
     if not np.all(np.isfinite(symbols)):
         raise ValueError("symbols must be finite")
-    thresholds = np.array([-2, 0, 2]) / np.sqrt(10.0)
-    binary_labels = np.array([0, 1, 3, 2], dtype=np.uint8)
-    i = binary_labels[np.searchsorted(thresholds, symbols.real, side="right")]
-    q = binary_labels[np.searchsorted(thresholds, symbols.imag, side="right")]
-    return np.stack((i >> 1, i & 1, q >> 1, q & 1), axis=-1)
+    levels, labels = qam_axis(order)
+    n_axis = int(math.log2(len(levels)))
+    thresholds = (levels[:-1] + levels[1:]) / 2
+    i = labels[np.searchsorted(thresholds, symbols.real, side="right")]
+    q = labels[np.searchsorted(thresholds, symbols.imag, side="right")]
+    shifts = np.arange(n_axis - 1, -1, -1)
+    return np.concatenate(((i[..., None] >> shifts) & 1, (q[..., None] >> shifts) & 1), axis=-1).astype(np.uint8)
+
+
+def qam_decisions(symbols: np.ndarray, order: int = 16) -> np.ndarray:
+    """Nearest normalized QAM symbols (used by blind receiver processing)."""
+    levels, _ = qam_axis(order)
+    thresholds = (levels[:-1] + levels[1:]) / 2
+    return levels[np.searchsorted(thresholds, np.asarray(symbols).real, side="right")] + 1j * levels[np.searchsorted(thresholds, np.asarray(symbols).imag, side="right")]
+
+
+def gray_qam_awgn_ber(snr_db: float | np.ndarray, order: int = 16) -> float | np.ndarray:
+    """Exact uniform Gray square-QAM BER by all PAM decision intervals.
+
+    Includes errors across several thresholds, not a nearest-neighbor formula.
+    SNR is complex-symbol Es/N0, each real noise variance N0/2.
+    """
+    levels, labels = qam_axis(order)
+    n_axis = int(math.log2(len(levels)))
+    bounds = np.r_[-np.inf, (levels[:-1] + levels[1:]) / 2, np.inf]
+    snr = np.asarray(snr_db, dtype=float)
+    sigma = np.sqrt(10 ** (-snr / 10) / 2)
+    result = np.zeros_like(snr)
+    for i, level in enumerate(levels):
+        for j, label in enumerate(labels):
+            distance = int(int(labels[i]) ^ int(label)).bit_count()
+            if distance:
+                probability = ndtr((bounds[j + 1] - level) / sigma) - ndtr((bounds[j] - level) / sigma)
+                result += distance * probability / (len(levels) * n_axis)
+    return float(result) if result.ndim == 0 else result
 
 
 def ber_interval(errors: int, n_bits: int, confidence: float = 0.95) -> tuple[float, float]:
@@ -54,12 +96,14 @@ def ber_interval(errors: int, n_bits: int, confidence: float = 0.95) -> tuple[fl
 
 
 def bit_error_counts(
-    tx_bits: np.ndarray, rx_symbols: np.ndarray, mask: np.ndarray | None = None
+    tx_bits: np.ndarray, rx_symbols: np.ndarray, mask: np.ndarray | None = None, *, order: int = 16
 ) -> tuple[int, int]:
     tx_bits = np.asarray(tx_bits)
     rx_symbols = np.asarray(rx_symbols)
-    if tx_bits.shape != (*rx_symbols.shape, 4):
-        raise ValueError("tx_bits must have shape rx_symbols.shape + (4,)")
+    n_bits_symbol = int(math.log2(order))
+    qam_axis(order)
+    if tx_bits.shape != (*rx_symbols.shape, n_bits_symbol):
+        raise ValueError(f"tx_bits must have shape rx_symbols.shape + ({n_bits_symbol},)")
     if not np.all((tx_bits == 0) | (tx_bits == 1)):
         raise ValueError("tx_bits must be binary")
     if mask is not None:
@@ -67,7 +111,7 @@ def bit_error_counts(
         tx_bits, rx_symbols = tx_bits[mask], rx_symbols[mask]
     if tx_bits.size == 0:
         raise ValueError("Cannot count BER on an empty array")
-    decisions = symbols_to_bits(rx_symbols)
+    decisions = symbols_to_bits(rx_symbols, order)
     return int(np.count_nonzero(tx_bits != decisions)), int(tx_bits.size)
 
 
@@ -83,6 +127,7 @@ def compute_metrics(
     rx_symbols: np.ndarray,
     tx_bits: np.ndarray | None = None,
     mask: np.ndarray | None = None,
+    *, order: int = 16,
 ) -> dict[str, float | int]:
     """Count pre-FEC bit errors and measure EVM against the uncalibrated inputs."""
     tx_symbols, rx_symbols = np.asarray(tx_symbols), np.asarray(rx_symbols)
@@ -90,8 +135,8 @@ def compute_metrics(
         raise ValueError("TX and RX symbol arrays must have the same non-scalar shape")
     if not np.all(np.isfinite(tx_symbols)) or not np.all(np.isfinite(rx_symbols)):
         raise ValueError("TX and RX symbols must be finite")
-    bits = symbols_to_bits(tx_symbols) if tx_bits is None else np.asarray(tx_bits)
-    errors, n_bits = bit_error_counts(bits, rx_symbols, mask)
+    bits = symbols_to_bits(tx_symbols, order) if tx_bits is None else np.asarray(tx_bits)
+    errors, n_bits = bit_error_counts(bits, rx_symbols, mask, order=order)
     if mask is not None:
         mask = _validate_mask(mask, len(tx_symbols))
         tx_symbols, rx_symbols = tx_symbols[mask], rx_symbols[mask]
