@@ -475,8 +475,10 @@ def _figures(model, directory):
                 ax.grid(axis="y", alpha=.25)
         save(fig, "ber-q", "全候補と通常DSP。各点はseed全frameの合算。縦線はClopper–Pearson 95%計数区間で、seed間の信頼区間ではない。ゼロ誤りではBER上限▽とQ下限△を示す。")
 
-        fig, axes = plt.subplots(1, len(conditions), figsize=(6 * len(conditions), 4), squeeze=False)
+        fig, axes = plt.subplots(1, len(conditions), figsize=(6 * len(conditions), 5.4), squeeze=False)
         for ax, condition in zip(axes[0], conditions):
+            candidate_markers = dict(zip(CANDIDATES[condition], ("o", "s", "D")))
+            labeled = set()
             for record in model["replicates"]:
                 if record["condition"] != condition or record["candidate"] == "no-nlc":
                     continue
@@ -487,16 +489,19 @@ def _figures(model, directory):
                     q = count["q_ci_low_db"]
                 rmps = record["complexity"]["total_per_output_polarization_symbol"] / 1000
                 if q is not None:
-                    ax.scatter(rmps, q, color=palette[record["masked"]], marker="^" if q_bound else "o" if record["masked"] else "s", alpha=.75)
-                    if record["replicate"] == min(r["replicate"] for r in model["replicates"] if _key(r)[:3] == _key(record)[:3]):
-                        ax.annotate(_method(record), (rmps, q), xytext=(4, 4), textcoords="offset points", fontsize=8)
+                    method = _method(record)
+                    ax.scatter(rmps, q, color=palette[record["masked"]],
+                               marker="^" if q_bound else candidate_markers[record["candidate"]], alpha=.75,
+                               label=method if method not in labeled else "_nolegend_")
+                    labeled.add(method)
             baseline = [r["metrics"]["total"]["q_ber_db"] for r in model["replicates"] if r["condition"] == condition and r["candidate"] == "no-nlc"]
             if baseline and all(q is not None for q in baseline):
                 ax.axhline(np.mean(baseline), color="#555555", linestyle="--", label="通常DSP seed平均")
-                ax.legend(fontsize=8)
+            if labeled or ax.lines:
+                ax.legend(fontsize=8, loc="upper center", bbox_to_anchor=(.5, -.22), ncol=2)
             ax.set(xlabel="理論 RMPS (千 / 出力片偏波symbol)", ylabel="各seedの BER由来 Q (dB)", title=f"{condition}QAM / 固定候補すべて")
             ax.grid(alpha=.25)
-        save(fig, "performance-rmps", "理論乗算数と保存test性能。ゼロ誤りはQ下限△。DP時刻の計数は横軸の2倍。maskは疎実装を仮定した計数であり、dense backendの実速度向上を表さない。論文参考点は重ねず別表に示す。")
+        save(fig, "performance-rmps", "理論乗算数と保存test性能。点=独立seed、形=候補、色=mask有無。ゼロ誤りはQ下限△。DP時刻の計数は横軸の2倍。maskは疎実装を仮定した計数であり、dense backendの実速度向上を表さない。論文参考点は重ねず別表に示す。")
 
         fig, axes = plt.subplots(len(conditions), 2, figsize=(11, 3.2 * len(conditions)), squeeze=False)
         for row, condition in enumerate(conditions):
