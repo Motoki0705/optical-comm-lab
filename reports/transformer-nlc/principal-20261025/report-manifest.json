@@ -1,6 +1,6 @@
 {
   "schema": "transformer-reader-report-v1",
-  "generated_utc": "2026-10-25T17:43:59.873548+00:00",
+  "generated_utc": "2026-10-26T01:42:34.914644+00:00",
   "command": [
     "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
     "-m",
@@ -16,7 +16,7 @@
     "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json",
     "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json",
     "--output-root",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/reports/transformer-nlc",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/reports/transformer-nlc",
     "--run-id",
     "principal-20261025",
     "--regenerate"
@@ -118,20 +118,20 @@
     "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json": "7e867d666d5b1bb9d505f9715f01969db3b2a3588ceea81cbaad2da0b4bada03"
   },
   "code": {
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/report.py": "18de101929e987c5fdec7282314b27e9fe70d4b521f6c6c552a95d0d925aacce",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/__main__.py": "7da13e011f158f84f66c4046c842f77a4e942681bb383a8c1732f6f852bbc7f3",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/docs/reproduction-spec.md": "4d79b4e2a61b20f90ba513f1edb8ab500353c6350f37552b87670c66aa2af3a4",
-    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56"
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/report.py": "acccdda1eaf27b45b6e86de43bbe43047ac782a00c7b120a89e41ef4cd70842c",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/__main__.py": "7da13e011f158f84f66c4046c842f77a4e942681bb383a8c1732f6f852bbc7f3",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/experiments/transformer_nlc/docs/reproduction-spec.md": "4d79b4e2a61b20f90ba513f1edb8ab500353c6350f37552b87670c66aa2af3a4",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56"
   },
-  "code_sha256": "232d5e00f410137b9d5215f20e2a9283a24a69369f1cdd154997ef553eddd441",
+  "code_sha256": "4579d47b312d2da21087ac5acb82923ace2ffe5160e824d8a10541d6a173e639",
   "font": {
     "family": "Noto Sans CJK JP",
     "path": "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
@@ -275,11 +275,16 @@
     "figures/learning.svg": "dc4ce10606ccfdfd7e2c34fa8ee819ddc7ceef6a6f85fccf135c034efe8bae9d",
     "figures/mask.png": "0c5f7527d6b8b8a608fc9945d4c9b4dd1d56512ccaa0e44bd5f453afc0e04705",
     "figures/mask.svg": "d459352b4b75fb41d47500a725205397300fda071c3cde22e73daffdd62001ac",
+    "figures/paper-16qam.png": "49fa9595dbaca187d70c2e12d9a9c1ad422acf34dfaea0caccb5f3386f8b9ada",
+    "figures/paper-16qam.svg": "490ddaa3fb4a85f8424c505a229833c91d3d96af2cb38136c18f978415d55e0f",
+    "figures/paper-64qam.png": "dae2858afe4f78178eba13e954425a96ee8c9d5ac8485e4a142e81178547f13e",
+    "figures/paper-64qam.svg": "f170c8806ed32a4e0452b97eb21a26aee712012a2122e1281e8fffb23e55154b",
     "figures/performance-rmps.png": "50df3bf86c447564d87029dea29c9626689ecb196000553bbd7ac24e3c51621f",
     "figures/performance-rmps.svg": "10ce77cc9ec49b8765261b18a246fe6a7f0176045104ceea0f394db915ebd640",
-    "report.html": "0cab9560ffedbe056c1a1f378fea45a7c3e07efa4846c6d0b7bdd36c5a0796eb",
-    "report.md": "3d96d751f6159953975b34516661a7a5f770ba8a04b12a54d9fbb23ac35121d3",
+    "report.html": "5ebebf86db4916b5c372062ba95de487fbfff785a9046773a88b127620a43ea5",
+    "report.md": "3b79d8eb20fc1083eceae64f112de7021f54bfa75561a52b8b7a0ff54b9e5ecf",
     "tables/counts.csv": "9d296b2295c6cf6bad1042a8d4756feea198a4d2cd61d85f6fa3b224aaa20fe2",
+    "tables/paper-comparison.json": "6e47a0f5e43cefd37021963031c2e3861056f9c38118d67ab4d8027fa2c142d7",
     "tables/run-inventory.json": "b56fe6001da85415f008201eb04b3017bc49c5e7d651772113b8da4dca5dcdb9",
     "tables/summary.json": "3b15c01c7c70de3275b0b0ac2e85db5d1fead85c4467533717c30b664e2e4699"
   }

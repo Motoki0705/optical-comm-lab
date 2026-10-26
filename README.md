@@ -13,7 +13,7 @@ Transformer主2条件は36件の学習・validation選択固定・held-out評価
 [日本語レポート](reports/transformer-nlc/principal-20261025/report.md)、
 [オフラインHTML](reports/transformer-nlc/principal-20261025/report.html)、
 [実行証拠の索引](artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json)に保存しています。
-通常DSPに対するprimaryの3seed平均ΔQは16QAMで約−0.0015 dB、64QAMで約＋0.002 dBと小さく、論文の大きな改善を再現したとは扱いません。
+レポートは論文メトリクスとの比較を中心に構成しています。16QAM A・maskなしは論文Q=8.82 dBに対し今回6.7707 dB、64QAM primary・maskなしは論文の探索最良8.17 dBに対し今回6.7277 dBです。通常DSPからの改善量はほぼ0 dBで、論文の品質改善は再現できていません。理論RMPSの差は16QAMで−0.30〜−1.86%ですが、性能改善や実行速度の再現を意味しません。
 縮小探索と採用した物理・DSP条件による**主2条件の部分再現**です。18件のepoch上限停止は収束未確認として残し、PMD・レート変更・CNN-LSTM/DBP・広範なアブレーションは未実施です。
 固定版の生成器と保存済み集計を使う[図表再生成手順](experiments/transformer_nlc/README.md#主2条件の保存結果2026-10-26)は、元の絶対パス配置を前提にしています。
 

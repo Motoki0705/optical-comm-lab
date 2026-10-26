@@ -16,10 +16,46 @@ from experiments.transformer_nlc.data import atomic_json, canonical_hash, file_h
 from experiments.transformer_nlc.data_config import pilot_config
 from experiments.transformer_nlc.evaluation import _aggregate_frames, _count_summary
 from experiments.transformer_nlc.model_config import ModelConfig
-from experiments.transformer_nlc.report import generate_report, inspect_inputs
+from experiments.transformer_nlc.report import generate_report, inspect_inputs, paper_comparison
 from experiments.transformer_nlc.training_config import TrainingConfig
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def test_paper_comparison_pairs_seeds_and_preserves_unmatched_benchmark():
+    # Deliberately missing/undefined seeds: subtracting independent group means
+    # would yield a different answer, and a missing pair must never become zero.
+    points = [(16, "no-nlc", None, 0, 6.), (16, "no-nlc", None, 1, 8.),
+              (16, "no-nlc", None, 2, 10.), (16, "C", False, 0, 6.2),
+              (16, "C", False, 1, 8.4), (16, "C", False, 2, None),
+              (16, "C", True, 0, 6.3), (16, "C", True, 1, 8.7),
+              (64, "no-nlc", None, 0, 6.5), (64, "high", False, 0, 6.6),
+              (64, "mid", False, 0, 8.5)]  # better TEST Q is not selected
+    records = [{"condition": c, "candidate": n, "masked": m, "replicate": seed,
+                "metrics": {"total": {"q_ber_db": q}}} for c, n, m, seed, q in points]
+    keys = list(dict.fromkeys((c, n, m) for c, n, m, _, _ in points))
+    summary = []
+    for c, n, m in keys:
+        values = [q for cc, nn, mm, _, q in points if (cc, nn, mm) == (c, n, m) and q is not None]
+        summary.append({"condition": c, "candidate": n, "masked": m,
+                        "mean_seed_q_db": float(np.mean(values)), "sample_std_seed_q_db": None})
+    model = {"replicates": records, "summary": summary, "trials": {},
+             "freeze": {"primary": [{"condition": 64, "candidate": "high", "masked": False}]}}
+    result = paper_comparison(model)
+    c = next(r for r in result["candidates"] if r["candidate"] == "C" and not r["masked"])
+    assert c["paired_gain"]["mean_db"] == pytest.approx(.3)
+    assert c["paired_gain"]["sample_sd_db"] == pytest.approx(np.sqrt(.02))
+    assert c["paired_gain"]["n"] == 2
+    assert c["paper_gain_db"] == pytest.approx(.64)
+    effect = result["mask_effects"][0]
+    assert effect["paired_mask_effect"]["mean_db"] == pytest.approx(.2)
+    assert effect["paper_mask_effect_db"] == pytest.approx(.37)
+    high = next(r for r in result["candidates"] if r["candidate"] == "high")
+    assert high["paper_q_db"] is None and high["paper_rmps"] is None
+    comparisons = result["benchmark_64"]["primary_comparisons"]
+    assert len(comparisons) == 1 and comparisons[0]["candidate"] == "high"
+    assert comparisons[0]["q_gap_to_search_best_db"] == pytest.approx(6.6 - 8.17)
+    assert comparisons[0]["gain_gap_to_search_best_db"] == pytest.approx(.1 - 1.67)
 
 
 @pytest.fixture
