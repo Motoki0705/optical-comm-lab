@@ -7,7 +7,7 @@ wheel alongside `optical_comm`; it is not a set of checkout-only scripts.
 | Workspace | Responsibility | Status |
 | --- | --- | --- |
 | [esn_longhaul](esn_longhaul/README.md) | Frozen-weight ESN/linear training, launch-power sweeps, audit, waveform export, and study report | Existing study, settings and saved evidence preserved |
-| [transformer_nlc](transformer_nlc/README.md) | Next Transformer nonlinear-compensation reproduction | Reserved; no scientific implementation yet |
+| [transformer_nlc](transformer_nlc/README.md) | Main 16QAM/64QAM Transformer nonlinear-compensation reproduction | Model/config/mask/RMPS APIs and tests implemented in [PR #52](https://github.com/Motoki0705/optical-comm-lab/pull/52); data/DSP progressing separately in [PR #51](https://github.com/Motoki0705/optical-comm-lab/pull/51); unified CLI, training and report planned |
 
 The shared library in `src/optical_comm` owns physical configuration, propagation,
 DSP, metrics, and the existing independent Kerr visualization models. Independent
@@ -15,6 +15,13 @@ numerical qualification remains in `scripts/qualify_numerics.py`: it checks the
 shared channel and must precede any study claiming qualified channel settings.
 The Kerr pulse/spatial configurations, scripts, and documents keep their existing
 paths and separate scientific scope.
+
+The Transformer README documents its six fixed model candidates, synthetic CPU
+shape example, and optional dependency setup with
+`uv sync --locked --extra transformer --group dev`. The CUDA 12.8 wheel source is
+uv-specific; base configuration, masks, and theoretical RMPS do not import
+PyTorch. Implemented model APIs do not establish completed channel qualification,
+production training, held-out performance, or a study report.
 
 To add a third study:
 
