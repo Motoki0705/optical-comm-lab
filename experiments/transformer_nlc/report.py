@@ -25,6 +25,76 @@ from .training_config import CANDIDATES, TrainingConfig, fixed_trial_plan
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "transformer-reader-report-v1"
 PAPER = "https://arxiv.org/html/2304.13119v3"
+# Published Table II, not digitized or inferred from the reproduced BER.
+PAPER_16 = {
+    ("A", False): (8.82, 608000), ("A", True): (8.76, 404000),
+    ("B", False): (8.54, 129000), ("B", True): (8.51, 81000),
+    ("C", False): (7.31, 22000), ("C", True): (7.68, 9000),
+}
+
+
+def paper_comparison(model):
+    """Compare saved seed Q with published references; never select by test Q.
+
+    The 64QAM value is a whole-search benchmark, NOT a candidate/mask target.
+    Pair differences before averaging; undefined Q and absent pairs stay absent.
+    """
+    records = {_key(r): r["metrics"]["total"]["q_ber_db"] for r in model["replicates"]}
+
+    def paired(condition, candidate, masked, other_candidate, other_masked):
+        points = []
+        for (c, name, mask, seed), q in records.items():
+            if (c, name, mask) != (condition, candidate, masked):
+                continue
+            other = records.get((c, other_candidate, other_masked, seed))
+            if q is not None and other is not None:
+                points.append({"seed": seed, "delta_q_db": q - other})
+        values = [p["delta_q_db"] for p in points]
+        return {"points": points, "n": len(values),
+                "mean_db": float(np.mean(values)) if values else None,
+                "sample_sd_db": float(np.std(values, ddof=1)) if len(values) > 1 else None}
+
+    def difference(value, reference):
+        return value - reference if value is not None and reference is not None else None
+
+    primary = {(p["condition"], p["candidate"], p["masked"]) for p in model["freeze"]["primary"]}
+    baselines, rows, masks = [], [], []
+    for s in model["summary"]:
+        c, candidate, masked = s["condition"], s["candidate"], s["masked"]
+        q = s["mean_seed_q_db"]
+        if candidate == "no-nlc":
+            reference = {16: 6.67, 64: 6.5}.get(c)
+            baselines.append({"condition": c, "paper_q_db": reference, "ours_q_db": q,
+                              "ours_q_sd_db": s["sample_std_seed_q_db"], "gap_db": difference(q, reference)})
+            continue
+        reference, rmps = PAPER_16.get((candidate, masked), (None, None)) if c == 16 else (None, None)
+        gain = paired(c, candidate, masked, "no-nlc", None)
+        trial = next((t for k, t in model["trials"].items() if k[:3] == (c, candidate, masked)), None)
+        ours_rmps = trial["complexity"]["total_per_output_polarization_symbol"] if trial else None
+        paper_gain = reference - 6.67 if reference is not None else None
+        row = {"condition": c, "candidate": candidate, "masked": masked, "primary": (c, candidate, masked) in primary,
+               "ours_q_db": q, "ours_q_sd_db": s["sample_std_seed_q_db"], "paper_q_db": reference,
+               "q_gap_db": difference(q, reference), "paired_gain": gain, "paper_gain_db": paper_gain,
+               "gain_gap_db": difference(gain["mean_db"], paper_gain), "ours_rmps": ours_rmps, "paper_rmps": rmps,
+               "rmps_relative_gap_percent": 100 * (ours_rmps / rmps - 1) if ours_rmps is not None and rmps else None}
+        rows.append(row)
+        if masked:
+            masks.append({"condition": c, "candidate": candidate,
+                          "paired_mask_effect": paired(c, candidate, True, candidate, False),
+                          "paper_mask_effect_db": PAPER_16[(candidate, True)][0] - PAPER_16[(candidate, False)][0]
+                          if c == 16 and (candidate, False) in PAPER_16 else None})
+    benchmark64 = [{"candidate": r["candidate"], "masked": r["masked"],
+                    "q_gap_to_search_best_db": difference(r["ours_q_db"], 8.17),
+                    "gain_gap_to_search_best_db": difference(r["paired_gain"]["mean_db"], 1.67)}
+                   for r in rows if r["condition"] == 64 and r["primary"]]
+    return {"schema": "transformer-paper-comparison-v1", "source": PAPER,
+            "references": {"16": "Section IV-C / Table II: baseline 6.67 dB; RMPS rounded to thousands",
+                           "64": "Section IV-D: baseline 6.5 dB, whole-search best 8.17 dB; no matched candidate/mask target"},
+            "difference_sign": "ours minus paper; Q and gain in dB, not a reproduction percentage",
+            "uncertainty": "sample SD across seeds; paired SD for changes, not a confidence interval",
+            "comparability": "Q definition, DSP and exact architectures not fully identified; observational gaps only",
+            "baselines": baselines, "candidates": rows, "mask_effects": masks,
+            "benchmark_64": {"paper_search_best_q_db": 8.17, "paper_gain_db": 1.67, "primary_comparisons": benchmark64}}
 
 
 def _key(item):
@@ -449,6 +519,43 @@ def _figures(model, directory):
             plt.close(fig)
             figures.append((name, caption))
 
+        comparison = paper_comparison(model)
+        matched = [r for r in comparison["candidates"] if r["paper_q_db"] is not None]
+        if matched:
+            fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+            x = np.arange(len(matched))
+            for ax, paper_key, our_key, sd_key, title in (
+                    (axes[0], "paper_q_db", "ours_q_db", "ours_q_sd_db", "絶対Q [dB]"),
+                    (axes[1], "paper_gain_db", "mean_db", "sample_sd_db", "通常DSPからの改善 ΔQ [dB]")):
+                ax.scatter(x - .10, [r[paper_key] for r in matched], marker="D", color="#713b9c", label="論文 Table II", zorder=4)
+                for i, r in enumerate(matched):
+                    source = r if our_key == "ours_q_db" else r["paired_gain"]
+                    if source[our_key] is not None:
+                        ax.errorbar(i + .10, source[our_key], yerr=source[sd_key], fmt="o", color="#0072b2", capsize=3,
+                                    label="今回の平均 ± seed標本SD" if i == 0 else None)
+                ax.set_xticks(x, [r["candidate"] + ("\nmaskあり" if r["masked"] else "\nmaskなし") for r in matched])
+                ax.set_ylabel(title)
+                ax.grid(axis="y", alpha=.25)
+                ax.legend(fontsize=8)
+            axes[1].axhline(0, color="gray", lw=.8)
+            save(fig, "paper-16qam", "16QAM: 論文Table IIと保存testの比較。左は絶対Q、右は同一seedの通常DSPからのΔQ。誤差棒は3 seedの標本SD（信頼区間ではない）。構造の対応とQ定義には未確定点がある。")
+        selected64 = [r for r in comparison["candidates"] if r["condition"] == 64 and r["primary"]]
+        if selected64:
+            fig, axes = plt.subplots(1, 2, figsize=(10, 4.3))
+            for ax, key, sd, reference, label in (
+                    (axes[0], "ours_q_db", "ours_q_sd_db", 8.17, "絶対Q [dB]"),
+                    (axes[1], "mean_db", "sample_sd_db", 1.67, "通常DSPからの改善 ΔQ [dB]")):
+                ax.axhline(reference, color="#713b9c", ls="--", label="論文の探索全体の最良値（参考線）")
+                for i, r in enumerate(selected64):
+                    source = r if key == "ours_q_db" else r["paired_gain"]
+                    if source[key] is not None:
+                        ax.errorbar(i, source[key], yerr=source[sd], fmt="o", color=palette[r["masked"]], capsize=4)
+                ax.set_xticks(range(len(selected64)), [_method(r) for r in selected64])
+                ax.set(xlim=(-.5, len(selected64) - .5), ylabel=label)
+                ax.grid(axis="y", alpha=.25)
+                ax.legend(fontsize=8, loc="center")
+            save(fig, "paper-64qam", "64QAM: validationだけで選んだprimaryと論文IV-Dの探索全体の最良値。参考線は各構造・maskに対応する目標値ではない。点は全seed平均、誤差棒は標本SD。")
+
         fig, axes = plt.subplots(len(conditions), 2, figsize=(11, 3.4 * len(conditions)), squeeze=False)
         for row, condition in enumerate(conditions):
             records = [r for r in model["replicates"] if r["condition"] == condition]
@@ -565,6 +672,7 @@ def _write_tables(model, output):
         writer.writeheader()
         writer.writerows(counts)
     (tables / "summary.json").write_text(json.dumps(model["summary"], indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
+    (tables / "paper-comparison.json").write_text(json.dumps(paper_comparison(model), indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
     inventory = []
     ledger = {_key(t): t for t in (model["ledger"] or {}).get("trials", [])}
     for item in fixed_trial_plan():
@@ -624,17 +732,76 @@ def _documents(model, figures, inventory, output, command):
         failures += item["initialization_failures"]
         return "; ".join(f"{a.get('status')}: {a.get('exception', '')} / OOM={a.get('oom', '未記録')} / {str(a.get('message', ''))[:160]}" for a in failures) or "なし"
 
-    heading("Transformerで光通信の誤りを減らせたか", 1)
+    heading("論文の通信品質と計算量をどこまで再現できたか", 1)
     paragraph(model["label"])
     synthetic_sources = {d["source"]["fixture"] for d, _ in model["datasets"].values() if d.get("source", {}).get("fixture")}
     if synthetic_sources:
         paragraph("入力fixtureの明示: " + "; ".join(sorted(synthetic_sources)))
-    paragraph("16QAMは1偏波の1記号に4 bit、64QAMは6 bitを載せる方式です。2つの偏波X/Yを同時に送ります。長い光ファイバでは雑音と光強度に依存するKerr効果で受信点がずれます。通常DSPは分散や位相などを補正する受信処理、NLCはその後に残るずれを学習モデルで推定し、引き算する補償です。残差には雑音も含まれ、純粋なKerr効果だけを測っているわけではありません。")
+    comparison = paper_comparison(model)
+    matched16 = [r for r in comparison["candidates"] if r["paper_q_db"] is not None]
+    selected64 = [r for r in comparison["candidates"] if r["condition"] == 64 and r["primary"]]
+    def fixed(value, digits=4):
+        return "未測定・未定義" if value is None else f"{value:.{digits}f}"
+    def gain_text(gain):
+        return f"{fixed(gain['mean_db'], 6)} ± {fixed(gain['sample_sd_db'], 6)} (n={gain['n']})"
+    if model["regime"] != "production" or not model["complete"]:
+        paragraph("PILOTまたは部分実行の資料です。以下の差はこの入力だけの記述値で、本番の論文再現判定には使いません。")
+    gains = [r["paired_gain"]["mean_db"] for r in comparison["candidates"] if r["paired_gain"]["mean_db"] is not None]
+    if gains and matched16 and selected64 and max(abs(g) for g in gains) < .01:
+        paragraph("結論: 今回の実験では、論文が示す非線形補償による通信品質の改善を再現できませんでした。通常DSPのQは論文と近い水準ですが、TransformerによるΔQは全候補で絶対値0.01 dB未満です。理論計算量の規模が近いことと、品質改善の再現は別の結果です。")
+    else:
+        paragraph("再現度は、通常DSPの水準、補償後のQ、通常DSPからの改善量ΔQ、maskの効果、理論計算量を分けて比較します。下表の差は観測値であり、厳密再現の合否や統計的有意差を自動判定するものではありません。")
+    paragraph("Qは通信の誤り率を品質へ換算した値で、大きいほど良い指標です。今回のQはBER由来です。QのdB値を割って『何％再現』とは表しません。差は今回−論文で示し、マイナスなら今回が低いことを意味します。平均は3 seedのQ平均、±はseed間の標本標準偏差です。ΔQは同じseedの通常DSPとの差を先に取り、その平均と標本SDを示します。")
+    link("比較元: 原論文 arXiv:2304.13119v3、IV-C / Table II・IV-D", PAPER)
+    paragraph("比較の前提: 原論文と同じQ換算・DSP・実行構造であることは完全には確認できていません。以下は公開値との記述的な比較です。差のすべてをモデルや学習の欠陥に帰属させることはできません。論文が直接公開していないBERをQから逆算し、論文の実測BERとして扱うこともしません。")
+
+    heading("1. 通常DSPの水準は近いが、補償効果は別に評価する")
+    table(("条件", "論文の通常DSP Q dB", "今回の通常DSP Q平均 ± SD dB", "今回−論文 dB"),
+          ((f"{r['condition']}QAM", fixed(r["paper_q_db"], 2), f"{fixed(r['ours_q_db'])} ± {fixed(r['ours_q_sd_db'])}", fixed(r["gap_db"])) for r in comparison["baselines"]))
+    paragraph("通常DSPはモデルによる非線形補償を加える前の基準です。この基準が近くても、Transformerによる上積みを再現したことにはなりません。数値資格に使った0.1 dBの目安は、論文との性能一致を判定する許容幅ではありません。")
+
+    heading("2. 16QAM: 論文の改善量と全6候補を直接比較する")
+    figure("paper-16qam")
+    table(("候補 / mask", "論文 Q dB", "今回 Q平均 ± SD dB", "Q差 dB", "論文 ΔQ dB", "今回 ΔQ平均 ± SD dB", "ΔQ差 dB"),
+          ((_method(r) + (" [primary]" if r["primary"] else ""), fixed(r["paper_q_db"], 2),
+            f"{fixed(r['ours_q_db'])} ± {fixed(r['ours_q_sd_db'])}", fixed(r["q_gap_db"]), fixed(r["paper_gain_db"], 2),
+            gain_text(r["paired_gain"]), fixed(r["gain_gap_db"])) for r in matched16))
+    paragraph("論文Table IIの最良値はA・maskなしの8.82 dBで、通常DSP 6.67 dBからの改善は2.15 dBです。本文の約2.1 dBより、表の値を優先して差を計算しました。A/B/Cの対応は公式TeXのコメントに依存し、原著の実行設定との完全な同一性は保証できません。primaryはtestを見る前にvalidation MSEで固定した候補です。論文の最良Aと今回のprimaryを混同せず、同じ候補名の全6行を示しました。")
+
+    heading("3. 64QAM: 論文の探索全体の最良値との差")
+    paragraph("論文IV-Dは通常DSP 6.5 dBから最良8.17 dB、差1.67 dBを報告しています。8.17 dBは広い探索全体の最良値です。今回のhigh/mid/low-adoptedそれぞれ、またはmask有無それぞれの正解値ではありません。比較対象はvalidationだけで固定したprimaryとし、testの最大値を選び直していません。")
+    figure("paper-64qam")
+    gaps64 = {(r["candidate"], r["masked"]): r for r in comparison["benchmark_64"]["primary_comparisons"]}
+    table(("今回のprimary", "今回 Q平均 ± SD dB", "論文最良8.17との差 dB", "今回 ΔQ平均 ± SD dB", "論文改善1.67との差 dB"),
+          ((_method(r), f"{fixed(r['ours_q_db'])} ± {fixed(r['ours_q_sd_db'])}",
+            fixed(gaps64[(r["candidate"], r["masked"])]["q_gap_to_search_best_db"]), gain_text(r["paired_gain"]),
+            fixed(gaps64[(r["candidate"], r["masked"])]["gain_gap_to_search_best_db"])) for r in selected64))
+    paragraph("この差は公開された性能水準への隔たりです。同一アーキテクチャに対する厳密な誤差ではありません。原論文の数百モデル探索に対し今回は36学習runに限定しており、探索範囲も異なります。全候補の測定値は後段と保存表に残しています。")
+
+    heading("4. maskの品質効果は再現したか")
+    table(("条件 / 候補", "論文: maskあり−なし dB", "今回: 対応seedの差平均 ± SD dB"),
+          ((f"{r['condition']}QAM / {r['candidate']}", fixed(r["paper_mask_effect_db"], 2) if r["paper_mask_effect_db"] is not None else "対応する公開値なし",
+            gain_text(r["paired_mask_effect"])) for r in comparison["mask_effects"]))
+    paragraph("論文では16QAM CのmaskによりQが7.31→7.68 dB、0.37 dB向上します。一方A/Bはそれぞれ−0.06/−0.03 dBです。maskの効果を一律の改善とは扱いません。今回の差は同一候補・同一seedで対応を取り、seedごとの通常DSP差とは区別しました。64QAMのmask別数値は本文から確定できず、原図8の色説明にも不一致があるため推測値を置いていません。")
+
+    heading("5. 理論計算量はどのくらい近いか")
+    table(("16QAM候補 / mask", "論文 RMPS", "今回 RMPS", "相対差 %"),
+          ((_method(r), str(r["paper_rmps"]), fixed(r["ours_rmps"], 3), fixed(r["rmps_relative_gap_percent"], 2)) for r in matched16))
+    paragraph("RMPSは片偏波の出力1 symbolあたりの実乗算数です。論文Table IIは千単位へ丸めた値です。今回の差には丸めと計数規約の違いを含み、厳密一致を示しません。maskの値は疎計算を仮定した理論値で、実装のdense attentionに同じ速度向上があるという意味ではありません。64QAMは同一構造と対応する公開RMPSが確定していないため、相対誤差を計算していません。")
+    link("公開値・対応seed差・差分の機械可読表", "tables/paper-comparison.json")
+
+    heading("この結果から言える範囲と残る課題")
+    paragraph("主2条件の学習・評価を完了したことと、論文の性能を再現したことを分けます。通常DSPの水準と理論計算量は比較できますが、今回のほぼゼロの補償効果から論文の改善を確認することはできません。採用した物理/DSP条件、Q換算、コメント由来構造、mask補完と密度差、探索範囲が残る相違点です。これらのどれが差の原因かは、今回の測定だけでは特定できません。" if gains and max(abs(g) for g in gains) < .01 else "公開値との相違点は物理/DSP条件、Q換算、コメント由来構造、mask補完と密度差、探索範囲です。今回の測定だけでは差の原因を特定できません。")
+    stops = {name: sum(i["stop_reason"] == name for i in inventory) for name in ("patience", "epoch_cap")}
+    paragraph(f"停止内訳はpatience {stops['patience']}件、epoch上限 {stops['epoch_cap']}件です。上限到達を収束とは呼ばず、patienceも停止規則の達成であって最適解の証明ではありません。負の結果を含む全候補を保存し、testを見た再選択や学習のやり直しはこの改訂では行っていません。")
+    paragraph("launch-power曲線と最適power、PMD、レート変更、CNN-LSTM/DBP比較、広範なアブレーションは未実施です。追加実験の実行前に相談する範囲であり、親Issue #40全体は未完了です。")
+    md.append("<details>\n<summary>測定条件・全候補の生計数・学習経過・資源測定を開く</summary>\n")
+    web.append("<details><summary>測定条件・全候補の生計数・学習経過・資源測定を開く</summary>")
     table(("判断の対象", "保存された証拠と状態"), (
         ("学習・固定・評価の完了", f"学習 {len(model['trials'])}/36 run、評価 {len([r for r in model['replicates'] if r['candidate'] != 'no-nlc'])}/36 run。評価status={model['metrics']['status']}"),
         ("数値資格", "; ".join(f"{c.condition}QAM r{c.replicate}: {(d.get('qualification') or {}).get('status', '未測定 / pilot')}" for d, c in model["datasets"].values())),
         ("独立bit再計数", f"評価時={model['metrics'].get('independent_recount', {}).get('status', '未完了')}、今回={model['recount']['status'] if model['recount'] else '未再実行（保存済み証拠を参照）'}"),
-        ("論文再現の分類", "主2条件の部分再現。Qが近くても原論文全体の厳密再現成功とはしない。一致の合否は根拠ある数値許容幅がないため未確定。"),
+        ("論文再現の分類", "主2条件の部分再現実験。実行完了と性能再現を区別し、冒頭で公開メトリクスとの差を報告する。"),
         ("独立validator", "指定 / 試行 / 完了 = 0 / 0 / 0。この報告生成は独立評価ではない。")))
     if model["missing"]:
         paragraph(f"未評価の固定対象（baseline含む）: {model['missing']}。未測定点にゼロの性能を代入していません。")
@@ -695,35 +862,8 @@ def _documents(model, figures, inventory, output, command):
                 f"{r.get('measurement', '未記録')} / {r.get('runtime', {})}") for r in model["resources"]))
     else:
         paragraph("専用resource proofは未入力です。最大構造のbatch資源資格や本番所要時間をこの報告だけで保証しません。")
-    heading("論文の参考値と今回の限界")
-    table(("16QAM参考値（Table II）", "通常DSP Q dB", "A / B / C Q dB", "A / B / C RMPS 千 / 片偏波symbol"),
-          (("maskなし", "6.67", "8.82 / 8.54 / 7.31", "608 / 129 / 22"), ("maskあり", "6.67", "8.76 / 8.51 / 7.68", "404 / 81 / 9")))
-    paragraph("64QAMの本文参考値は通常DSP約6.5 dBから最良約8.1 dBです。今回の各縮小候補の正解値や達成保証ではありません。上の表はpublishedの参考値であり、この報告の実測値ではありません。構造との対応はauthor_tex_commentedに留まります。元論文の図は結果図に転用していません。")
-    link("原論文 arXiv:2304.13119v3（2024-08-01）", PAPER)
-    comparison = []
-    baseline = {s["condition"]: s for s in model["summary"] if s["candidate"] == "no-nlc"}
-    for s in model["summary"]:
-        if s["candidate"] == "no-nlc":
-            continue
-        base_q = baseline.get(s["condition"], {}).get("mean_seed_q_db")
-        q = s["mean_seed_q_db"]
-        delta = q - base_q if q is not None and base_q is not None else None
-        reference = {False: {"A": 8.82, "B": 8.54, "C": 7.31}, True: {"A": 8.76, "B": 8.51, "C": 7.68}}[s["masked"]].get(s["candidate"]) if s["condition"] == 16 else None
-        matched = []
-        for record in model["replicates"]:
-            if _key(record)[:3] != (s["condition"], s["candidate"], s["masked"]):
-                continue
-            same_seed = next((b for b in model["replicates"] if b["candidate"] == "no-nlc" and (b["condition"], b["replicate"]) == (record["condition"], record["replicate"])), None)
-            rq = record["metrics"]["total"]["q_ber_db"]
-            bq = same_seed["metrics"]["total"]["q_ber_db"] if same_seed else None
-            if rq is not None and bq is not None:
-                matched.append(rq - bq)
-        delta = float(np.mean(matched)) if matched else None
-        comparison.append((f"{s['condition']}QAM / {_method(s)}", f"{_number(delta)} (n={len(matched)})", _number(q - reference if q is not None and reference is not None else None),
-                           _number(delta - (reference - 6.67) if delta is not None and reference is not None else None),
-                           "平均Qで改善" if delta is not None and delta > 0 else "平均Qで改善なし" if delta is not None else "判定不能"))
-    table(("手法", "同一seed通常DSPからのΔQ平均 dB", "論文からの絶対Q差 dB", "論文からのΔQ差 dB", "観測結果（有意性判定ではない）"), comparison)
-    paragraph("ΔQは同じ条件・seedの差を取り、その全点を平均した記述値で、統計的有意差の宣言ではありません。nは対応するQが定義されたseed数です。数値資格の0.1 dB目安を論文性能の合格幅に転用しません。縮小探索、採用した物理/DSP条件、追加validation、コメント由来構造、mask補完と密度差の限界が残ります。launch-power曲線と最適power、PMD、レート変更、CNN-LSTM/DBP、広範なアブレーションは未実施で、追加前に相談する範囲です。負の結果も隠さず、親Issue #40の全範囲の完了とは扱いません。")
+    md.append("</details>\n")
+    web.append("</details>")
     heading("保存物から再生成する")
     paragraph("学習・test推論を再実行せずcompact JSONを検査して生成しました。checkpointとbulk配列は既定では読みません。モデルのhashはfreezeに保存された識別子を照合したもので、今回モデルbytesを再検証したという意味ではありません。optional --recountだけは保存されたbulk予測をCPUで再計数します。")
     command_text = json.dumps(command, ensure_ascii=False)
