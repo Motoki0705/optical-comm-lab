@@ -111,7 +111,36 @@ trainはX残差の中央b×2 MSE、validationは同一重みのXY swapによる�
 
 保存先は`artifacts/transformer-nlc/<run-id>/`。trainは`run.json`、`history.json`、`best.pt`、`latest.pt`、sweepは失敗を含む`ledger.json`、freezeは不変の`selection-freeze.json`、evaluateは`metrics.json`/`metrics.csv`とignored `bulk/`内の再計数用予測を保存する。入力source/data/checkpointと重なる出力、同runへの重複job、非resume上書きを拒否する。GPU許容差は設定に先に保存し、実測した再開検証と未検証を分ける。通常試験には小さな合成pilotでのCPU実学習対再開・test非読込・checkpoint reload・保存予測の独立Gray BER再計数を含める。
 
-BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。`report`入口は[#47](https://github.com/Motoki0705/optical-comm-lab/issues/47)の未実装を明示して終了し、見かけの報告は作らない。
+BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。
+
+## 保存結果から日本語レポートを生成する
+
+`report`は学習・モデル推論をやり直さず、評価時に固定したfreeze、`run.json`/history、data manifest内のconfig/qualification、保存metricsからMarkdown、offline HTML、PNG/SVG図、CSV/JSON表、入力/出力/生成コードhashを生成する。Matplotlibは実際の図生成時だけimportする。元論文図を測定結果として転用しない。
+
+```bash
+.venv/bin/python -m experiments.transformer_nlc report \
+  --metrics artifacts/transformer-nlc/principal-test/metrics.json \
+  --ledger artifacts/transformer-nlc/principal-sweep/ledger.json \
+  --run-id principal --dry-run
+.venv/bin/python -m experiments.transformer_nlc report \
+  --metrics artifacts/transformer-nlc/principal-test/metrics.json \
+  --ledger artifacts/transformer-nlc/principal-sweep/ledger.json \
+  --resource-proof artifacts/transformer-nlc/resource-main16-A-masked/resource-benchmark.json \
+                   artifacts/transformer-nlc/resource-main16-A-unmasked/resource-benchmark.json \
+                   artifacts/transformer-nlc/resource-main64-high-masked/resource-benchmark.json \
+                   artifacts/transformer-nlc/resource-main64-high-unmasked/resource-benchmark.json \
+  --run-id principal
+```
+
+出力は`reports/transformer-nlc/principal/report.md`と`report.html`。HTMLの図表リンクは相対パスで、出力directoryをまとめて移せばnetworkなしで読める。外部リンクは原論文への任意の参照だけ。日本語fontのfamily/元file hashをmanifestへ記録し、SVGはglyphをpathとして保存する。browserでの見た目の確認を自動実施したという意味ではない。
+
+既定でcompact入力のhash・状態・全trial/seed/frame・bit分母・計数区間・合算・既存groupを照合する。checkpointはfreezeに保存したhash識別子を照合し、model bytesをloadしない。bulk配列も不要なので、bulkを別storageへ移した後もcompact入力を元pathへ揃えれば再生成できる。`--recount`を明示すると既存の独立再計数APIでbulk予測をCPU検査する。`--dry-run --recount`は拒否する。
+
+本番freezeは全36学習runを必須とし、完了評価の欠測・hash不一致は拒否する。専用pilotの報告には`--allow-pilot`が必要で、必ずPILOTと表示する。開発fixtureの出力は`--output-root .work/transformer-report-fixtures`などignored scratchに置き、本番結果として保存しない。`failed`/`interrupted`/`in_progress`の評価を記述する場合は`--allow-partial`も明示し、欠測対象と失敗を表示する。これはfreeze前の未完了学習だけからの報告には対応しない。
+
+全36予定runを表に残し、通常DSPをdataset/condition/seed/frameごとに一度だけ計数する。完全一致するbaseline重複だけを除外し、異なる計数は拒否する。Q合算とseed Q平均、独立bit計数区間とframe/seed変動、疎実装を仮定した理論RMPSとdense backendの実測資源を分ける。epoch capは未収束、未記録のmemory/latencyは未測定と表示する。resource proofは任意で、未入力を合格に読み替えない。
+
+同じrun-idへの通常出力は拒否する。`--regenerate`は、そのdirectoryがこのreportのmanifestで所有され、全出力hashが一致し、追加file/directoryがない場合だけ置き換える。保存先run directory自体がsymlinkの場合は、CLI/APIともに`--regenerate`指定でも拒否する。変更済みの図や利用者の追加fileは削除しない。元入力とsource、既存ESN/Kerr reportへの出力は拒否する。CLIの`report`には変更すべき学習configやseedがないため、`--config`/`--seed`は受け取らない。再実行commandと図表のhashは`report-manifest.json`に残る。
 
 ## 今後の実行範囲と進行
 
