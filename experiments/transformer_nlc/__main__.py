@@ -9,7 +9,9 @@ import sys
 def _output(parser, args):
     if not args.run_id or Path(args.run_id).name != args.run_id or args.run_id in (".", ".."):
         parser.error("run-id must be one directory name")
-    return (args.output_root / args.run_id).resolve()
+    output = args.output_root / args.run_id
+    # The report guard must see a symlink run directory before resolving it.
+    return output if args.action == "report" else output.resolve()
 
 
 def _destination(parser):
@@ -67,17 +69,31 @@ def main(argv=None) -> int:
     mask.add_argument("--unmasked", dest="masked", action="store_false")
     benchmark_parser.add_argument("--device", default="cuda")
     benchmark_parser.add_argument("--microbatch-blocks", type=int, default=512)
-    sub.add_parser("report", help="Reader-facing report is implemented under Issue #47")
+    report_parser = sub.add_parser("report", help="Japanese offline report from frozen compact metrics; no learning/inference")
+    _destination(report_parser)
+    report_parser.set_defaults(output_root=Path("reports/transformer-nlc"))
+    report_parser.add_argument("--metrics", type=Path, required=True)
+    report_parser.add_argument("--ledger", type=Path, help="Optional complete finite sweep ledger, including past failures")
+    report_parser.add_argument("--resource-proof", type=Path, nargs="+", default=[], help="Optional dedicated resource-benchmark JSON files")
+    report_parser.add_argument("--allow-pilot", action="store_true", help="Explicitly permit a report labeled PILOT")
+    report_parser.add_argument("--allow-partial", action="store_true", help="Explicitly describe an incomplete evaluation")
+    report_parser.add_argument("--recount", action="store_true", help="Also verify saved bulk predictions on CPU; default reads compact inputs only")
+    report_parser.add_argument("--regenerate", action="store_true", help="Replace only an unchanged report owned by its output-hash manifest")
     args = parser.parse_args(argv)
     command = [sys.executable, "-m", "experiments.transformer_nlc", *(sys.argv[1:] if argv is None else argv)]
-    if args.action == "report":
-        parser.exit(2, "Report generation is pending Issue #47; saved metrics.json/metrics.csv are the stable input.\n")
     if args.action == "recount":
         from .evaluation import independent_recount
         print(json.dumps(independent_recount(args.metrics), indent=2))
         return 0
     output = _output(parser, args)
-    if args.action == "generate":
+    if args.action == "report":
+        from .report import generate_report
+        if args.dry_run and args.recount:
+            parser.error("--dry-run cannot be combined with --recount; recount opens bulk predictions")
+        result = generate_report(args.metrics, output, allow_pilot=args.allow_pilot, allow_partial=args.allow_partial,
+                                 ledger_path=args.ledger, resource_paths=args.resource_proof, recount=args.recount,
+                                 regenerate=args.regenerate, dry_run=args.dry_run, command=command)
+    elif args.action == "generate":
         from .data import generate as generate_data, generation_plan
         from .data_config import DataConfig, main16, main64, pilot_config
         if args.config and (args.condition is not None or args.pilot or args.scored_symbols is not None):
