@@ -111,7 +111,6 @@ trainはX残差の中央b×2 MSE、validationは同一重みのXY swapによる�
 
 保存先は`artifacts/transformer-nlc/<run-id>/`。trainは`run.json`、`history.json`、`best.pt`、`latest.pt`、sweepは失敗を含む`ledger.json`、freezeは不変の`selection-freeze.json`、evaluateは`metrics.json`/`metrics.csv`とignored `bulk/`内の再計数用予測を保存する。入力source/data/checkpointと重なる出力、同runへの重複job、非resume上書きを拒否する。GPU許容差は設定に先に保存し、実測した再開検証と未検証を分ける。通常試験には小さな合成pilotでのCPU実学習対再開・test非読込・checkpoint reload・保存予測の独立Gray BER再計数を含める。
 
-<<<<<<< HEAD
 BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。保存結果の`report`生成には、以下に記録した内容の生成器を使う。
 
 ## 主2条件の保存結果（2026-10-26）
@@ -155,8 +154,6 @@ PYTHONPATH="$REPORT_CODE/src:$REPORT_CODE" \
 この再生成先が既に存在する場合は、新しい出力先を選ぶか、未変更のreport所有directoryに限って`--regenerate`を明示する。既定の生成はcheckpointやbulk配列を開かない。図・表のhashは一致し、Markdown/HTMLの差は出力先を含むコマンドだけ、manifestの生成時刻は再生成ごとに変わる。
 
 freeze/run/checkpoint/data manifestは元のproducerの絶対パスを保存している。再読み込み評価とcompact再生成はその元配置で検証済みで、任意の新cloneへそのまま移せるとは主張しない。元配置を再現するか、保存された生成recipeから新runを作る必要がある。元metadataを移動先へ書き換えた手順は検証していない。
-=======
-BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを保存する。ゼロ誤りのQは点推定を持たず下限を示す。独立bit計数区間とframe/replicate変動を区別し、MSE/EVM/SNRは補助値とする。追加のgain/phase fitはtestラベルから行わない。Eq.2の`r-alpha*e_hat`はunit-Es座標に適用する。
 
 ## 保存結果から日本語レポートを生成する
 
@@ -186,7 +183,6 @@ BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを�
 全36予定runを表に残し、通常DSPをdataset/condition/seed/frameごとに一度だけ計数する。完全一致するbaseline重複だけを除外し、異なる計数は拒否する。Q合算とseed Q平均、独立bit計数区間とframe/seed変動、疎実装を仮定した理論RMPSとdense backendの実測資源を分ける。epoch capは未収束、未記録のmemory/latencyは未測定と表示する。resource proofは任意で、未入力を合格に読み替えない。
 
 同じrun-idへの通常出力は拒否する。`--regenerate`は、そのdirectoryがこのreportのmanifestで所有され、全出力hashが一致し、追加file/directoryがない場合だけ置き換える。保存先run directory自体がsymlinkの場合は、CLI/APIともに`--regenerate`指定でも拒否する。変更済みの図や利用者の追加fileは削除しない。元入力とsource、既存ESN/Kerr reportへの出力は拒否する。CLIの`report`には変更すべき学習configやseedがないため、`--config`/`--seed`は受け取らない。再実行commandと図表のhashは`report-manifest.json`に残る。
->>>>>>> origin/main
 
 ## 今後の実行範囲と進行
 
