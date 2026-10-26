@@ -28,9 +28,10 @@ Keep this `AGENTS.md` at the repository root; do not proliferate nested copies. 
 
 | Directory | Responsibility and place for extensions |
 | --- | --- |
-| `src/optical_comm/` | Reusable channel, DSP, metrics, reservoir, and experiment modules. Put a new mechanism beside the owning module; separate it only when it has a distinct API. |
-| `configs/` | Versioned experiment configurations. Name configurations by purpose; no unexplained parameter variants. |
-| `scripts/` | Thin, reproducible command-line entry points and visualization generators. Put reusable numerical logic in `src`. |
+| `src/optical_comm/` | Reusable physical configuration, channel, DSP, metrics, and independent Kerr visualization modules. The old experiment/reservoir imports are compatibility adapters. |
+| `experiments/` | Parallel study packages: each owns its orchestration, learning methods, named configs and method docs. Follow `experiments/README.md` to add a study; shared numerical mechanisms remain in `src/optical_comm/`. |
+| `configs/` | Independent numerical/Kerr configurations and compatibility symlinks to ESN study configs. Canonical study settings live with their experiment. |
+| `scripts/` | Thin compatibility entry points for study modules, independent channel qualification, and Kerr visualization generators. Study implementations belong in their experiment package. |
 | `tests/` | Analytic limits, data isolation, reproducibility, and substantive regression tests. Do not mirror implementation internals. |
 | `docs/` | Requirements, architecture, methods, source references, and research decisions. Consolidate related investigation notes. |
 | `reports/` | The reader-facing report and its figures. Explain axes, units, uncertainty, and the scope of each conclusion. |

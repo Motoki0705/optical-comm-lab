@@ -6,6 +6,17 @@ Run `uv sync --group dev` and `uv run python -m pytest`. Enable the optional GPU
 
 Add substantive limits or regressions that check externally observable scientific behavior. Do not treat these small numerical-verification problems as proof of full-link convergence. Long sampling/step/frame/guard studies belong in recorded experiment artifacts, with acceptance criteria in [experiment-plan.md](../docs/experiment-plan.md).
 
+ESN experiment/reservoir tests retain the old public imports to exercise their
+compatibility aliases; implementation ownership is now in
+`experiments/esn_longhaul`. Audit tests explicitly distinguish synthetic,
+current-source fixtures from immutable historical evidence. The historical run
+must reject new-source audit/resume without writes. Isolated-copy checks include
+both packages, reject mixed checkouts, and detect changed canonical study code.
+Waveform output guards protect `experiments/` as well as shared source/configs.
+Wheel verification must additionally run outside the checkout, including the
+packaged-default dry-run and a tiny CPU run/audit/resume; editable tests alone
+do not verify package inclusion.
+
 `test_spatial_kerr.py` verifies the spatial CW solver using independent complex
 2D Gaussian and Kerr/loss limits, Bessel LP01 boundary/phase, analytic free
 Gaussian streamlines, low-intensity/domain termination, and physical mesh XYZ

@@ -2,7 +2,6 @@
 
 import csv
 import hashlib
-import importlib.util
 import json
 import os
 from pathlib import Path
@@ -15,9 +14,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEC = importlib.util.spec_from_file_location("audit_run_cli", ROOT / "scripts" / "audit_run.py")
-audit = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(audit)
+from experiments.esn_longhaul import audit_run as audit
 
 
 def write_json(path, value):
@@ -32,7 +29,12 @@ def rehash(directory, filename):
 
 @pytest.fixture
 def saved_run(tmp_path):
-    """A one-condition copy of committed measurements, with its own config hash."""
+    """Synthetic one-condition fixture, never a migrated scientific evidence run.
+
+    Test only: replace provenance with the source under test so the saved-data
+    semantic checks remain exercised after a source refactor. Production records
+    remain immutable and are separately required to reject this new source.
+    """
     source = ROOT / "artifacts" / "final-1600km-20261012"
     run = tmp_path / "saved-run"
     run.mkdir()
@@ -46,9 +48,14 @@ def saved_run(tmp_path):
     digest = audit.content_hash(audit.ExperimentConfig.from_dict(config).to_dict())
     manifest = json.loads((run / "manifest.json").read_text())
     manifest["compatibility"]["config_hash"] = digest
+    current = audit.software_manifest()
+    manifest["software"]["source_sha256"] = current["source_sha256"]
+    manifest["software"]["source_hash"] = current["source_hash"]
+    manifest["compatibility"]["source_hash"] = current["source_hash"]
     write_json(run / "manifest.json", manifest)
     complete = json.loads((run / dirname / "complete.json").read_text())
     complete["compatibility"]["config_hash"] = digest
+    complete["compatibility"]["source_hash"] = current["source_hash"]
     write_json(run / dirname / "complete.json", complete)
     rows = json.loads((source / "summary.json").read_text())["metrics"]
     rows = [row for row in rows if row["launch_power_dbm"] == 0]
@@ -145,22 +152,30 @@ def test_cli_runs_with_only_copied_source_and_data_and_identifies_actual_code(sa
     clone = tmp_path / "clone"
     (clone / "scripts").mkdir(parents=True)
     shutil.copytree(ROOT / "src", clone / "src", ignore=shutil.ignore_patterns("__pycache__"))
+    shutil.copytree(ROOT / "experiments", clone / "experiments", ignore=shutil.ignore_patterns("__pycache__"))
     for name in ("audit_run.py", "run_experiment.py"):
         shutil.copy2(ROOT / "scripts" / name, clone / "scripts" / name)
     target = clone / "artifacts" / "saved-run"
     shutil.copytree(saved_run, target)
     before = data_snapshot(target)
-    env = dict(os.environ, PYTHONPATH=str(clone / "src"))
+    env = dict(os.environ, PYTHONPATH=os.pathsep.join((str(clone / "src"), str(clone))))
     result = subprocess.run([sys.executable, "scripts/audit_run.py", "--run", "artifacts/saved-run",
                              "--output", "audit.json"], cwd=clone, env=env, text=True, capture_output=True)
     assert result.returncode == 0, result.stderr
     record = json.loads((clone / "audit.json").read_text())
-    assert record["audit_code"]["sha256"] == hashlib.sha256((clone / "scripts/audit_run.py").read_bytes()).hexdigest()
+    assert record["audit_code"]["sha256"] == hashlib.sha256((clone / "experiments/esn_longhaul/audit_run.py").read_bytes()).hexdigest()
     assert Path(record["observations"]["imported_scientific_source_root"]) == clone
     assert record["semantic_checks"]["input_files_sha256"]["config.json"] == hashlib.sha256((target / "config.json").read_bytes()).hexdigest()
     assert before == data_snapshot(target)
     assert record["semantic_checks_sha256"] == audit.audit_run(saved_run)["semantic_checks_sha256"]
-    altered_source = clone / "src/optical_comm/reservoir.py"
+    mixed = dict(env, PYTHONPATH=os.pathsep.join((str(ROOT / "src"), str(clone))))
+    mismatch = subprocess.run([sys.executable, "scripts/audit_run.py", "--run", "artifacts/saved-run",
+                               "--output", "mixed-tree.json"], cwd=clone, env=mixed,
+                              text=True, capture_output=True)
+    assert mismatch.returncode == 1
+    assert "different trees" in mismatch.stderr
+    assert not (clone / "mixed-tree.json").exists()
+    altered_source = clone / "experiments/esn_longhaul/reservoir.py"
     altered_source.write_text(altered_source.read_text() + "\n# changed copy\n")
     failed = subprocess.run([sys.executable, "scripts/audit_run.py", "--run", "artifacts/saved-run"],
                             cwd=clone, env=env, text=True, capture_output=True)
@@ -176,3 +191,31 @@ def test_cli_refuses_to_overwrite_science_input(saved_run):
     assert result.returncode == 1
     assert "read-only" in result.stderr
     assert before == data_snapshot(saved_run)
+
+
+def test_original_historical_source_is_rejected_without_writes(tmp_path):
+    run = ROOT / "artifacts/final-1600km-20261012"
+    before = data_snapshot(run)
+    manifest = json.loads((run / "manifest.json").read_text())
+    assert manifest["software"]["git_commit"] == "daa52bf810f213b057fada90e8c1b903509c766c"
+    assert manifest["compatibility"]["source_hash"] == "3873aa64fdd676d5f78ff844bdf9c81f5d2c9677b60903913c0abc821d1c3e82"
+    assert manifest["software"]["source_sha256"]["src/optical_comm/reservoir.py"] == "02f2440a7698f61b7e1d84be180e723c1e79a93e1c296bfb980ac2420d1ee48d"
+    output = tmp_path / "should-not-exist.json"
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/audit_run.py"), "--run", str(run),
+                             "--output", str(output)], text=True, capture_output=True)
+    assert result.returncode == 1
+    assert "source hash differs" in result.stderr
+    assert not output.exists()
+    config = audit.ExperimentConfig.from_dict(json.loads((run / "config.json").read_text()))
+    with pytest.raises(ValueError, match="resume rejected"):
+        audit.experiment.run_experiment(config, run.parent, run.name, resume=True)
+    assert before == data_snapshot(run)
+
+
+def test_audit_output_protects_experiment_sources(saved_run):
+    output = ROOT / "experiments/esn_longhaul/should-not-exist.json"
+    result = subprocess.run([sys.executable, str(ROOT / "scripts/audit_run.py"), "--run", str(saved_run),
+                             "--output", str(output)], text=True, capture_output=True)
+    assert result.returncode == 1
+    assert "overwrite scientific source" in result.stderr
+    assert not output.exists()

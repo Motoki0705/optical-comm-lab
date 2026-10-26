@@ -2,7 +2,7 @@
 
 このディレクトリは、研究要件、実験計画、モデル・数値手法、出典、研究上の判断を説明する。ユーザーの要求は [requirements.md](requirements.md)、採用した条件・データ分離・受入条件は [experiment-plan.md](experiment-plan.md) に集約する。関連する調査の結論は要件・計画・方法の文書に統合し、作業担当ごとの中間メモを並べない。
 
-新しい機構は、その仕様と根拠を既存の関連文書へ追記する。新しい文書やディレクトリは、継続して担う責任と読む人が明確な場合に設ける。コードは `src/optical_comm/`、実験条件は `configs/`、読者向けの結果と図は `reports/`、再現用のデータとモデルは `artifacts/` が担当する。共通の作業規則はリポジトリ直下の `AGENTS.md` に置き、下位ディレクトリに複製しない。
+新しい機構は、その仕様と根拠を既存の関連文書へ追記する。新しい文書やディレクトリは、継続して担う責任と読む人が明確な場合に設ける。共通の物理・DSP・指標は `src/optical_comm/`、実験固有の実装・設定・方法は [`experiments/`](../experiments/README.md)、独立した数値確認とKerrの条件は `configs/`、読者向けの結果と図は `reports/`、再現用のデータとモデルは `artifacts/` が担当する。共通の作業規則はリポジトリ直下の `AGENTS.md` に置き、下位ディレクトリに複製しない。
 
 [repository-maintenance.md](repository-maintenance.md) は、開発の節目で scout が配置・利用経路・一時コード・再現情報を点検し、根拠を重複確認して Issue に残す手順と依頼文を担当する。各回の結果は管理 PR または保守 Issue に記録する。
 
@@ -25,3 +25,9 @@ SSFM計算、数値検証、電場・位相・チャープ・スペクトルの�
 読者向けの入口は [映像中心の日本語解説](../reports/animations/spatial_kerr/index.html)、
 図とHTMLの再生成は [解説のREADME](../reports/animations/spatial_kerr/README.md)と
 [builder CLI](../scripts/build_spatial_kerr_report.py)を参照する。
+
+既存ESN研究の計画・学習方法は
+[`experiments/esn_longhaul/docs/`](../experiments/esn_longhaul/README.md) が正本です。
+このディレクトリの旧URLは転送ページとして保持します。元のユーザー要求は
+`requirements.md` にそのまま保存し、物理・DSP・指標と数値確認の文書は共通の参照としてここに残します。
+新しい研究の追加手順と来歴互換性は [実験構成](../experiments/README.md) を参照してください。
