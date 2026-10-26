@@ -125,16 +125,16 @@ BERはX/Y/合算のerrors/bit数と95% Clopper–Pearson区間、BER由来Qを�
 | 64QAM high / maskなし | 6.725544 | 6.727675 | ＋0.002131 |
 | 64QAM high / maskあり | 6.725544 | 6.727181 | ＋0.001638 |
 
-各値は3独立seedの記述値で、有意な改善の宣言ではない。差はseed間変動より小さく、論文の大きな改善を再現したとは扱わない。全36件・全seed/frame、計数区間と変動、負の結果、停止理由、理論RMPSと実測資源の範囲は[日本語レポート](../../reports/transformer-nlc/principal-20261025/report.md)と[オフラインHTML](../../reports/transformer-nlc/principal-20261025/report.html)に保存した。縮小探索と採用条件による主2条件の部分再現であり、論文値との一致の合否は未確定である。
+各値は3独立seedの記述値で、有意な改善の宣言ではない。差はseed間変動より小さく、論文の大きな改善を再現したとは扱わない。全36件・全seed/frame、計数区間と変動、負の結果、停止理由、理論RMPSと実測資源の範囲は[日本語レポート](../../reports/transformer-nlc/principal-20261025/report.md)と[オフラインHTML](../../reports/transformer-nlc/principal-20261025/report.html)に保存した。論文メトリクスとの比較では、16QAM A・maskなしは論文8.82 dBに対して今回6.7707 dB、64QAM primary・maskなしは論文の探索最良8.17 dBに対して今回6.7277 dBだった。補償による品質改善は再現できていない。16QAMの理論RMPSは公開値より0.30〜1.86%低いが、計数規約と丸めの差があり、速度向上の実証ではない。
 
-[実行証拠索引](../../artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json)は、6データmanifest、qualification、全36 run/history、freeze、主評価とreload評価、再計数、資源資格、環境、入力整合性を指す。[レポート生成manifest](../../reports/transformer-nlc/principal-20261025/report-manifest.json)は入力91件・生成コード12件・生成物15件のhashを残す。[生成・再生成の通常検証](../../artifacts/transformer-nlc/principal-report-verification-20261025/report-verification.json)には、図10ファイルと数値表3ファイルのhash一致、オフラインasset検査、PNGとSVGの目視確認を保存した。ブラウザでの描画確認は行っていない。
+[実行証拠索引](../../artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json)は、6データmanifest、qualification、全36 run/history、freeze、主評価とreload評価、再計数、資源資格、環境、入力整合性を指す。[現行レポート生成manifest](../../reports/transformer-nlc/principal-20261025/report-manifest.json)は入力・生成コード・生成物のhashを残す。[論文メトリクス比較の改訂検証](../../artifacts/transformer-nlc/principal-paper-comparison-20261026/verification.json)では、元の成果物234件（checkpoint 88件を含む）と数値表3件の不変性、図表の再生成、公開値との対応計算を検証する。
 
-学習・評価の生成元は`5705e7b9fe8db08b26e829979d39e2279f1739dd`、学習数値source hashは`c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142`。今回の描画は生成器の基点`70f60185fbfdc9ff81aa21d7cfabbedc681d49c3`に、RMPS図の注釈を候補形状・mask色・図外凡例へ変更する差分を適用した内容である。[正確な差分](../../artifacts/transformer-nlc/principal-report-verification-20261025/render-source.patch)と[実行時の内容hash](../../artifacts/transformer-nlc/principal-report-verification-20261025/render-source-snapshot.json)を保存し、全36点の座標・入力91件・数値表3件は不変と確認した。旧renderのmanifest・検証・索引は同じ検証directoryの`history/render-20261025T170036Z/`に保全した。元の科学manifestの生成元SHAやpathは変更していない。
+学習・評価の生成元は`5705e7b9fe8db08b26e829979d39e2279f1739dd`、学習数値source hashは`c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142`のまま。現行の比較中心の生成器は`db63638579853297a13efe49c44887a3f7059813`にある。改訂前の[生成検証・索引](../../artifacts/transformer-nlc/principal-report-verification-20261025/report-verification.json)と、その配下の過去render記録は当時の成果物の履歴として保全した。現行レポートに対する検証とは区別する。旧manifestと改訂の対応は[来歴の説明](../../artifacts/transformer-nlc/principal-paper-comparison-20261026/README.md)を参照。元の科学manifestの生成元SHAやpathは変更していない。
 
-次は実際に検証した、学習・推論を行わないcompact集計からの再生成コマンド。上記の差分を含む内容hashと一致する生成器worktreeで実行し、出力をignored scratchへ分離する。新しい生成器checkoutを用意する場合は、基点commitから保存した`render-source.patch`を`git apply`で適用し、snapshotの内容hashと照合する。Python環境と日本語fontの実在する版はmanifestに記録している。
+元の配置にある保存済みcompact入力から、現行版を次のように別directoryへ再生成できる。`REPORT_CODE`は上記commitの生成器を持つcheckoutを指定する。
 
 ```bash
-REPORT_CODE=/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report
+REPORT_CODE=/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction
 REPORT_RESULTS=/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results
 cd "$REPORT_CODE"
 PYTHONPATH="$REPORT_CODE/src:$REPORT_CODE" \

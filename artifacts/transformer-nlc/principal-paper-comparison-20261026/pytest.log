@@ -1,0 +1,20 @@
+.........................s.............................................. [ 26%]
+..............s......................................................... [ 53%]
+........................................................................ [ 79%]
+.......................................................                  [100%]
+=============================== warnings summary ===============================
+tests/test_spatial_kerr.py: 48 warnings
+  /home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/lib/python3.12/site-packages/skimage/measure/_marching_cubes_lewiner.py:237: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    ar.shape = shape
+
+tests/test_spatial_kerr.py: 13 warnings
+  /home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/lib/python3.12/site-packages/skimage/measure/_marching_cubes_lewiner.py:213: DeprecationWarning: Setting the shape on a NumPy array has been deprecated in NumPy 2.5.
+  As an alternative, you can create a new view using np.reshape (with copy=False if needed).
+    faces.shape = -1, 3
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_channel.py:200: optional CuPy extra is not installed
+SKIPPED [1] tests/test_spatial_kerr.py:115: could not import 'cupy': No module named 'cupy'
+269 passed, 2 skipped, 61 warnings in 70.47s (0:01:10)

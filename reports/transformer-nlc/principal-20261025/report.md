@@ -1,15 +1,101 @@
-# Transformerで光通信の誤りを減らせたか
+# 論文の通信品質と計算量をどこまで再現できたか
 
 production / 主2条件の部分再現
 
-16QAMは1偏波の1記号に4 bit、64QAMは6 bitを載せる方式です。2つの偏波X/Yを同時に送ります。長い光ファイバでは雑音と光強度に依存するKerr効果で受信点がずれます。通常DSPは分散や位相などを補正する受信処理、NLCはその後に残るずれを学習モデルで推定し、引き算する補償です。残差には雑音も含まれ、純粋なKerr効果だけを測っているわけではありません。
+結論: 今回の実験では、論文が示す非線形補償による通信品質の改善を再現できませんでした。通常DSPのQは論文と近い水準ですが、TransformerによるΔQは全候補で絶対値0.01 dB未満です。理論計算量の規模が近いことと、品質改善の再現は別の結果です。
+
+Qは通信の誤り率を品質へ換算した値で、大きいほど良い指標です。今回のQはBER由来です。QのdB値を割って『何％再現』とは表しません。差は今回−論文で示し、マイナスなら今回が低いことを意味します。平均は3 seedのQ平均、±はseed間の標本標準偏差です。ΔQは同じseedの通常DSPとの差を先に取り、その平均と標本SDを示します。
+
+[比較元: 原論文 arXiv:2304.13119v3、IV-C / Table II・IV-D](https://arxiv.org/html/2304.13119v3)
+
+比較の前提: 原論文と同じQ換算・DSP・実行構造であることは完全には確認できていません。以下は公開値との記述的な比較です。差のすべてをモデルや学習の欠陥に帰属させることはできません。論文が直接公開していないBERをQから逆算し、論文の実測BERとして扱うこともしません。
+
+## 1. 通常DSPの水準は近いが、補償効果は別に評価する
+
+| 条件 | 論文の通常DSP Q dB | 今回の通常DSP Q平均 ± SD dB | 今回−論文 dB |
+| --- | --- | --- | --- |
+| 16QAM | 6.67 | 6.7727 ± 0.0364 | 0.1027 |
+| 64QAM | 6.50 | 6.7255 ± 0.0071 | 0.2255 |
+
+通常DSPはモデルによる非線形補償を加える前の基準です。この基準が近くても、Transformerによる上積みを再現したことにはなりません。数値資格に使った0.1 dBの目安は、論文との性能一致を判定する許容幅ではありません。
+
+## 2. 16QAM: 論文の改善量と全6候補を直接比較する
+
+![16QAM: 論文Table IIと保存testの比較。左は絶対Q、右は同一seedの通常DSPからのΔQ。誤差棒は3 seedの標本SD（信頼区間ではない）。構造の対応とQ定義には未確定点がある。](figures/paper-16qam.png)
+
+16QAM: 論文Table IIと保存testの比較。左は絶対Q、右は同一seedの通常DSPからのΔQ。誤差棒は3 seedの標本SD（信頼区間ではない）。構造の対応とQ定義には未確定点がある。
+
+| 候補 / mask | 論文 Q dB | 今回 Q平均 ± SD dB | Q差 dB | 論文 ΔQ dB | 今回 ΔQ平均 ± SD dB | ΔQ差 dB |
+| --- | --- | --- | --- | --- | --- | --- |
+| A / maskなし | 8.82 | 6.7707 ± 0.0411 | -2.0493 | 2.15 | -0.002017 ± 0.004711 (n=3) | -2.1520 |
+| B / maskなし | 8.54 | 6.7699 ± 0.0392 | -1.7701 | 1.87 | -0.002791 ± 0.004419 (n=3) | -1.8728 |
+| C / maskなし [primary] | 7.31 | 6.7711 ± 0.0378 | -0.5389 | 0.64 | -0.001611 ± 0.001921 (n=3) | -0.6416 |
+| A / maskあり | 8.76 | 6.7699 ± 0.0407 | -1.9901 | 2.09 | -0.002826 ± 0.004313 (n=3) | -2.0928 |
+| B / maskあり | 8.51 | 6.7687 ± 0.0409 | -1.7413 | 1.84 | -0.003950 ± 0.005331 (n=3) | -1.8440 |
+| C / maskあり [primary] | 7.68 | 6.7712 ± 0.0390 | -0.9088 | 1.01 | -0.001443 ± 0.002709 (n=3) | -1.0114 |
+
+論文Table IIの最良値はA・maskなしの8.82 dBで、通常DSP 6.67 dBからの改善は2.15 dBです。本文の約2.1 dBより、表の値を優先して差を計算しました。A/B/Cの対応は公式TeXのコメントに依存し、原著の実行設定との完全な同一性は保証できません。primaryはtestを見る前にvalidation MSEで固定した候補です。論文の最良Aと今回のprimaryを混同せず、同じ候補名の全6行を示しました。
+
+## 3. 64QAM: 論文の探索全体の最良値との差
+
+論文IV-Dは通常DSP 6.5 dBから最良8.17 dB、差1.67 dBを報告しています。8.17 dBは広い探索全体の最良値です。今回のhigh/mid/low-adoptedそれぞれ、またはmask有無それぞれの正解値ではありません。比較対象はvalidationだけで固定したprimaryとし、testの最大値を選び直していません。
+
+![64QAM: validationだけで選んだprimaryと論文IV-Dの探索全体の最良値。参考線は各構造・maskに対応する目標値ではない。点は全seed平均、誤差棒は標本SD。](figures/paper-64qam.png)
+
+64QAM: validationだけで選んだprimaryと論文IV-Dの探索全体の最良値。参考線は各構造・maskに対応する目標値ではない。点は全seed平均、誤差棒は標本SD。
+
+| 今回のprimary | 今回 Q平均 ± SD dB | 論文最良8.17との差 dB | 今回 ΔQ平均 ± SD dB | 論文改善1.67との差 dB |
+| --- | --- | --- | --- | --- |
+| high / maskなし | 6.7277 ± 0.0097 | -1.4423 | 0.002131 ± 0.003625 (n=3) | -1.6679 |
+| high / maskあり | 6.7272 ± 0.0092 | -1.4428 | 0.001638 ± 0.002939 (n=3) | -1.6684 |
+
+この差は公開された性能水準への隔たりです。同一アーキテクチャに対する厳密な誤差ではありません。原論文の数百モデル探索に対し今回は36学習runに限定しており、探索範囲も異なります。全候補の測定値は後段と保存表に残しています。
+
+## 4. maskの品質効果は再現したか
+
+| 条件 / 候補 | 論文: maskあり−なし dB | 今回: 対応seedの差平均 ± SD dB |
+| --- | --- | --- |
+| 16QAM / A | -0.06 | -0.000809 ± 0.000879 (n=3) |
+| 16QAM / B | -0.03 | -0.001159 ± 0.001853 (n=3) |
+| 16QAM / C | 0.37 | 0.000168 ± 0.001438 (n=3) |
+| 64QAM / high | 対応する公開値なし | -0.000494 ± 0.000686 (n=3) |
+| 64QAM / mid | 対応する公開値なし | -0.000267 ± 0.002239 (n=3) |
+| 64QAM / low-adopted | 対応する公開値なし | -0.000215 ± 0.002058 (n=3) |
+
+論文では16QAM CのmaskによりQが7.31→7.68 dB、0.37 dB向上します。一方A/Bはそれぞれ−0.06/−0.03 dBです。maskの効果を一律の改善とは扱いません。今回の差は同一候補・同一seedで対応を取り、seedごとの通常DSP差とは区別しました。64QAMのmask別数値は本文から確定できず、原図8の色説明にも不一致があるため推測値を置いていません。
+
+## 5. 理論計算量はどのくらい近いか
+
+| 16QAM候補 / mask | 論文 RMPS | 今回 RMPS | 相対差 % |
+| --- | --- | --- | --- |
+| A / maskなし | 608000 | 604563.250 | -0.57 |
+| B / maskなし | 129000 | 127555.500 | -1.12 |
+| C / maskなし | 22000 | 21933.500 | -0.30 |
+| A / maskあり | 404000 | 400325.125 | -0.91 |
+| B / maskあり | 81000 | 79549.625 | -1.79 |
+| C / maskあり | 9000 | 8832.500 | -1.86 |
+
+RMPSは片偏波の出力1 symbolあたりの実乗算数です。論文Table IIは千単位へ丸めた値です。今回の差には丸めと計数規約の違いを含み、厳密一致を示しません。maskの値は疎計算を仮定した理論値で、実装のdense attentionに同じ速度向上があるという意味ではありません。64QAMは同一構造と対応する公開RMPSが確定していないため、相対誤差を計算していません。
+
+[公開値・対応seed差・差分の機械可読表](tables/paper-comparison.json)
+
+## この結果から言える範囲と残る課題
+
+主2条件の学習・評価を完了したことと、論文の性能を再現したことを分けます。通常DSPの水準と理論計算量は比較できますが、今回のほぼゼロの補償効果から論文の改善を確認することはできません。採用した物理/DSP条件、Q換算、コメント由来構造、mask補完と密度差、探索範囲が残る相違点です。これらのどれが差の原因かは、今回の測定だけでは特定できません。
+
+停止内訳はpatience 18件、epoch上限 18件です。上限到達を収束とは呼ばず、patienceも停止規則の達成であって最適解の証明ではありません。負の結果を含む全候補を保存し、testを見た再選択や学習のやり直しはこの改訂では行っていません。
+
+launch-power曲線と最適power、PMD、レート変更、CNN-LSTM/DBP比較、広範なアブレーションは未実施です。追加実験の実行前に相談する範囲であり、親Issue #40全体は未完了です。
+
+<details>
+<summary>測定条件・全候補の生計数・学習経過・資源測定を開く</summary>
 
 | 判断の対象 | 保存された証拠と状態 |
 | --- | --- |
 | 学習・固定・評価の完了 | 学習 36/36 run、評価 36/36 run。評価status=complete |
 | 数値資格 | 16QAM r0: passed; 16QAM r1: passed; 16QAM r2: passed; 64QAM r0: passed; 64QAM r1: passed; 64QAM r2: passed |
 | 独立bit再計数 | 評価時=passed、今回=未再実行（保存済み証拠を参照） |
-| 論文再現の分類 | 主2条件の部分再現。Qが近くても原論文全体の厳密再現成功とはしない。一致の合否は根拠ある数値許容幅がないため未確定。 |
+| 論文再現の分類 | 主2条件の部分再現実験。実行完了と性能再現を区別し、冒頭で公開メトリクスとの差を報告する。 |
 | 独立validator | 指定 / 試行 / 完了 = 0 / 0 / 0。この報告生成は独立評価ではない。 |
 
 ## どの条件を測ったか
@@ -239,40 +325,14 @@ GPU memoryのnullはゼロ使用の実測値ではなく未測定です。通常
 | 64 / high / True | passed / True | 2.09 / 1667729408 / 1811939328 | initialization, forward/backward, actual Adam step; synchronized CUDA / {&#x27;CUBLAS_WORKSPACE_CONFIG&#x27;: &#x27;:4096:8&#x27;, &#x27;SDPA_backends&#x27;: {&#x27;flash&#x27;: True, &#x27;math&#x27;: True, &#x27;memory_efficient&#x27;: True}, &#x27;attention_backend&#x27;: &#x27;torch.scaled_dot_product_attention dense dispatcher&#x27;, &#x27;byteorder&#x27;: &#x27;little&#x27;, &#x27;capability&#x27;: [12, 0], &#x27;cpu_threads&#x27;: 1, &#x27;cuda_build&#x27;: &#x27;12.8&#x27;, &#x27;cudnn&#x27;: 90701, &#x27;default_dtype&#x27;: &#x27;torch.float32&#x27;, &#x27;deterministic&#x27;: True, &#x27;device&#x27;: &#x27;cuda&#x27;, &#x27;dtype&#x27;: &#x27;float32&#x27;, &#x27;float32_matmul_precision&#x27;: &#x27;highest&#x27;, &#x27;gpu_name&#x27;: &#x27;NVIDIA GeForce RTX 5060 Ti&#x27;, &#x27;gpu_total_bytes&#x27;: 17102864384, &#x27;numpy&#x27;: &#x27;2.5.4&#x27;, &#x27;physical_dtype&#x27;: &#x27;complex128&#x27;, &#x27;platform&#x27;: &#x27;Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39&#x27;, &#x27;python&#x27;: &#x27;3.12.3&#x27;, &#x27;scipy&#x27;: &#x27;1.18.1&#x27;, &#x27;tf32&#x27;: False, &#x27;torch&#x27;: &#x27;2.7.1+cu128&#x27;} |
 | 64 / high / False | passed / True | 4.785 / 1667483136 / 1811939328 | initialization, forward/backward, actual Adam step; synchronized CUDA / {&#x27;CUBLAS_WORKSPACE_CONFIG&#x27;: &#x27;:4096:8&#x27;, &#x27;SDPA_backends&#x27;: {&#x27;flash&#x27;: True, &#x27;math&#x27;: True, &#x27;memory_efficient&#x27;: True}, &#x27;attention_backend&#x27;: &#x27;torch.scaled_dot_product_attention dense dispatcher&#x27;, &#x27;byteorder&#x27;: &#x27;little&#x27;, &#x27;capability&#x27;: [12, 0], &#x27;cpu_threads&#x27;: 1, &#x27;cuda_build&#x27;: &#x27;12.8&#x27;, &#x27;cudnn&#x27;: 90701, &#x27;default_dtype&#x27;: &#x27;torch.float32&#x27;, &#x27;deterministic&#x27;: True, &#x27;device&#x27;: &#x27;cuda&#x27;, &#x27;dtype&#x27;: &#x27;float32&#x27;, &#x27;float32_matmul_precision&#x27;: &#x27;highest&#x27;, &#x27;gpu_name&#x27;: &#x27;NVIDIA GeForce RTX 5060 Ti&#x27;, &#x27;gpu_total_bytes&#x27;: 17102864384, &#x27;numpy&#x27;: &#x27;2.5.4&#x27;, &#x27;physical_dtype&#x27;: &#x27;complex128&#x27;, &#x27;platform&#x27;: &#x27;Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39&#x27;, &#x27;python&#x27;: &#x27;3.12.3&#x27;, &#x27;scipy&#x27;: &#x27;1.18.1&#x27;, &#x27;tf32&#x27;: False, &#x27;torch&#x27;: &#x27;2.7.1+cu128&#x27;} |
 
-## 論文の参考値と今回の限界
-
-| 16QAM参考値（Table II） | 通常DSP Q dB | A / B / C Q dB | A / B / C RMPS 千 / 片偏波symbol |
-| --- | --- | --- | --- |
-| maskなし | 6.67 | 8.82 / 8.54 / 7.31 | 608 / 129 / 22 |
-| maskあり | 6.67 | 8.76 / 8.51 / 7.68 | 404 / 81 / 9 |
-
-64QAMの本文参考値は通常DSP約6.5 dBから最良約8.1 dBです。今回の各縮小候補の正解値や達成保証ではありません。上の表はpublishedの参考値であり、この報告の実測値ではありません。構造との対応はauthor_tex_commentedに留まります。元論文の図は結果図に転用していません。
-
-[原論文 arXiv:2304.13119v3（2024-08-01）](https://arxiv.org/html/2304.13119v3)
-
-| 手法 | 同一seed通常DSPからのΔQ平均 dB | 論文からの絶対Q差 dB | 論文からのΔQ差 dB | 観測結果（有意性判定ではない） |
-| --- | --- | --- | --- | --- |
-| 16QAM / A / maskなし | -0.002017 (n=3) | -2.049 | -2.152 | 平均Qで改善なし |
-| 16QAM / B / maskなし | -0.002791 (n=3) | -1.77 | -1.873 | 平均Qで改善なし |
-| 16QAM / C / maskなし | -0.001611 (n=3) | -0.5389 | -0.6416 | 平均Qで改善なし |
-| 16QAM / A / maskあり | -0.002826 (n=3) | -1.99 | -2.093 | 平均Qで改善なし |
-| 16QAM / B / maskあり | -0.00395 (n=3) | -1.741 | -1.844 | 平均Qで改善なし |
-| 16QAM / C / maskあり | -0.001443 (n=3) | -0.9088 | -1.011 | 平均Qで改善なし |
-| 64QAM / high / maskなし | 0.002131 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善 |
-| 64QAM / mid / maskなし | -0.004084 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善なし |
-| 64QAM / low-adopted / maskなし | -0.001051 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善なし |
-| 64QAM / high / maskあり | 0.001638 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善 |
-| 64QAM / mid / maskあり | -0.004351 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善なし |
-| 64QAM / low-adopted / maskあり | -0.001266 (n=3) | 未測定・未定義 | 未測定・未定義 | 平均Qで改善なし |
-
-ΔQは同じ条件・seedの差を取り、その全点を平均した記述値で、統計的有意差の宣言ではありません。nは対応するQが定義されたseed数です。数値資格の0.1 dB目安を論文性能の合格幅に転用しません。縮小探索、採用した物理/DSP条件、追加validation、コメント由来構造、mask補完と密度差の限界が残ります。launch-power曲線と最適power、PMD、レート変更、CNN-LSTM/DBP、広範なアブレーションは未実施で、追加前に相談する範囲です。負の結果も隠さず、親Issue #40の全範囲の完了とは扱いません。
+</details>
 
 ## 保存物から再生成する
 
 学習・test推論を再実行せずcompact JSONを検査して生成しました。checkpointとbulk配列は既定では読みません。モデルのhashはfreezeに保存された識別子を照合したもので、今回モデルbytesを再検証したという意味ではありません。optional --recountだけは保存されたbulk予測をCPUで再計数します。
 
 ```json
-["/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python", "-m", "experiments.transformer_nlc", "report", "--metrics", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json", "--ledger", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json", "--resource-proof", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json", "--output-root", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/reports/transformer-nlc", "--run-id", "principal-20261025", "--regenerate"]
+["/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python", "-m", "experiments.transformer_nlc", "report", "--metrics", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json", "--ledger", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-sweep-20261025/ledger.json", "--resource-proof", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json", "--output-root", "/home/kamimura/projects/optical-comm-lab/.work/worktrees/paper-metric-reproduction/reports/transformer-nlc", "--run-id", "principal-20261025", "--regenerate"]
 ```
 
 [入力・生成コード・出力のhash manifest](report-manifest.json)
