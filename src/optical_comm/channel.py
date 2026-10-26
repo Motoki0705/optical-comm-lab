@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
 from scipy import fft as scipy_fft
@@ -260,3 +260,118 @@ def dbp_symbols(
         _to_numpy(field, xp), config, frame.launch_power_dbm, compensate_dispersion=False
     )
     return symbols
+
+
+@dataclass(frozen=True)
+class SpanStepAudit:
+    """Actual accepted Strang steps, peak local phase, and retry accounting."""
+
+    span: int
+    count: int
+    distance_km: float
+    min_km: float
+    max_km: float
+    mean_km: float
+    quantiles_km: tuple[float, ...]
+    max_phase_rad: float
+    retries: int
+
+
+@dataclass(frozen=True)
+class PropagationAudit:
+    phase_bound_rad: float
+    max_step_km: float
+    min_step_km: float
+    spans: tuple[SpanStepAudit, ...]
+
+
+def _adaptive_span(
+    field: Any, config: LinkConfig, phase_bound: float, min_step: float,
+    xp: Any, fft: Any, span: int,
+) -> tuple[Any, SpanStepAudit]:
+    """Audit power *after* trial half dispersion; reject unsafe trial lengths.
+
+    Each accepted step is symmetric. A rejected trial is recalculated from the
+    unchanged step-start field. No prediction of the peak is trusted as a bound.
+    """
+    omega = xp.asarray(2 * np.pi * np.fft.fftfreq(len(field), d=1 / config.sample_rate_hz))
+
+    def disperse(value: Any, distance: float) -> Any:
+        if config.beta2_s2_per_km == 0:
+            return value
+        response = xp.exp(0.5j * config.beta2_s2_per_km * omega**2 * distance)
+        return fft.ifft(fft.fft(value, axis=0) * response[:, None], axis=0)
+
+    position, trial_length, retries, peak = 0.0, min(config.step_km, config.span_km), 0, 0.0
+    lengths: list[float] = []
+    while position < config.span_km:
+        remaining = config.span_km - position
+        dz = min(trial_length, config.step_km, remaining)
+        while True:
+            half = disperse(field, dz / 2)
+            power = xp.sum(xp.abs(half) ** 2, axis=1)
+            max_power = float(xp.max(power).item())
+            effective = dz if config.alpha_per_km == 0 else -math.expm1(-config.alpha_per_km * dz) / config.alpha_per_km
+            maximum_phase = (8 / 9) * config.gamma_per_w_km * max_power * effective
+            if not math.isfinite(maximum_phase):
+                raise FloatingPointError("Nonfinite nonlinear phase during adaptive propagation")
+            if maximum_phase <= phase_bound:
+                break
+            if dz <= min_step:
+                raise RuntimeError("Minimum SSFM step still exceeds nonlinear phase bound")
+            retries += 1
+            dz = max(min_step, dz * min(0.5, 0.95 * phase_bound / maximum_phase))
+            dz = min(dz, remaining)
+        phase = (8 / 9) * config.gamma_per_w_km * power * effective
+        field = disperse(half * xp.exp(1j * phase[:, None]) * math.exp(-config.alpha_per_km * dz / 2), dz / 2)
+        position += dz
+        # Absorb only floating-point endpoint residue; physical distance is kept.
+        if config.span_km - position < 1e-12 * config.span_km:
+            position = config.span_km
+        lengths.append(dz)
+        peak = max(peak, maximum_phase)
+        trial_length = min(config.step_km, dz * (1.2 if maximum_phase == 0 else min(1.2, 0.98 * phase_bound / maximum_phase)))
+    values = np.asarray(lengths)
+    return field, SpanStepAudit(span, len(lengths), float(values.sum()), float(values.min()),
+        float(values.max()), float(values.mean()), tuple(float(x) for x in np.quantile(values, [0, .1, .25, .5, .75, .9, 1])), peak, retries)
+
+
+def propagate_link_adaptive(
+    field: np.ndarray,
+    config: LinkConfig,
+    noise_seed: int | np.random.SeedSequence,
+    *,
+    phase_max_deg: float = 0.05,
+    min_step_km: float = 1e-6,
+    backend: str = "numpy",
+    ase_source: Callable[[int, int, LinkConfig], np.ndarray] | None = None,
+) -> tuple[np.ndarray, PropagationAudit]:
+    """Forward link with a checked maximum local Manakov phase per step.
+
+    The legacy fixed-step path is unchanged. SeedSequence is cloned before
+    spawning so callers can reuse a recipe without mutating its RNG state.
+    """
+    field = np.asarray(field, dtype=np.complex128)
+    if field.ndim != 2 or field.shape[1] != 2 or len(field) == 0 or not np.all(np.isfinite(field)):
+        raise ValueError("field must be a finite nonempty (time,2) complex array")
+    if not math.isfinite(phase_max_deg) or phase_max_deg <= 0:
+        raise ValueError("phase_max_deg must be finite and positive")
+    if not math.isfinite(min_step_km) or not 0 < min_step_km <= config.step_km:
+        raise ValueError("min_step_km must be positive and <= maximum step_km")
+    phase_bound = math.radians(phase_max_deg)
+    sequence = (np.random.SeedSequence(noise_seed.entropy, spawn_key=noise_seed.spawn_key, pool_size=noise_seed.pool_size)
+                if isinstance(noise_seed, np.random.SeedSequence) else np.random.SeedSequence(noise_seed))
+    span_sequences = sequence.spawn(config.n_spans)
+    xp, fft = _backend(backend)
+    result, audits = xp.asarray(field), []
+    for span, seq in enumerate(span_sequences):
+        result, audit = _adaptive_span(result, config, phase_bound, min_step_km, xp, fft, span)
+        result *= math.sqrt(config.edfa_gain)
+        if config.ase_enabled:
+            noise = (ase_noise(len(field), config, np.random.Generator(np.random.PCG64(seq)))
+                     if ase_source is None else np.asarray(ase_source(span, len(field), config), dtype=np.complex128))
+            if noise.shape != field.shape or not np.all(np.isfinite(noise)):
+                raise ValueError("ASE source returned invalid field shape or nonfinite values")
+            result += xp.asarray(noise)
+        audits.append(audit)
+    return _to_numpy(result, xp), PropagationAudit(phase_bound, config.step_km, min_step_km, tuple(audits))
