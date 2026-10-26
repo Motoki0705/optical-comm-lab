@@ -1,0 +1,40 @@
+{
+  "schema": "transformer-report-render-source-snapshot-v1",
+  "recorded_utc": "2026-10-25T17:46:18.756036+00:00",
+  "source_worktree": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report",
+  "base_commit": "70f60185fbfdc9ff81aa21d7cfabbedc681d49c3",
+  "dirty_at_generation": true,
+  "dirty_files": {
+    "experiments/transformer_nlc/report.py": {
+      "sha256": "18de101929e987c5fdec7282314b27e9fe70d4b521f6c6c552a95d0d925aacce",
+      "bytes": 61451
+    }
+  },
+  "exact_patch": {
+    "path": "artifacts/transformer-nlc/principal-report-verification-20261025/render-source.patch",
+    "sha256": "a76724b3f8fe12e8485de19ca6ce48a961931776052d30e2a8d625f29abd9f9d",
+    "bytes": 3539
+  },
+  "reconstruction": "Start from base_commit, apply the exact saved patch with git apply from that checkout root, and compare all generating_file_hashes. HEAD alone does not describe the executed dirty generator.",
+  "generating_file_hashes": {
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/report.py": "18de101929e987c5fdec7282314b27e9fe70d4b521f6c6c552a95d0d925aacce",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/__main__.py": "7da13e011f158f84f66c4046c842f77a4e942681bb383a8c1732f6f852bbc7f3",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/experiments/transformer_nlc/docs/reproduction-spec.md": "4d79b4e2a61b20f90ba513f1edb8ab500353c6350f37552b87670c66aa2af3a4",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-report/src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56"
+  },
+  "generating_code_sha256": "232d5e00f410137b9d5215f20e2a9283a24a69369f1cdd154997ef553eddd441",
+  "scientific_producer_identities": "Literal original data/model/training/evaluation producer metadata retained; no scientific JSON modified.",
+  "independent_validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ]
+}

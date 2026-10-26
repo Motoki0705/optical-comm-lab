@@ -1,0 +1,77 @@
+{
+  "GPU_resume_verifications": [
+    {
+      "atol": 1e-06,
+      "checked": {
+        "scalars": 33,
+        "tensors": 162
+      },
+      "condition": 16,
+      "maxima": {
+        "floating_tensor_max_abs": 0.0,
+        "scalar_max_abs": 0.0
+      },
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main16-20261025/verification.json",
+      "rtol": 1e-05,
+      "sha256": "b97fedf91e74f9af258d0a6de0d91e71a69f7b9e6a5a7bfcdeca66e8c4c5fb4e",
+      "status": "passed"
+    },
+    {
+      "atol": 1e-06,
+      "checked": {
+        "scalars": 33,
+        "tensors": 98
+      },
+      "condition": 64,
+      "maxima": {
+        "floating_tensor_max_abs": 0.0,
+        "scalar_max_abs": 0.0
+      },
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resume-verification-main64-20261025/verification.json",
+      "rtol": 1e-05,
+      "sha256": "471ce92012702496dc6c0d20dfcf3ad816c190ede4fb53d643dd993ef502d237",
+      "status": "passed"
+    }
+  ],
+  "captured_unix": 1792938666.9838665,
+  "interpretation": "GPU resume comparisons and reload validation were performed externally after train() calls. Original run.json automatic GPU_verification=not_run fields are preserved; the linked verification.json files record the executed checks. No production/model/training source changes or extra selection trials.",
+  "learning_pilot_summary": {
+    "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/learning-pilot-summary.json",
+    "sha256": "87068f4db2c9a8fcde70ed503e7cc265daa6d572375f2b2622ee711bdd1ce2eb"
+  },
+  "production_gate": {
+    "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-learning-20261025/production-gate.json",
+    "sha256": "e15992537a7fc82e8145abaa99925ae36db5552298388ad50cc1b4fca97570fb"
+  },
+  "qualification": [
+    {
+      "condition": 16,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main16-20261025/qualification.json",
+      "sha256": "ef8ef5c85c5d0f94d52e324ce27966388bf5f9257299a8522c18872002314d4b"
+    },
+    {
+      "condition": 64,
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-data/artifacts/transformer-nlc/qualification-main64-20261025/qualification.json",
+      "sha256": "0c45ebb90591f920dd35dd7f3c19ca4546a4f0f4d9ec0a762c99b3096811e8ba"
+    }
+  ],
+  "resource_benchmarks": [
+    {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-masked-micro512-20261025/resource-benchmark.json",
+      "sha256": "313080c540069a6c76e4da81ef9ad581667c8b19450c6c8d88b5d4aa6a224ee0"
+    },
+    {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main16-unmasked-micro512-20261025/resource-benchmark.json",
+      "sha256": "fe2dc65b814bf65cf27c14538a8415f88e38a6ff3acb61a1eff504885cabe037"
+    },
+    {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-masked-micro512-20261025/resource-benchmark.json",
+      "sha256": "8b5d8608d7856b48842cbcbc9bc87965a9e5f98c6ebf86b1a15fbf9c53aa6e38"
+    },
+    {
+      "path": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/resource-main64-unmasked-micro512-20261025/resource-benchmark.json",
+      "sha256": "7e867d666d5b1bb9d505f9715f01969db3b2a3588ceea81cbaad2da0b4bada03"
+    }
+  ],
+  "schema": "transformer-production-gate-evidence-index-v1"
+}

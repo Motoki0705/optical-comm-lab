@@ -1,0 +1,8 @@
+{
+  "comparison": "all frame metrics exact after independent frozen checkpoint reload",
+  "first": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-20261025/metrics.json",
+  "frame_predictions": 168,
+  "freeze_sha256": "fc26b8830d9ef9e0b3e864e5bf0e27347f84916dde1d29d13fd9841c9d63ddf1",
+  "reload": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/principal-evaluation-reload-20261025/metrics.json",
+  "status": "passed"
+}

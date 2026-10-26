@@ -1,0 +1,944 @@
+{
+  "checked_unix": 1792936452.0697832,
+  "complete_datasets": [
+    {
+      "bps_window": 65,
+      "bulk_bytes": 238179928,
+      "condition": 16,
+      "frames": [
+        {
+          "file_sha256": "663e5f7c0b24f5d0c6d1dc77d3437c00358149fce1fc2413bade9ce5a74bc738",
+          "frame": 0,
+          "physical_seconds": 64.52280884699576,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "40253c4c08e0b94c45ffa7547767109f6fa2d70246a3f16552bc746e2652d8ba",
+          "frame": 1,
+          "physical_seconds": 63.17184798900416,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "05fcc9cfa06442f00ffb34fed9807a444641d93ae5a30780bedb2590539967cb",
+          "frame": 2,
+          "physical_seconds": 62.81472418300109,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "9eed5bc592112e479133d5ee5d7dc74dffc67b032175f9e3445feed950ba7a1d",
+          "frame": 3,
+          "physical_seconds": 63.10700162599824,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "061ce33d1ec74366e59285772ca4a2a7ce92a14b08ad3a14111f0e5750beb2ab",
+          "frame": 4,
+          "physical_seconds": 66.00784888500493,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "9c82e084dd97e1d40a23a8a501d3830f185c83419a660ddfcbaab0b30ed93030",
+          "frame": 5,
+          "physical_seconds": 66.1223102139993,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "1da208dec4b04ca9beb482976a19dd0e13d9234353b9086dee34a48755fd8f26",
+          "frame": 6,
+          "physical_seconds": 63.96008546899975,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "40feb9ea22ae0ddcfbed13e020e83c668f75c1457005caae48e1a5f156330e1e",
+          "frame": 7,
+          "physical_seconds": 61.82271731000219,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "2b45f65e5ba069ecae3cf032cf3906184f4df6a86168cd3e1eeed3f00b0c4974",
+          "frame": 0,
+          "physical_seconds": 61.45018491299561,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "86b6f74976631f5aa62bcf1d49d9a8154807f012704c03bec5c402c4855e57a5",
+          "frame": 1,
+          "physical_seconds": 61.60933352000575,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "56c801466267f07e12672436a5ab19b7cf0332f37c8e58c6ff80b8b0ab71e6e3",
+          "frame": 0,
+          "physical_seconds": 61.414970409998205,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "4fd7c61d8b67eca7d84c16bee6356bc78e873162a0480d27dacdde6feb0e8458",
+          "frame": 1,
+          "physical_seconds": 60.71859052599757,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "9c6ab662f9824117c996ee7efae19e9b2b2ee4d295d501de76712bfa7a146233",
+          "frame": 2,
+          "physical_seconds": 62.02743755999836,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "e413f08b196f58b8cbb0423af16af08c56e47c57acd5a4209a7104e6175f5769",
+          "frame": 3,
+          "physical_seconds": 60.64896353000222,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 140855455651256018518511232876589080657,
+              "state": 5807654676074954323210484174813333144
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 2402636170396824470,
+          "spawn_key": [
+            16,
+            0,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 157991974053236231524103409331097219739,
+              "state": 330766917322986659982573589657593375525
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 13244472146707409197,
+          "spawn_key": [
+            16,
+            0,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r0-20261025/manifest.json",
+      "manifest_sha256": "427a50e5dd281db62281d00b86eb5dd69d21393632c1b4bc3e671f4eabea08cd",
+      "receiver_sha256": "c7d9d3f42392470b5fb69fe33cc07352b21cd5cd9349c5eff5781884c6398011",
+      "replicate": 0,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    },
+    {
+      "bps_window": 65,
+      "bulk_bytes": 238179928,
+      "condition": 16,
+      "frames": [
+        {
+          "file_sha256": "10960ebe818628c0dfb8885540e387a7f78ea90161433933abbabf1701236588",
+          "frame": 0,
+          "physical_seconds": 63.01929143600137,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "1cf9e15e1dc190ba9894b688ce087d347e330cb35d57865788eda1e29618f6e3",
+          "frame": 1,
+          "physical_seconds": 63.302564052995876,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "588cec176b13c3cd7f4059aff000f9aeb2782127b3bcc4e014180453ea74c18f",
+          "frame": 2,
+          "physical_seconds": 62.97697522299859,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "f0a3259c9103825c6ec0ea8eb0c5c274f7fb21e8bbc05802a907b1b08eb9efb9",
+          "frame": 3,
+          "physical_seconds": 63.361319253002875,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "9b1986e601d2b8856d88c03a1c1d138ec0ba7fa7dfa42eeba83b7e65950776ce",
+          "frame": 4,
+          "physical_seconds": 62.93801325399545,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "bcc665e265460568e1ebc56ea3610d51ff82acb6f66a541ccae0787a64306a14",
+          "frame": 5,
+          "physical_seconds": 62.7649141429938,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "fe0c5881ab4eb4527540e4e30e35f9983d501c528e5a11bc3088992b4d203e73",
+          "frame": 6,
+          "physical_seconds": 63.0440276990048,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "afb9a98f14773607f54249e5602552ebf626aadf2b88d0ba937b02d7436836fe",
+          "frame": 7,
+          "physical_seconds": 62.373070298999664,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "94cefb42a063c0199bfa4bc2e625f56e835d634aca808363a8095dc4c6cda521",
+          "frame": 0,
+          "physical_seconds": 62.459701428997505,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "906581ecb70b8e737606702125d6726e8fc727382830b95b4b4a107e1bb97f87",
+          "frame": 1,
+          "physical_seconds": 61.8876165430047,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "3017bcf227046d77fa227b79c510b8ad01a080ab00af8331e0e196bda812f863",
+          "frame": 0,
+          "physical_seconds": 61.417826303993934,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "e1c2d6de01ec714ce9be0614e4daa42b821eda0760db99c50961c942a6fddf2e",
+          "frame": 1,
+          "physical_seconds": 61.776283118997526,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "3deba91ae2d9303d93eb27ba1f9a84022032df90bcab6c0de218e9804a929a1c",
+          "frame": 2,
+          "physical_seconds": 64.36074232800456,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "15d380769dd314d61f89d195208ee3ec2680452634befdcf4b170b71b367cbcf",
+          "frame": 3,
+          "physical_seconds": 61.59233291000419,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 164760605796187060400606963905727586703,
+              "state": 331801179591643939302045142707217145128
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 5057685441850109070,
+          "spawn_key": [
+            16,
+            1,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 180745610503237661445284526081187442771,
+              "state": 2902515249315307303913564848638300073
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 5350001467992497621,
+          "spawn_key": [
+            16,
+            1,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r1-20261025/manifest.json",
+      "manifest_sha256": "4f43bc4c2b4e2ed59d78654653ff86ae1c604ebf2187f037148d45142101434b",
+      "receiver_sha256": "d0f8e3cd5e2362665bd93dac90a94e30d3f946346249b5d264ac777b7b768ca3",
+      "replicate": 1,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    },
+    {
+      "bps_window": 65,
+      "bulk_bytes": 238179928,
+      "condition": 16,
+      "frames": [
+        {
+          "file_sha256": "32a5cd6ff7d27948c9529f694704af81f1d3479f7b29003faf479d930813179b",
+          "frame": 0,
+          "physical_seconds": 63.5953938859966,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "38126f7bde35a0c18bdf41ae000561bdaff2df961c9d8356dbb59ec3e7bbd34d",
+          "frame": 1,
+          "physical_seconds": 64.2649304459992,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "3ae24e1640ecf49d801e1171bf720218885beef7c848fde507d91e11ddc4f07f",
+          "frame": 2,
+          "physical_seconds": 62.35441614699812,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "87cf68a76f20b3979215a3a63f9097d442f76c98d30f16573e01e7f637ecdcde",
+          "frame": 3,
+          "physical_seconds": 61.13012748300389,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "6198a28af4d2868811720583ed3e0ad7ed3c228afe372e4ca26a05dfb6a3f447",
+          "frame": 4,
+          "physical_seconds": 62.46146997699543,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "e566ee17cce83729015d42efe0d6bb476dd462a83b4155095f33c6d80d98698d",
+          "frame": 5,
+          "physical_seconds": 61.6878777689999,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "7b569e796892881e5b948299bc8b8c109690a79bd30896d0d639b5e20ef41cdb",
+          "frame": 6,
+          "physical_seconds": 62.252896268997574,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "fd74e25d12d62e4017714903024823d4403ae5340f79208948b632af55f86200",
+          "frame": 7,
+          "physical_seconds": 63.778204333997564,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "d39cb2bc6262d6f0fa45aa30d6393da991352c332280ae8a059815029eff36c8",
+          "frame": 0,
+          "physical_seconds": 64.06646806500066,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "f4dbbe871e5df14682a036015f74b0e056f590f508143ffcf4330a25f23c3c6e",
+          "frame": 1,
+          "physical_seconds": 63.62197896500584,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "2ce4ab7f641e1fa371d4e38300ca05625e0e476dddbb72b821b049f547ce9da3",
+          "frame": 0,
+          "physical_seconds": 62.11934177000512,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "a8ea9625cb61f3b3aab317bc70c43bd007deb7ea37f70990e18465f241f0e499",
+          "frame": 1,
+          "physical_seconds": 61.99086542399891,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "b0c6cb6df9b6a6052a6677e85838be11b83b8cb26f22af3696606960a6811c79",
+          "frame": 2,
+          "physical_seconds": 60.73324610100099,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "75cadfe2e6ba59f26deee293c3c087ddcf9f66d9c732d51b547afa266b74e538",
+          "frame": 3,
+          "physical_seconds": 62.60836621800263,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 141632245415965728296553166435836671273,
+              "state": 234795213292258429034470939273653345888
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 10417027614515971444,
+          "spawn_key": [
+            16,
+            2,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 213587139388246963635794445124754102145,
+              "state": 32958271126269367396332490380563212405
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 2745656650935327042,
+          "spawn_key": [
+            16,
+            2,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r2-20261025/manifest.json",
+      "manifest_sha256": "035355a872cc11070966f4797e959cf5880c0e549a4bafd9eea16006c45b2e41",
+      "receiver_sha256": "c4b5b2a9340d476bda5b511b338ee4699657cbb57508004a1e4301b4983e94cd",
+      "replicate": 2,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    },
+    {
+      "bps_window": 65,
+      "bulk_bytes": 246917720,
+      "condition": 64,
+      "frames": [
+        {
+          "file_sha256": "938cde597178cf246212bc97c5b035377c0658eaf2850eabd3e824160880bcbd",
+          "frame": 0,
+          "physical_seconds": 22.229575593002664,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "a80bf14c1368f4def1d9351f41e3ad0fcca17f9e7464ee6e54ac22be660b8041",
+          "frame": 1,
+          "physical_seconds": 22.19864830699953,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "78d56d307ae607dc6c8e4ed8628f1a134a318e6e5da86eed8c1ccc5b1e13910a",
+          "frame": 2,
+          "physical_seconds": 21.401836662000278,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "807f16f6fda5b6f08a4fdb054d497d19944bfbce9543aef4d035064cf21c5f2b",
+          "frame": 3,
+          "physical_seconds": 21.74071229800029,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "5188c0eb5aa7f170d38748aa91e342a8d50f99dc71b71c87901a0380852ff23e",
+          "frame": 4,
+          "physical_seconds": 21.409780789996148,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "e29fd9c1e345d69011b3712950b054382ea3d22d318a33a2b6e39d806161e43a",
+          "frame": 5,
+          "physical_seconds": 22.44237785000587,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "bd8a6a02ee24fb5249b2ac77f0840670352cea7af2c599586a980520ff502188",
+          "frame": 6,
+          "physical_seconds": 22.771577692998108,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "d5604fba14c41ea0caf4f20afa9d5216206f8e29fa4fb6b589c500ba8e9419a1",
+          "frame": 7,
+          "physical_seconds": 21.836607099001412,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "376751c7c5507a037a4c0ad5c444eb007b3b7cbf5a3d0d37acb6c2915b2c2f4c",
+          "frame": 0,
+          "physical_seconds": 22.548525562000577,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "176933c0b25f6a94f9e851f412e00ea0a7541dbb726ebf545d2d2490a60610b5",
+          "frame": 1,
+          "physical_seconds": 21.96231112699752,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "d3054c6dbdeed3133d6931bc001b6b399198b372089a7a182e18d824dde27bc5",
+          "frame": 0,
+          "physical_seconds": 21.905953880996094,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "d81545d1a62f94b3f43ad87dfe6b179da8eb6c3367cfe1b61e686e209bf1bc58",
+          "frame": 1,
+          "physical_seconds": 22.252418663003482,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "1323a7780f4f1f12272b91cd31beec0735d685213805ead577ad714da9dbf957",
+          "frame": 2,
+          "physical_seconds": 22.165337723003177,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "f9ba7452973232cff18cd457a7209f0843921741e92d73c1f82a357122656dbe",
+          "frame": 3,
+          "physical_seconds": 22.140388997999253,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 39422996210958579140380726693296031865,
+              "state": 136410381938929960561090800076030234399
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 4403911626665225842,
+          "spawn_key": [
+            64,
+            0,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 252549923126165596955735900529110578727,
+              "state": 288884850083881124026088951982968683354
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 11535062373163757821,
+          "spawn_key": [
+            64,
+            0,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r0-20261025/manifest.json",
+      "manifest_sha256": "a41d76c5496b36b3446cef88faccd38ffa0695d4719ca3a6a811a9273ef237f4",
+      "receiver_sha256": "a648bfcb6923f6ec26d66d965eb96c7aa07bafd30da6a1f0013fcd55286ca5a4",
+      "replicate": 0,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    },
+    {
+      "bps_window": 65,
+      "bulk_bytes": 246917720,
+      "condition": 64,
+      "frames": [
+        {
+          "file_sha256": "a0f618b46aa770f64c0fd7f80c2a75998d954b8b4d7d0f1344ceb70b4344d4f6",
+          "frame": 0,
+          "physical_seconds": 22.811764215999574,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "a524457553e1bdfda06682516147f19c0b9ef42b15ff9dba73ec358c74e46c96",
+          "frame": 1,
+          "physical_seconds": 22.536551067998516,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "23fb8deeb4a8be6e50551d6442c2894dfdce2f1fe52d7b6ebb7339ce1e65bd9c",
+          "frame": 2,
+          "physical_seconds": 21.962433109001722,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "3e46aec0ae301c80585d1dbe472788f0eadc88009ca92d8886a7f6ded47bc4d0",
+          "frame": 3,
+          "physical_seconds": 22.034571039002913,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "235b3a0747316b301b2dfe6e03f68ff7970761950fa95bbe4016678a16891c9f",
+          "frame": 4,
+          "physical_seconds": 22.612355129997013,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "9eadb4ba0d11bafce430b831bb5ea1b7c514606588547e4b9eb43c5e89a8997c",
+          "frame": 5,
+          "physical_seconds": 22.597861108995858,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "0df895c08572482c2ea060db169a3a463455ae5d06c96963087c29bd23e43863",
+          "frame": 6,
+          "physical_seconds": 22.169563679999555,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "d29900dd90e3dd68ff35f08ff659b19af080e91b9547e91ec8d0ca0e0a3c49a5",
+          "frame": 7,
+          "physical_seconds": 21.995856223999,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "ab67d07ab2e8626dcf28c7b97b204f5607860f3001c89d7bbacb6d4ee11d0453",
+          "frame": 0,
+          "physical_seconds": 22.855243358004373,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "da39cafb042d49e45e8b67995005282096a077987d20db4acd03272359e81ac0",
+          "frame": 1,
+          "physical_seconds": 22.13564008299727,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "aaf85d45b456b425e9d4da98ec0065e9e028ae60beaa4e39e22e027059fdb629",
+          "frame": 0,
+          "physical_seconds": 22.381970146998356,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "df5b5d50e7c0fef2adbf28cfd3c0038908ebc4544f955b3242b2b5e80c3a461f",
+          "frame": 1,
+          "physical_seconds": 21.94869611699687,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "1bba8d5768921b27142c265676e416334d78477be86da03f710df8e03cb85e94",
+          "frame": 2,
+          "physical_seconds": 22.38461441799882,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "cdf3fd07cb00a89432fea246a4a915783fc0710e823797c0cd55fe8b03d85700",
+          "frame": 3,
+          "physical_seconds": 22.07181356399815,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 261493863070856886063403480281113376475,
+              "state": 60210491247288249230606158939395886777
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 250681756143637909,
+          "spawn_key": [
+            64,
+            1,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 240910356705118273886286062911831544747,
+              "state": 150191578763781032002213168777575216402
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 9432487984814200934,
+          "spawn_key": [
+            64,
+            1,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r1-20261025/manifest.json",
+      "manifest_sha256": "d8a1df0115c6453bdae1428c8ef66078dee92046c3a383ec03eeba2b80309a2c",
+      "receiver_sha256": "5c73cd073dd4c60ca8685ef0dafea6bc8c15a360c85b516dd6dc548be99f7828",
+      "replicate": 1,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    },
+    {
+      "bps_window": 65,
+      "bulk_bytes": 246917720,
+      "condition": 64,
+      "frames": [
+        {
+          "file_sha256": "c11f754230a43e90657f78e525fa322e9edfbddee5dc8c802cf280419590722e",
+          "frame": 0,
+          "physical_seconds": 22.34086771999864,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "df6e3e08551fd71b346f43791871a95ef9479d0e356f978fd1d05cab06ed839c",
+          "frame": 1,
+          "physical_seconds": 22.52726005000295,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "09687c0c29d834bafefa6a44801c3ea7329cb3191336e28141e835edd2ea423e",
+          "frame": 2,
+          "physical_seconds": 22.630485934998433,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "f3ac928892d0b9b3e8031fe7806ef4c0a6a1d2039ccee05d5a6ac0790ba96269",
+          "frame": 3,
+          "physical_seconds": 21.65569513200171,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "5fcaf8e4ac5c76fe92d3ac394b7ff21b730b751722a1bc9fa8d3b0e12dfe696f",
+          "frame": 4,
+          "physical_seconds": 21.566638855998463,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "c11f6ab8711aa00dee5a31124f1ea4991dafc4d429c82076355978138b400670",
+          "frame": 5,
+          "physical_seconds": 21.981889062000846,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "2729ead454016f605b92ebe8a141729f7056d1969309f557069b19f7672e447b",
+          "frame": 6,
+          "physical_seconds": 21.987547962999088,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "977223e867afbaf5404c12cb42c08d5e74ef1161fe84df06db37f3dff2da0f4c",
+          "frame": 7,
+          "physical_seconds": 21.727258649996656,
+          "scored_DP_times": 65536,
+          "split": "train"
+        },
+        {
+          "file_sha256": "5b67028f524a1fac024ac4679aa695b577b8e156ea2eb0e936f4ab04617957de",
+          "frame": 0,
+          "physical_seconds": 22.485662316001253,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "971d2e8367a6382b8745a6567e9cfad92ba9df0a5638c187afbecfdf7480788d",
+          "frame": 1,
+          "physical_seconds": 22.308477468999627,
+          "scored_DP_times": 65536,
+          "split": "validation"
+        },
+        {
+          "file_sha256": "d90850df12f11905d235c8039f5103891d7f01bb806d269a21d60c2eea03ef5d",
+          "frame": 0,
+          "physical_seconds": 21.930864105001092,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "e0cc133b06f8519c0c51c7ae397082028f2373f3e0c8b14908b82d28525877b9",
+          "frame": 1,
+          "physical_seconds": 21.705606310002622,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "5319feb4706b96b96781e62a7e20fc32277a7afb87ec4152b201dd189e240162",
+          "frame": 2,
+          "physical_seconds": 21.832140555998194,
+          "scored_DP_times": 65536,
+          "split": "test"
+        },
+        {
+          "file_sha256": "c113e5e904cc29d35a7da7b284b7c7f6bd1ec6a5b01487656a992a15c1256c4d",
+          "frame": 3,
+          "physical_seconds": 21.73705523100216,
+          "scored_DP_times": 65536,
+          "split": "test"
+        }
+      ],
+      "generating_commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+      "learning_seeds": {
+        "model": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 136713726325615513987733657692426188803,
+              "state": 197834951762264648527314765742655135368
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 419601401748098998,
+          "spawn_key": [
+            64,
+            2,
+            0,
+            0,
+            2
+          ]
+        },
+        "shuffle": {
+          "PCG64_initial_state": {
+            "bit_generator": "PCG64",
+            "has_uint32": 0,
+            "state": {
+              "inc": 20346157921004246292789849380034481877,
+              "state": 314309793320881424760448154200900104646
+            },
+            "uinteger": 0
+          },
+          "master_entropy": 2026102543,
+          "native_seed_uint64": 5979594450552156069,
+          "spawn_key": [
+            64,
+            2,
+            0,
+            0,
+            3
+          ]
+        }
+      },
+      "manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r2-20261025/manifest.json",
+      "manifest_sha256": "a4393c450461a522d12db996c912a757a3500e49efc5957364a26887ea421f95",
+      "receiver_sha256": "fb411781a348a1db31e8fba43e789a2c59ad5280e5d494966fe028cae8a6b089",
+      "replicate": 2,
+      "source_content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+      "status": "passed",
+      "test_metrics": "not_computed",
+      "verification": "raw file SHA256 only; no test array interpretation/metrics"
+    }
+  ],
+  "schema": "transformer-data-integrity-snapshot-v1",
+  "status": "passed",
+  "total_frames": 84
+}

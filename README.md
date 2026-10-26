@@ -4,11 +4,18 @@
 
 共通の物理・DSP・指標は `src/optical_comm/`、研究ごとの実装・設定・方法は
 [`experiments/`](experiments/README.md) に分けます。既存研究は
-[`esn_longhaul`](experiments/esn_longhaul/README.md)、次の Transformer 再現は
+[`esn_longhaul`](experiments/esn_longhaul/README.md)、Transformer 再現は
 [`transformer_nlc`](experiments/transformer_nlc/README.md) で独立に管理します。
-Transformer の科学的実装はこの構成変更に含めません。
 
-結果と図は [日本語レポート](reports/final_report.md)、オフラインで読める [画像埋め込みHTML](reports/final_report.html) に保存します。HTMLはブラウザの印刷機能でPDFにできます。
+既存ESN研究の結果と図は [日本語レポート](reports/final_report.md)、オフラインで読める [画像埋め込みHTML](reports/final_report.html) に保存します。HTMLはブラウザの印刷機能でPDFにできます。
+
+Transformer主2条件は36件の学習・validation選択固定・held-out評価・独立再計数・全checkpoint再読み込み評価まで完了しました。
+[日本語レポート](reports/transformer-nlc/principal-20261025/report.md)、
+[オフラインHTML](reports/transformer-nlc/principal-20261025/report.html)、
+[実行証拠の索引](artifacts/transformer-nlc/principal-learning-20261025/ready-report-inputs.json)に保存しています。
+通常DSPに対するprimaryの3seed平均ΔQは16QAMで約−0.0015 dB、64QAMで約＋0.002 dBと小さく、論文の大きな改善を再現したとは扱いません。
+縮小探索と採用した物理・DSP条件による**主2条件の部分再現**です。18件のepoch上限停止は収束未確認として残し、PMD・レート変更・CNN-LSTM/DBP・広範なアブレーションは未実施です。
+固定版の生成器と保存済み集計を使う[図表再生成手順](experiments/transformer_nlc/README.md#主2条件の保存結果2026-10-26)は、元の絶対パス配置を前提にしています。
 
 光ファイバ内部の変化は、[3本の物理シミュレーション映像と日本語解説](reports/animations/kerr_physics/index.html)で見られます。自己位相変調、波長分散、両者の同時作用を、計算した電場からBlenderで映像化しました。各12秒・1080pのMP4と編集できるシーン、[再生成記録](reports/animations/kerr_physics/README.md)を保存しています。80 kmの単独パルスによる説明用実験で、1600 kmの学習評価とは別のデータです。
 

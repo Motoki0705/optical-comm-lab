@@ -1,0 +1,18 @@
+{
+  "checked_unix": 1792935014.7709463,
+  "checks": [
+    "Ignored driver Python compilation",
+    "Late inventory file corruption rejected by bytehash preflight before scientific evaluate API invocation",
+    "Training dependency source hash unchanged after orchestration-only adjustment"
+  ],
+  "driver_v2_sha256": "b1dd415bb3d74f6cc095336cc5276a3db8f3f832b64132bdf0a80a2b4ce71e57",
+  "fixture_scope": "temporary ignored files only; no channel test arrays or metrics opened",
+  "independent_validator_requested_attempted_completed": [
+    0,
+    0,
+    0
+  ],
+  "schema": "transformer-orchestration-verification-v1",
+  "status": "passed",
+  "training_source_content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142"
+}

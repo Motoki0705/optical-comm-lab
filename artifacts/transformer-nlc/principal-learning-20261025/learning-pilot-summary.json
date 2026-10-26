@@ -1,0 +1,816 @@
+{
+  "actual_full_link_spans": {
+    "16": 40,
+    "64": 12
+  },
+  "created_unix": 1792932959.1497707,
+  "guard_symbols_per_side": 256,
+  "pilot_streams": "dedicated split3, independent of production",
+  "production_guard_symbols_per_side": 4096,
+  "regime": "pilot",
+  "runs": [
+    {
+      "actual_epochs": 5,
+      "attempts": [
+        {
+          "ended_unix": 1792932757.7590334,
+          "from_epoch": 0,
+          "from_optimizer_step": 0,
+          "started_unix": 1792932756.5056899,
+          "status": "complete"
+        }
+      ],
+      "best_checkpoint_sha256": "13df5a7cc1a9dd5d64041015923079153bff121a08bb08f71019951100a80566",
+      "checkpoint_total_bytes": 262134,
+      "condition": 16,
+      "config": {
+        "adam_betas": [
+          0.9,
+          0.999
+        ],
+        "adam_eps": 1e-08,
+        "candidate": "C",
+        "condition": 16,
+        "cpu_threads": 1,
+        "deterministic": true,
+        "device": "cuda",
+        "effective_batch_blocks": 512,
+        "gpu_resume_atol": 1e-06,
+        "gpu_resume_rtol": 1e-05,
+        "masked": false,
+        "max_epochs": 5,
+        "max_lr": 0.001,
+        "microbatch_blocks": 512,
+        "model": {
+          "attention_projection_dim": 16,
+          "b": 128,
+          "d_ff": 32,
+          "d_model": 16,
+          "dropout": 0.0,
+          "h": 4,
+          "initialization": "xavier_uniform",
+          "k": 9,
+          "layer_norm_eps": 1e-05,
+          "layers": 2,
+          "mask_rho": null,
+          "negative_slope": 0.2,
+          "output_window": 7,
+          "t": 16
+        },
+        "patience": 100,
+        "pilot_validation_symbols": 2048,
+        "regime": "pilot",
+        "warmup_epochs": 10,
+        "weight_decay": 0.0
+      },
+      "epoch_history": [
+        {
+          "epoch": 1,
+          "improved": true,
+          "learning_rate": 0.0001,
+          "optimizer_step": 1,
+          "patience_used": 0,
+          "seconds": 0.6936479630021495,
+          "train_mse_X_IQ": 1.013884425163269,
+          "validation_mse_XY_IQ": 0.953537106513977
+        },
+        {
+          "epoch": 2,
+          "improved": true,
+          "learning_rate": 0.0002,
+          "optimizer_step": 2,
+          "patience_used": 0,
+          "seconds": 0.046862013994541485,
+          "train_mse_X_IQ": 0.951244056224823,
+          "validation_mse_XY_IQ": 0.8352307081222534
+        },
+        {
+          "epoch": 3,
+          "improved": true,
+          "learning_rate": 0.0003,
+          "optimizer_step": 3,
+          "patience_used": 0,
+          "seconds": 0.057815430001937784,
+          "train_mse_X_IQ": 0.8333964347839355,
+          "validation_mse_XY_IQ": 0.6764893531799316
+        },
+        {
+          "epoch": 4,
+          "improved": true,
+          "learning_rate": 0.0004,
+          "optimizer_step": 4,
+          "patience_used": 0,
+          "seconds": 0.06153786900540581,
+          "train_mse_X_IQ": 0.6752455234527588,
+          "validation_mse_XY_IQ": 0.4990922212600708
+        },
+        {
+          "epoch": 5,
+          "improved": true,
+          "learning_rate": 0.0005,
+          "optimizer_step": 5,
+          "patience_used": 0,
+          "seconds": 0.043770059004600625,
+          "train_mse_X_IQ": 0.4983977973461151,
+          "validation_mse_XY_IQ": 0.32856643199920654
+        }
+      ],
+      "finite_gradient_check": "every effective optimizer step; nonfinite raises and records failure",
+      "mask": "unmasked",
+      "peak_allocated_GPU_bytes": 81156608,
+      "plan": {
+        "accumulation_max": 1,
+        "blocks_per_epoch": 32,
+        "config": {
+          "adam_betas": [
+            0.9,
+            0.999
+          ],
+          "adam_eps": 1e-08,
+          "candidate": "C",
+          "condition": 16,
+          "cpu_threads": 1,
+          "deterministic": true,
+          "device": "cuda",
+          "effective_batch_blocks": 512,
+          "gpu_resume_atol": 1e-06,
+          "gpu_resume_rtol": 1e-05,
+          "masked": false,
+          "max_epochs": 5,
+          "max_lr": 0.001,
+          "microbatch_blocks": 512,
+          "model": {
+            "attention_projection_dim": 16,
+            "b": 128,
+            "d_ff": 32,
+            "d_model": 16,
+            "dropout": 0.0,
+            "h": 4,
+            "initialization": "xavier_uniform",
+            "k": 9,
+            "layer_norm_eps": 1e-05,
+            "layers": 2,
+            "mask_rho": null,
+            "negative_slope": 0.2,
+            "output_window": 7,
+            "t": 16
+          },
+          "patience": 100,
+          "pilot_validation_symbols": 2048,
+          "regime": "pilot",
+          "warmup_epochs": 10,
+          "weight_decay": 0.0
+        },
+        "data_config_sha256": "03023499b33c7a05251d7d324932b4f0f3966e298f368d150abe82bdf9b959ed",
+        "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main16-20261025/manifest.json",
+        "data_manifest_sha256": "7220b8d7cdf72e01f05ddad74f4641f71cdadc9da936af6a87aceedef03b2bbe",
+        "data_regime": "pilot",
+        "effective_batch_blocks": 512,
+        "loss": "X residual mean over central b*2 real coordinates; validation equal XY mean",
+        "max_optimizer_steps": 5,
+        "microbatch_blocks": 512,
+        "optimizer_steps_per_epoch": 1,
+        "replicate": 0,
+        "restart_boundary": "last_completed_epoch",
+        "test_access": "forbidden",
+        "validation_blocks": 16,
+        "validation_generated_DP_times_per_frame": 4096,
+        "validation_used_DP_times_per_frame": 2048,
+        "warmup_steps": 10
+      },
+      "public_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "-m",
+        "experiments.transformer_nlc",
+        "train",
+        "--config",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/configs/learning-pilot-main16-unmasked.json",
+        "--data-manifest",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main16-20261025/manifest.json",
+        "--run-id",
+        "learning-pilot-main16-unmasked-20261025",
+        "--output-root",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc"
+      ],
+      "run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-main16-unmasked-20261025/run.json",
+      "run_sha256": "aaef83fb6d7518f31441f429d8cb6936874611caa245b44f9032a23bb57d8cff",
+      "status": "complete",
+      "validation_targets": [
+        {
+          "frame": 0,
+          "generated_scored_DP_times": 4096,
+          "split": "validation",
+          "symbol_index_range": {
+            "first": 608,
+            "last_inclusive": 2655,
+            "stride": 1
+          },
+          "used_DP_times": 2048
+        }
+      ]
+    },
+    {
+      "actual_epochs": 5,
+      "attempts": [
+        {
+          "ended_unix": 1792932767.6972055,
+          "from_epoch": 0,
+          "from_optimizer_step": 0,
+          "started_unix": 1792932766.556527,
+          "status": "complete"
+        }
+      ],
+      "best_checkpoint_sha256": "efbc83f9d247b4fe8d247ad7a4acaa69a1557dd6a8e2fa393f4e802f3cba4af4",
+      "checkpoint_total_bytes": 262134,
+      "condition": 16,
+      "config": {
+        "adam_betas": [
+          0.9,
+          0.999
+        ],
+        "adam_eps": 1e-08,
+        "candidate": "C",
+        "condition": 16,
+        "cpu_threads": 1,
+        "deterministic": true,
+        "device": "cuda",
+        "effective_batch_blocks": 512,
+        "gpu_resume_atol": 1e-06,
+        "gpu_resume_rtol": 1e-05,
+        "masked": true,
+        "max_epochs": 5,
+        "max_lr": 0.001,
+        "microbatch_blocks": 512,
+        "model": {
+          "attention_projection_dim": 16,
+          "b": 128,
+          "d_ff": 32,
+          "d_model": 16,
+          "dropout": 0.0,
+          "h": 4,
+          "initialization": "xavier_uniform",
+          "k": 9,
+          "layer_norm_eps": 1e-05,
+          "layers": 2,
+          "mask_rho": 2.6,
+          "negative_slope": 0.2,
+          "output_window": 7,
+          "t": 16
+        },
+        "patience": 100,
+        "pilot_validation_symbols": 2048,
+        "regime": "pilot",
+        "warmup_epochs": 10,
+        "weight_decay": 0.0
+      },
+      "epoch_history": [
+        {
+          "epoch": 1,
+          "improved": true,
+          "learning_rate": 0.0001,
+          "optimizer_step": 1,
+          "patience_used": 0,
+          "seconds": 0.6324061709965463,
+          "train_mse_X_IQ": 1.086093783378601,
+          "validation_mse_XY_IQ": 1.037469744682312
+        },
+        {
+          "epoch": 2,
+          "improved": true,
+          "learning_rate": 0.0002,
+          "optimizer_step": 2,
+          "patience_used": 0,
+          "seconds": 0.04507863300386816,
+          "train_mse_X_IQ": 1.0340807437896729,
+          "validation_mse_XY_IQ": 0.9381418824195862
+        },
+        {
+          "epoch": 3,
+          "improved": true,
+          "learning_rate": 0.0003,
+          "optimizer_step": 3,
+          "patience_used": 0,
+          "seconds": 0.042205393001495395,
+          "train_mse_X_IQ": 0.9353785514831543,
+          "validation_mse_XY_IQ": 0.8025310635566711
+        },
+        {
+          "epoch": 4,
+          "improved": true,
+          "learning_rate": 0.0004,
+          "optimizer_step": 4,
+          "patience_used": 0,
+          "seconds": 0.046498552001139615,
+          "train_mse_X_IQ": 0.8006691932678223,
+          "validation_mse_XY_IQ": 0.6460863351821899
+        },
+        {
+          "epoch": 5,
+          "improved": true,
+          "learning_rate": 0.0005,
+          "optimizer_step": 5,
+          "patience_used": 0,
+          "seconds": 0.06819676200393587,
+          "train_mse_X_IQ": 0.6450357437133789,
+          "validation_mse_XY_IQ": 0.4866364002227783
+        }
+      ],
+      "finite_gradient_check": "every effective optimizer step; nonfinite raises and records failure",
+      "mask": "masked",
+      "peak_allocated_GPU_bytes": 81249280,
+      "plan": {
+        "accumulation_max": 1,
+        "blocks_per_epoch": 32,
+        "config": {
+          "adam_betas": [
+            0.9,
+            0.999
+          ],
+          "adam_eps": 1e-08,
+          "candidate": "C",
+          "condition": 16,
+          "cpu_threads": 1,
+          "deterministic": true,
+          "device": "cuda",
+          "effective_batch_blocks": 512,
+          "gpu_resume_atol": 1e-06,
+          "gpu_resume_rtol": 1e-05,
+          "masked": true,
+          "max_epochs": 5,
+          "max_lr": 0.001,
+          "microbatch_blocks": 512,
+          "model": {
+            "attention_projection_dim": 16,
+            "b": 128,
+            "d_ff": 32,
+            "d_model": 16,
+            "dropout": 0.0,
+            "h": 4,
+            "initialization": "xavier_uniform",
+            "k": 9,
+            "layer_norm_eps": 1e-05,
+            "layers": 2,
+            "mask_rho": 2.6,
+            "negative_slope": 0.2,
+            "output_window": 7,
+            "t": 16
+          },
+          "patience": 100,
+          "pilot_validation_symbols": 2048,
+          "regime": "pilot",
+          "warmup_epochs": 10,
+          "weight_decay": 0.0
+        },
+        "data_config_sha256": "03023499b33c7a05251d7d324932b4f0f3966e298f368d150abe82bdf9b959ed",
+        "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main16-20261025/manifest.json",
+        "data_manifest_sha256": "7220b8d7cdf72e01f05ddad74f4641f71cdadc9da936af6a87aceedef03b2bbe",
+        "data_regime": "pilot",
+        "effective_batch_blocks": 512,
+        "loss": "X residual mean over central b*2 real coordinates; validation equal XY mean",
+        "max_optimizer_steps": 5,
+        "microbatch_blocks": 512,
+        "optimizer_steps_per_epoch": 1,
+        "replicate": 0,
+        "restart_boundary": "last_completed_epoch",
+        "test_access": "forbidden",
+        "validation_blocks": 16,
+        "validation_generated_DP_times_per_frame": 4096,
+        "validation_used_DP_times_per_frame": 2048,
+        "warmup_steps": 10
+      },
+      "public_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "-m",
+        "experiments.transformer_nlc",
+        "train",
+        "--config",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/configs/learning-pilot-main16-masked.json",
+        "--data-manifest",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main16-20261025/manifest.json",
+        "--run-id",
+        "learning-pilot-main16-masked-20261025",
+        "--output-root",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc"
+      ],
+      "run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-main16-masked-20261025/run.json",
+      "run_sha256": "02fd4f475cc6637715b3c1a606183d9474fd6b2518ed994b22914c5d4ddaeafc",
+      "status": "complete",
+      "validation_targets": [
+        {
+          "frame": 0,
+          "generated_scored_DP_times": 4096,
+          "split": "validation",
+          "symbol_index_range": {
+            "first": 608,
+            "last_inclusive": 2655,
+            "stride": 1
+          },
+          "used_DP_times": 2048
+        }
+      ]
+    },
+    {
+      "actual_epochs": 5,
+      "attempts": [
+        {
+          "ended_unix": 1792932796.4189496,
+          "from_epoch": 0,
+          "from_optimizer_step": 0,
+          "started_unix": 1792932795.3506994,
+          "status": "complete"
+        }
+      ],
+      "best_checkpoint_sha256": "5400c744a5b5beee6a62a6070516eaafa208747aebb59eca48732f541232ec6a",
+      "checkpoint_total_bytes": 196090,
+      "condition": 64,
+      "config": {
+        "adam_betas": [
+          0.9,
+          0.999
+        ],
+        "adam_eps": 1e-08,
+        "candidate": "low-adopted",
+        "condition": 64,
+        "cpu_threads": 1,
+        "deterministic": true,
+        "device": "cuda",
+        "effective_batch_blocks": 512,
+        "gpu_resume_atol": 1e-06,
+        "gpu_resume_rtol": 1e-05,
+        "masked": false,
+        "max_epochs": 5,
+        "max_lr": 0.001,
+        "microbatch_blocks": 512,
+        "model": {
+          "attention_projection_dim": 16,
+          "b": 128,
+          "d_ff": 64,
+          "d_model": 16,
+          "dropout": 0.0,
+          "h": 4,
+          "initialization": "xavier_uniform",
+          "k": 9,
+          "layer_norm_eps": 1e-05,
+          "layers": 1,
+          "mask_rho": null,
+          "negative_slope": 0.2,
+          "output_window": 7,
+          "t": 16
+        },
+        "patience": 100,
+        "pilot_validation_symbols": 2048,
+        "regime": "pilot",
+        "warmup_epochs": 10,
+        "weight_decay": 0.0
+      },
+      "epoch_history": [
+        {
+          "epoch": 1,
+          "improved": true,
+          "learning_rate": 0.0001,
+          "optimizer_step": 1,
+          "patience_used": 0,
+          "seconds": 0.5990770690041245,
+          "train_mse_X_IQ": 0.21128275990486145,
+          "validation_mse_XY_IQ": 0.20368333160877228
+        },
+        {
+          "epoch": 2,
+          "improved": true,
+          "learning_rate": 0.0002,
+          "optimizer_step": 2,
+          "patience_used": 0,
+          "seconds": 0.0778663780001807,
+          "train_mse_X_IQ": 0.20091336965560913,
+          "validation_mse_XY_IQ": 0.18385367095470428
+        },
+        {
+          "epoch": 3,
+          "improved": true,
+          "learning_rate": 0.0003,
+          "optimizer_step": 3,
+          "patience_used": 0,
+          "seconds": 0.04249612599960528,
+          "train_mse_X_IQ": 0.18128913640975952,
+          "validation_mse_XY_IQ": 0.15688487887382507
+        },
+        {
+          "epoch": 4,
+          "improved": true,
+          "learning_rate": 0.0004,
+          "optimizer_step": 4,
+          "patience_used": 0,
+          "seconds": 0.05724232899956405,
+          "train_mse_X_IQ": 0.15462353825569153,
+          "validation_mse_XY_IQ": 0.1258663833141327
+        },
+        {
+          "epoch": 5,
+          "improved": true,
+          "learning_rate": 0.0005,
+          "optimizer_step": 5,
+          "patience_used": 0,
+          "seconds": 0.039748786999552976,
+          "train_mse_X_IQ": 0.12397175282239914,
+          "validation_mse_XY_IQ": 0.09440001100301743
+        }
+      ],
+      "finite_gradient_check": "every effective optimizer step; nonfinite raises and records failure",
+      "mask": "unmasked",
+      "peak_allocated_GPU_bytes": 77860352,
+      "plan": {
+        "accumulation_max": 1,
+        "blocks_per_epoch": 32,
+        "config": {
+          "adam_betas": [
+            0.9,
+            0.999
+          ],
+          "adam_eps": 1e-08,
+          "candidate": "low-adopted",
+          "condition": 64,
+          "cpu_threads": 1,
+          "deterministic": true,
+          "device": "cuda",
+          "effective_batch_blocks": 512,
+          "gpu_resume_atol": 1e-06,
+          "gpu_resume_rtol": 1e-05,
+          "masked": false,
+          "max_epochs": 5,
+          "max_lr": 0.001,
+          "microbatch_blocks": 512,
+          "model": {
+            "attention_projection_dim": 16,
+            "b": 128,
+            "d_ff": 64,
+            "d_model": 16,
+            "dropout": 0.0,
+            "h": 4,
+            "initialization": "xavier_uniform",
+            "k": 9,
+            "layer_norm_eps": 1e-05,
+            "layers": 1,
+            "mask_rho": null,
+            "negative_slope": 0.2,
+            "output_window": 7,
+            "t": 16
+          },
+          "patience": 100,
+          "pilot_validation_symbols": 2048,
+          "regime": "pilot",
+          "warmup_epochs": 10,
+          "weight_decay": 0.0
+        },
+        "data_config_sha256": "c9af9acbdf7e83cd6eebeea47e4d362c127adf4887071ea7010578eecd7c02d3",
+        "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main64-20261025/manifest.json",
+        "data_manifest_sha256": "c142c99c300ebb5520c7bceb82b489ac45857c34bb0da7695c25de5e1c4ac714",
+        "data_regime": "pilot",
+        "effective_batch_blocks": 512,
+        "loss": "X residual mean over central b*2 real coordinates; validation equal XY mean",
+        "max_optimizer_steps": 5,
+        "microbatch_blocks": 512,
+        "optimizer_steps_per_epoch": 1,
+        "replicate": 0,
+        "restart_boundary": "last_completed_epoch",
+        "test_access": "forbidden",
+        "validation_blocks": 16,
+        "validation_generated_DP_times_per_frame": 4096,
+        "validation_used_DP_times_per_frame": 2048,
+        "warmup_steps": 10
+      },
+      "public_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "-m",
+        "experiments.transformer_nlc",
+        "train",
+        "--config",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/configs/learning-pilot-main64-unmasked.json",
+        "--data-manifest",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main64-20261025/manifest.json",
+        "--run-id",
+        "learning-pilot-main64-unmasked-20261025",
+        "--output-root",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc"
+      ],
+      "run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-main64-unmasked-20261025/run.json",
+      "run_sha256": "d8d165bdd81a51423fc6492b0de99e57fa3c9b9d8010439fd3e51e85e4ade50f",
+      "status": "complete",
+      "validation_targets": [
+        {
+          "frame": 0,
+          "generated_scored_DP_times": 4096,
+          "split": "validation",
+          "symbol_index_range": {
+            "first": 608,
+            "last_inclusive": 2655,
+            "stride": 1
+          },
+          "used_DP_times": 2048
+        }
+      ]
+    },
+    {
+      "actual_epochs": 5,
+      "attempts": [
+        {
+          "ended_unix": 1792932804.8029249,
+          "from_epoch": 0,
+          "from_optimizer_step": 0,
+          "started_unix": 1792932803.7133157,
+          "status": "complete"
+        }
+      ],
+      "best_checkpoint_sha256": "62392e04995ae63fab7fed0f7155ca5402cb32f2a4d647aeb98e652ebc10ec09",
+      "checkpoint_total_bytes": 196090,
+      "condition": 64,
+      "config": {
+        "adam_betas": [
+          0.9,
+          0.999
+        ],
+        "adam_eps": 1e-08,
+        "candidate": "low-adopted",
+        "condition": 64,
+        "cpu_threads": 1,
+        "deterministic": true,
+        "device": "cuda",
+        "effective_batch_blocks": 512,
+        "gpu_resume_atol": 1e-06,
+        "gpu_resume_rtol": 1e-05,
+        "masked": true,
+        "max_epochs": 5,
+        "max_lr": 0.001,
+        "microbatch_blocks": 512,
+        "model": {
+          "attention_projection_dim": 16,
+          "b": 128,
+          "d_ff": 64,
+          "d_model": 16,
+          "dropout": 0.0,
+          "h": 4,
+          "initialization": "xavier_uniform",
+          "k": 9,
+          "layer_norm_eps": 1e-05,
+          "layers": 1,
+          "mask_rho": 2.6,
+          "negative_slope": 0.2,
+          "output_window": 7,
+          "t": 16
+        },
+        "patience": 100,
+        "pilot_validation_symbols": 2048,
+        "regime": "pilot",
+        "warmup_epochs": 10,
+        "weight_decay": 0.0
+      },
+      "epoch_history": [
+        {
+          "epoch": 1,
+          "improved": true,
+          "learning_rate": 0.0001,
+          "optimizer_step": 1,
+          "patience_used": 0,
+          "seconds": 0.6952003400001558,
+          "train_mse_X_IQ": 0.21354040503501892,
+          "validation_mse_XY_IQ": 0.20478472113609314
+        },
+        {
+          "epoch": 2,
+          "improved": true,
+          "learning_rate": 0.0002,
+          "optimizer_step": 2,
+          "patience_used": 0,
+          "seconds": 0.04380312399734976,
+          "train_mse_X_IQ": 0.203595831990242,
+          "validation_mse_XY_IQ": 0.1858224868774414
+        },
+        {
+          "epoch": 3,
+          "improved": true,
+          "learning_rate": 0.0003,
+          "optimizer_step": 3,
+          "patience_used": 0,
+          "seconds": 0.033509387001686264,
+          "train_mse_X_IQ": 0.1847410351037979,
+          "validation_mse_XY_IQ": 0.15992343425750732
+        },
+        {
+          "epoch": 4,
+          "improved": true,
+          "learning_rate": 0.0004,
+          "optimizer_step": 4,
+          "patience_used": 0,
+          "seconds": 0.03695664799306542,
+          "train_mse_X_IQ": 0.15899023413658142,
+          "validation_mse_XY_IQ": 0.1299455761909485
+        },
+        {
+          "epoch": 5,
+          "improved": true,
+          "learning_rate": 0.0005,
+          "optimizer_step": 5,
+          "patience_used": 0,
+          "seconds": 0.028773904996342026,
+          "train_mse_X_IQ": 0.12917640805244446,
+          "validation_mse_XY_IQ": 0.09917770326137543
+        }
+      ],
+      "finite_gradient_check": "every effective optimizer step; nonfinite raises and records failure",
+      "mask": "masked",
+      "peak_allocated_GPU_bytes": 77953024,
+      "plan": {
+        "accumulation_max": 1,
+        "blocks_per_epoch": 32,
+        "config": {
+          "adam_betas": [
+            0.9,
+            0.999
+          ],
+          "adam_eps": 1e-08,
+          "candidate": "low-adopted",
+          "condition": 64,
+          "cpu_threads": 1,
+          "deterministic": true,
+          "device": "cuda",
+          "effective_batch_blocks": 512,
+          "gpu_resume_atol": 1e-06,
+          "gpu_resume_rtol": 1e-05,
+          "masked": true,
+          "max_epochs": 5,
+          "max_lr": 0.001,
+          "microbatch_blocks": 512,
+          "model": {
+            "attention_projection_dim": 16,
+            "b": 128,
+            "d_ff": 64,
+            "d_model": 16,
+            "dropout": 0.0,
+            "h": 4,
+            "initialization": "xavier_uniform",
+            "k": 9,
+            "layer_norm_eps": 1e-05,
+            "layers": 1,
+            "mask_rho": 2.6,
+            "negative_slope": 0.2,
+            "output_window": 7,
+            "t": 16
+          },
+          "patience": 100,
+          "pilot_validation_symbols": 2048,
+          "regime": "pilot",
+          "warmup_epochs": 10,
+          "weight_decay": 0.0
+        },
+        "data_config_sha256": "c9af9acbdf7e83cd6eebeea47e4d362c127adf4887071ea7010578eecd7c02d3",
+        "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main64-20261025/manifest.json",
+        "data_manifest_sha256": "c142c99c300ebb5520c7bceb82b489ac45857c34bb0da7695c25de5e1c4ac714",
+        "data_regime": "pilot",
+        "effective_batch_blocks": 512,
+        "loss": "X residual mean over central b*2 real coordinates; validation equal XY mean",
+        "max_optimizer_steps": 5,
+        "microbatch_blocks": 512,
+        "optimizer_steps_per_epoch": 1,
+        "replicate": 0,
+        "restart_boundary": "last_completed_epoch",
+        "test_access": "forbidden",
+        "validation_blocks": 16,
+        "validation_generated_DP_times_per_frame": 4096,
+        "validation_used_DP_times_per_frame": 2048,
+        "warmup_steps": 10
+      },
+      "public_command": [
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+        "-m",
+        "experiments.transformer_nlc",
+        "train",
+        "--config",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/configs/learning-pilot-main64-masked.json",
+        "--data-manifest",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-data-main64-20261025/manifest.json",
+        "--run-id",
+        "learning-pilot-main64-masked-20261025",
+        "--output-root",
+        "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc"
+      ],
+      "run": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/learning-pilot-main64-masked-20261025/run.json",
+      "run_sha256": "7698978a7f4ff0f7e57828c6a4c0ce32ebbeb6c55d117d09b3b0415a91d999d1",
+      "status": "complete",
+      "validation_targets": [
+        {
+          "frame": 0,
+          "generated_scored_DP_times": 4096,
+          "split": "validation",
+          "symbol_index_range": {
+            "first": 608,
+            "last_inclusive": 2655,
+            "stride": 1
+          },
+          "used_DP_times": 2048
+        }
+      ]
+    }
+  ],
+  "schema": "transformer-learning-pilot-summary-v1",
+  "selection_use": "functional learning and resource gate only; not production evidence",
+  "test_metrics_seen": false
+}

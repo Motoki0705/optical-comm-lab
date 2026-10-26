@@ -1,0 +1,37 @@
+{
+  "held_out_evaluation": {
+    "batch": "actual per-trial microbatch from frozen config",
+    "comparison_limit": "Do not divide model time by the no-NLC row time or claim isolated baseline speed/VRAM from these fields.",
+    "no_NLC_rows": "no-NLC shares the first candidate evaluation loop for each dataset. Its time and peak allocation are copied from that coupled loop, include candidate inference, and are not isolated no-NLC latency or VRAM.",
+    "scope": "after checkpoint/model loading: frame IO, shared-weight X/Y inference, compensation, Gray scoring, prediction diagnostics and save IO; final CUDA synchronization",
+    "warmup": "no separate inference warmup; first forward included"
+  },
+  "recorded_unix": 1792940550.5865605,
+  "resource_benchmark": {
+    "interpretation": "resource fit and planning only; no demonstrated speedup from a single run",
+    "scope": "model/Adam initialization, float32 forward/backward, one actual Adam update; synchronized CUDA; dedicated synthetic512blocks",
+    "warmup": "no separate warmup; single measurement",
+    "weights_reused_for_learning": false
+  },
+  "schema": "transformer-runtime-measurement-scopes-v1",
+  "source_evidence": {
+    "benchmark": "experiments/transformer_nlc/training.py:462",
+    "epoch": "experiments/transformer_nlc/training.py:308",
+    "evaluation": "experiments/transformer_nlc/evaluation.py:242"
+  },
+  "theory_RMPS": {
+    "masked": "sparse-computation assumption for theoretical attention savings; actual PyTorch backend uses dense SDPA dispatch",
+    "no_NLC": "zero additional neural NLC cost does not mean zero receiver/DSP system cost.",
+    "scope": "neural NLC only; per-output-polarization-symbol and two-call DP-time denominators are separate"
+  },
+  "training_history_seconds": {
+    "excludes": [
+      "model/Adam initialization",
+      "initial dataset loading",
+      "completed-epoch checkpoint writes after timer stops"
+    ],
+    "full_run_attempts": "attempt started/ended wallclock timestamps also retained in each run.json",
+    "scope": "one epoch of X-only training plus equal-XY validation, including CPU batch conversion; synchronized CUDA at epoch end"
+  },
+  "training_source_content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142"
+}

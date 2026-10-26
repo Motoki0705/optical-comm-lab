@@ -1,0 +1,1752 @@
+{
+  "attempts": [
+    {
+      "ended_unix": 1792936628.9359486,
+      "from_epoch": 0,
+      "from_optimizer_step": 0,
+      "started_unix": 1792936402.2254639,
+      "status": "complete"
+    }
+  ],
+  "best_epoch": 28,
+  "best_validation_mse": 0.02131503075361252,
+  "checkpoints": {
+    "best": {
+      "path": "best.pt",
+      "sha256": "c8a1256fd8491cedb9a89321143aedc5054cb04b31dd55d9ea4c882b30b5a3c7"
+    },
+    "latest": {
+      "path": "latest.pt",
+      "sha256": "9d2a556a72c7286a99a2886269fbe2242aa6ef5cfc02f0c1ffde9f37c955a83b"
+    }
+  },
+  "command": [
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-model/.venv/bin/python",
+    "-m",
+    "experiments.transformer_nlc",
+    "sweep",
+    "--data-manifest",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r0-20261025/manifest.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r1-20261025/manifest.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r2-20261025/manifest.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r0-20261025/manifest.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r1-20261025/manifest.json",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main64-r2-20261025/manifest.json",
+    "--regime",
+    "production",
+    "--device",
+    "cuda",
+    "--microbatch-blocks",
+    "512",
+    "--run-id",
+    "principal-sweep-20261025",
+    "--output-root",
+    "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc"
+  ],
+  "completed_epochs": 128,
+  "config": {
+    "adam_betas": [
+      0.9,
+      0.999
+    ],
+    "adam_eps": 1e-08,
+    "candidate": "A",
+    "condition": 16,
+    "cpu_threads": 1,
+    "deterministic": true,
+    "device": "cuda",
+    "effective_batch_blocks": 512,
+    "gpu_resume_atol": 1e-06,
+    "gpu_resume_rtol": 1e-05,
+    "masked": false,
+    "max_epochs": 500,
+    "max_lr": 0.001,
+    "microbatch_blocks": 512,
+    "model": {
+      "attention_projection_dim": 64,
+      "b": 128,
+      "d_ff": 64,
+      "d_model": 96,
+      "dropout": 0.0,
+      "h": 4,
+      "initialization": "xavier_uniform",
+      "k": 9,
+      "layer_norm_eps": 1e-05,
+      "layers": 3,
+      "mask_rho": null,
+      "negative_slope": 0.2,
+      "output_window": 15,
+      "t": 96
+    },
+    "patience": 100,
+    "pilot_validation_symbols": null,
+    "regime": "production",
+    "warmup_epochs": 10,
+    "weight_decay": 0.0
+  },
+  "convergence": "patience",
+  "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r0-20261025/manifest.json",
+  "data_source": {
+    "commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+    "content_sha256": "4ba57a9e4a401a11a16c4241eb6ea3db253ef59c32b2c9ac38c0e5676e01f74e",
+    "dirty_status": [
+      "?? artifacts/transformer-nlc/"
+    ],
+    "files": {
+      "experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+      "experiments/transformer_nlc/data_cli.py": "df3c8c165939f672a486c421f7261ba40276bd72cbb0afab2c8a8528465505be",
+      "experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+      "experiments/transformer_nlc/qualification.py": "b21ca2f7d067d18a9e280c0b573e38a0f095d1dca619a2121985004b38459e54",
+      "experiments/transformer_nlc/receiver.py": "42d0f7b6e5c653caa9a02862572d94bac57bce8fefb895239936e2ff25429bee",
+      "src/optical_comm/channel.py": "01641767e6bc5c1ae68abe0973e82c65d7bac5bbe56c4abdbfcc0a5cdf3c2324",
+      "src/optical_comm/config.py": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2",
+      "src/optical_comm/dsp.py": "ce2a11529f932a35f0f1822ccefd538a3e6d27222fa04983b57cda081da01d07",
+      "src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56"
+    },
+    "observed_provenance": {
+      "content_sha256": "58d4e0420dc192bd8b2e2b3fed9483bbf2eb62111099768b95ab307648ba5adc",
+      "files": {
+        "experiments/transformer_nlc/README.md": "5eeae9dcdc1b31ecdf757d9d9184fdb08f0832fc4d040c0726294f62cddc0654",
+        "experiments/transformer_nlc/__init__.py": "87c03866af856323d837620659715a32e06170b0bd68010cb8d91e867a07a53a",
+        "experiments/transformer_nlc/__main__.py": "953bfc7f7b3344ed3c33d8076b3e98bf9328220825c94b2edc497658cabb8392",
+        "experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
+        "experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
+        "experiments/transformer_nlc/configs/learning-pilot-main16-masked.json": "8f83e5306b5eb324c6e5e7a668068f96daba65919e58d3053a6c90706e2272ce",
+        "experiments/transformer_nlc/configs/learning-pilot-main16-unmasked.json": "ee65cd103a7bcdda97dcdf6f17351bfacdb70769b2d4b805749addf76a99af24",
+        "experiments/transformer_nlc/configs/learning-pilot-main64-masked.json": "c61a6d397a7d8048ba20e2f1e1aa258039794eafa46ae8ee94c513f05f5bf894",
+        "experiments/transformer_nlc/configs/learning-pilot-main64-unmasked.json": "c017ccfa8dc1bb77c555b2c43cb0432b0b0994c09ef055c6a1e0f5136bd3bfd0",
+        "experiments/transformer_nlc/configs/smoke-main16-masked.json": "5d383f758afe322d607fede08be963a808ab76a963f220858538a6ba1e4545e1",
+        "experiments/transformer_nlc/configs/smoke-main16-unmasked.json": "bd445eb7bb5cf875be37972c85bb4a46fd64ad897c37456bd0bbf771d931927a",
+        "experiments/transformer_nlc/configs/smoke-main64-masked.json": "d38e80e80d47f1466b6bf5f03e4b16709114a74b58da03686549b9c14a1f2e93",
+        "experiments/transformer_nlc/configs/smoke-main64-unmasked.json": "5e942b87995aa6a92f97cd175b1476ac24561c83641ea0af91f2ea5ea6017f57",
+        "experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+        "experiments/transformer_nlc/data_cli.py": "df3c8c165939f672a486c421f7261ba40276bd72cbb0afab2c8a8528465505be",
+        "experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+        "experiments/transformer_nlc/docs/data-pipeline.md": "1a4742b2f62e54204cdd57dc0fa1ec4e5841a5a3abd8aaefccc6d0145ed8b29d",
+        "experiments/transformer_nlc/docs/reproduction-spec.md": "4d79b4e2a61b20f90ba513f1edb8ab500353c6350f37552b87670c66aa2af3a4",
+        "experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
+        "experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
+        "experiments/transformer_nlc/model.py": "b4165d3ecfe81bdbd4e81436df67dcf71bc18d3573be9387a21186718db883af",
+        "experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
+        "experiments/transformer_nlc/qualification.py": "b21ca2f7d067d18a9e280c0b573e38a0f095d1dca619a2121985004b38459e54",
+        "experiments/transformer_nlc/receiver.py": "42d0f7b6e5c653caa9a02862572d94bac57bce8fefb895239936e2ff25429bee",
+        "experiments/transformer_nlc/training.py": "ae507b7653e3b6b9c64c074de3e88777272ec9a1d74cd8ccc49f5177a9a130dd",
+        "experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
+        "pyproject.toml": "765dc44a313305eb3c18621540aa43bf2ef35baee30177c8f56f5ee0e834d4e7",
+        "src/optical_comm/README.md": "9e598b5dcad3c5a523d4b8a440c7cd7c20f3ed6c6c3cdcd7be2ed3b5c4908eb3",
+        "src/optical_comm/__init__.py": "7be7e87dec6fecec2b3b0763b70981c173920317f1afb8640f284a5431c949fd",
+        "src/optical_comm/channel.py": "01641767e6bc5c1ae68abe0973e82c65d7bac5bbe56c4abdbfcc0a5cdf3c2324",
+        "src/optical_comm/config.py": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2",
+        "src/optical_comm/dsp.py": "ce2a11529f932a35f0f1822ccefd538a3e6d27222fa04983b57cda081da01d07",
+        "src/optical_comm/experiment.py": "0d776fef2531f9c3a62f8c3ad0915371e5333b643c8f0b01aca6d6cf65821939",
+        "src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56",
+        "src/optical_comm/reservoir.py": "fcbc4cac80c1887bdee1f2d4721c1f9d6905c96ea50f6dc0f239ad30c2cf95f8",
+        "src/optical_comm/visualization/README.md": "e07b745354000de7bed31b4d37203e079faf6f010105ce085167c1dd8df72df1",
+        "src/optical_comm/visualization/__init__.py": "9768a3bde719abbb78e660550ffe1b8d36a3d6d08f931040d337c47807e5fdcc",
+        "src/optical_comm/visualization/pulses.py": "6108c410ef1c2372d591880e4ce1c0551af94f90b8ff2e4fe383ee6cc65c85c1",
+        "src/optical_comm/visualization/spatial.py": "1f65be9d50fbb9c2878cedefee48b83e836954aca63c55989ecc3d41dfa2e617",
+        "src/optical_comm/visualization/spatial_artifacts.py": "68f4ad0cc658f29e00fa5340fa5c7082f77efd009ef8b24a8ea559bcf40f63d3",
+        "uv.lock": "5d271b22d75e2dbe39f7a60b128d7583a22b498a1e0f24d04ed70f4ad603122a"
+      },
+      "scope": "actual_shared_and_study_trees_plus_checkout_pyproject_lock_when_present"
+    },
+    "scope_paths": [
+      "src/optical_comm/config.py",
+      "src/optical_comm/channel.py",
+      "src/optical_comm/dsp.py",
+      "src/optical_comm/metrics.py",
+      "experiments/transformer_nlc/data_config.py",
+      "experiments/transformer_nlc/data.py",
+      "experiments/transformer_nlc/receiver.py",
+      "experiments/transformer_nlc/data_cli.py",
+      "experiments/transformer_nlc/qualification.py"
+    ],
+    "scope_version": "transformer-numerical-source-v1",
+    "source_layout": {
+      "kind": "source_checkout",
+      "module_paths": {
+        "experiments/transformer_nlc/data.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data.py",
+        "experiments/transformer_nlc/data_cli.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data_cli.py",
+        "experiments/transformer_nlc/data_config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data_config.py",
+        "experiments/transformer_nlc/qualification.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/qualification.py",
+        "experiments/transformer_nlc/receiver.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/receiver.py",
+        "src/optical_comm/channel.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/channel.py",
+        "src/optical_comm/config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/config.py",
+        "src/optical_comm/dsp.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/dsp.py",
+        "src/optical_comm/metrics.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/metrics.py"
+      },
+      "root": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results",
+      "schema": "transformer-import-layout-v1"
+    }
+  },
+  "history": [
+    {
+      "epoch": 1,
+      "improved": true,
+      "learning_rate": 0.0001,
+      "optimizer_step": 8,
+      "patience_used": 0,
+      "seconds": 3.290930624003522,
+      "train_mse_X_IQ": 0.05422721849754453,
+      "validation_mse_XY_IQ": 0.05289021134376526
+    },
+    {
+      "epoch": 2,
+      "improved": true,
+      "learning_rate": 0.0002,
+      "optimizer_step": 16,
+      "patience_used": 0,
+      "seconds": 1.8129121999954805,
+      "train_mse_X_IQ": 0.03934289561584592,
+      "validation_mse_XY_IQ": 0.033446794375777245
+    },
+    {
+      "epoch": 3,
+      "improved": true,
+      "learning_rate": 0.0003,
+      "optimizer_step": 24,
+      "patience_used": 0,
+      "seconds": 1.8207629509997787,
+      "train_mse_X_IQ": 0.027897281805053353,
+      "validation_mse_XY_IQ": 0.024256009608507156
+    },
+    {
+      "epoch": 4,
+      "improved": true,
+      "learning_rate": 0.0004,
+      "optimizer_step": 32,
+      "patience_used": 0,
+      "seconds": 1.7773405560001265,
+      "train_mse_X_IQ": 0.024656946305185556,
+      "validation_mse_XY_IQ": 0.023872584104537964
+    },
+    {
+      "epoch": 5,
+      "improved": true,
+      "learning_rate": 0.0005,
+      "optimizer_step": 40,
+      "patience_used": 0,
+      "seconds": 1.7731255979961134,
+      "train_mse_X_IQ": 0.022606689482927322,
+      "validation_mse_XY_IQ": 0.02179809007793665
+    },
+    {
+      "epoch": 6,
+      "improved": true,
+      "learning_rate": 0.0006,
+      "optimizer_step": 48,
+      "patience_used": 0,
+      "seconds": 1.780097585004114,
+      "train_mse_X_IQ": 0.021832281025126576,
+      "validation_mse_XY_IQ": 0.021656963974237442
+    },
+    {
+      "epoch": 7,
+      "improved": true,
+      "learning_rate": 0.0007,
+      "optimizer_step": 56,
+      "patience_used": 0,
+      "seconds": 1.7683097870030906,
+      "train_mse_X_IQ": 0.021471901331096888,
+      "validation_mse_XY_IQ": 0.021563047543168068
+    },
+    {
+      "epoch": 8,
+      "improved": true,
+      "learning_rate": 0.0008,
+      "optimizer_step": 64,
+      "patience_used": 0,
+      "seconds": 1.7635651769960532,
+      "train_mse_X_IQ": 0.021354800555855036,
+      "validation_mse_XY_IQ": 0.021456479094922543
+    },
+    {
+      "epoch": 9,
+      "improved": true,
+      "learning_rate": 0.0009000000000000001,
+      "optimizer_step": 72,
+      "patience_used": 0,
+      "seconds": 1.7663296659957268,
+      "train_mse_X_IQ": 0.021274265367537737,
+      "validation_mse_XY_IQ": 0.021394670009613037
+    },
+    {
+      "epoch": 10,
+      "improved": true,
+      "learning_rate": 0.001,
+      "optimizer_step": 80,
+      "patience_used": 0,
+      "seconds": 1.8012728260000586,
+      "train_mse_X_IQ": 0.021226228680461645,
+      "validation_mse_XY_IQ": 0.021364658139646053
+    },
+    {
+      "epoch": 11,
+      "improved": true,
+      "learning_rate": 0.0009534625892455924,
+      "optimizer_step": 88,
+      "patience_used": 0,
+      "seconds": 1.7678455850036698,
+      "train_mse_X_IQ": 0.021207141922786832,
+      "validation_mse_XY_IQ": 0.021342771127820015
+    },
+    {
+      "epoch": 12,
+      "improved": true,
+      "learning_rate": 0.000912870929175277,
+      "optimizer_step": 96,
+      "patience_used": 0,
+      "seconds": 1.7921291560051031,
+      "train_mse_X_IQ": 0.021194172324612737,
+      "validation_mse_XY_IQ": 0.021335932426154613
+    },
+    {
+      "epoch": 13,
+      "improved": true,
+      "learning_rate": 0.0008770580193070292,
+      "optimizer_step": 104,
+      "patience_used": 0,
+      "seconds": 1.8013423459997284,
+      "train_mse_X_IQ": 0.021186201833188534,
+      "validation_mse_XY_IQ": 0.021329563111066818
+    },
+    {
+      "epoch": 14,
+      "improved": true,
+      "learning_rate": 0.0008451542547285166,
+      "optimizer_step": 112,
+      "patience_used": 0,
+      "seconds": 1.784086115003447,
+      "train_mse_X_IQ": 0.021180714247748256,
+      "validation_mse_XY_IQ": 0.02132540289312601
+    },
+    {
+      "epoch": 15,
+      "improved": true,
+      "learning_rate": 0.0008164965809277261,
+      "optimizer_step": 120,
+      "patience_used": 0,
+      "seconds": 1.7781395850033732,
+      "train_mse_X_IQ": 0.021175541216507554,
+      "validation_mse_XY_IQ": 0.02132302988320589
+    },
+    {
+      "epoch": 16,
+      "improved": false,
+      "learning_rate": 0.0007905694150420948,
+      "optimizer_step": 128,
+      "patience_used": 1,
+      "seconds": 1.7722679519938538,
+      "train_mse_X_IQ": 0.02117026993073523,
+      "validation_mse_XY_IQ": 0.02132351603358984
+    },
+    {
+      "epoch": 17,
+      "improved": true,
+      "learning_rate": 0.0007669649888473704,
+      "optimizer_step": 136,
+      "patience_used": 0,
+      "seconds": 1.8147235860014916,
+      "train_mse_X_IQ": 0.021167265716940165,
+      "validation_mse_XY_IQ": 0.021322349086403847
+    },
+    {
+      "epoch": 18,
+      "improved": true,
+      "learning_rate": 0.00074535599249993,
+      "optimizer_step": 144,
+      "patience_used": 0,
+      "seconds": 1.8150913440040313,
+      "train_mse_X_IQ": 0.021163777448236942,
+      "validation_mse_XY_IQ": 0.021321133710443974
+    },
+    {
+      "epoch": 19,
+      "improved": true,
+      "learning_rate": 0.0007254762501100117,
+      "optimizer_step": 152,
+      "patience_used": 0,
+      "seconds": 1.8172509509968222,
+      "train_mse_X_IQ": 0.021160101983696222,
+      "validation_mse_XY_IQ": 0.02131797280162573
+    },
+    {
+      "epoch": 20,
+      "improved": false,
+      "learning_rate": 0.0007071067811865476,
+      "optimizer_step": 160,
+      "patience_used": 1,
+      "seconds": 1.804683718000888,
+      "train_mse_X_IQ": 0.02115616318769753,
+      "validation_mse_XY_IQ": 0.02131841517984867
+    },
+    {
+      "epoch": 21,
+      "improved": true,
+      "learning_rate": 0.0006900655593423542,
+      "optimizer_step": 168,
+      "patience_used": 0,
+      "seconds": 1.7846354930006783,
+      "train_mse_X_IQ": 0.021153699606657028,
+      "validation_mse_XY_IQ": 0.021316991187632084
+    },
+    {
+      "epoch": 22,
+      "improved": true,
+      "learning_rate": 0.0006741998624632421,
+      "optimizer_step": 176,
+      "patience_used": 0,
+      "seconds": 1.7771740879979916,
+      "train_mse_X_IQ": 0.021150890039280057,
+      "validation_mse_XY_IQ": 0.02131641749292612
+    },
+    {
+      "epoch": 23,
+      "improved": false,
+      "learning_rate": 0.000659380473395787,
+      "optimizer_step": 184,
+      "patience_used": 1,
+      "seconds": 1.7731889359929482,
+      "train_mse_X_IQ": 0.02114847768098116,
+      "validation_mse_XY_IQ": 0.02131676021963358
+    },
+    {
+      "epoch": 24,
+      "improved": false,
+      "learning_rate": 0.0006454972243679028,
+      "optimizer_step": 192,
+      "patience_used": 2,
+      "seconds": 1.7837370909983292,
+      "train_mse_X_IQ": 0.02114658080972731,
+      "validation_mse_XY_IQ": 0.021316546015441418
+    },
+    {
+      "epoch": 25,
+      "improved": true,
+      "learning_rate": 0.0006324555320336759,
+      "optimizer_step": 200,
+      "patience_used": 0,
+      "seconds": 1.784225825998874,
+      "train_mse_X_IQ": 0.02114388649351895,
+      "validation_mse_XY_IQ": 0.02131570316851139
+    },
+    {
+      "epoch": 26,
+      "improved": true,
+      "learning_rate": 0.0006201736729460423,
+      "optimizer_step": 208,
+      "patience_used": 0,
+      "seconds": 1.7816761880021659,
+      "train_mse_X_IQ": 0.02114184107631445,
+      "validation_mse_XY_IQ": 0.021315617486834526
+    },
+    {
+      "epoch": 27,
+      "improved": false,
+      "learning_rate": 0.0006085806194501846,
+      "optimizer_step": 216,
+      "patience_used": 1,
+      "seconds": 1.790065990993753,
+      "train_mse_X_IQ": 0.02114006970077753,
+      "validation_mse_XY_IQ": 0.02131627220660448
+    },
+    {
+      "epoch": 28,
+      "improved": true,
+      "learning_rate": 0.0005976143046671967,
+      "optimizer_step": 224,
+      "patience_used": 0,
+      "seconds": 1.829335162001371,
+      "train_mse_X_IQ": 0.021137900883331895,
+      "validation_mse_XY_IQ": 0.02131503075361252
+    },
+    {
+      "epoch": 29,
+      "improved": false,
+      "learning_rate": 0.0005872202195147035,
+      "optimizer_step": 232,
+      "patience_used": 1,
+      "seconds": 1.801954773000034,
+      "train_mse_X_IQ": 0.02113590342923999,
+      "validation_mse_XY_IQ": 0.02131540421396494
+    },
+    {
+      "epoch": 30,
+      "improved": false,
+      "learning_rate": 0.0005773502691896258,
+      "optimizer_step": 240,
+      "patience_used": 2,
+      "seconds": 1.787622466996254,
+      "train_mse_X_IQ": 0.021134382812306285,
+      "validation_mse_XY_IQ": 0.021315447986125946
+    },
+    {
+      "epoch": 31,
+      "improved": false,
+      "learning_rate": 0.0005679618342470648,
+      "optimizer_step": 248,
+      "patience_used": 3,
+      "seconds": 1.7767787529955967,
+      "train_mse_X_IQ": 0.021132673835381866,
+      "validation_mse_XY_IQ": 0.02131632063537836
+    },
+    {
+      "epoch": 32,
+      "improved": false,
+      "learning_rate": 0.0005590169943749475,
+      "optimizer_step": 256,
+      "patience_used": 4,
+      "seconds": 1.7869349299944588,
+      "train_mse_X_IQ": 0.0211313609033823,
+      "validation_mse_XY_IQ": 0.021315722726285458
+    },
+    {
+      "epoch": 33,
+      "improved": false,
+      "learning_rate": 0.0005504818825631803,
+      "optimizer_step": 264,
+      "patience_used": 5,
+      "seconds": 1.7941914050024934,
+      "train_mse_X_IQ": 0.021129676140844822,
+      "validation_mse_XY_IQ": 0.021315976977348328
+    },
+    {
+      "epoch": 34,
+      "improved": false,
+      "learning_rate": 0.0005423261445466404,
+      "optimizer_step": 272,
+      "patience_used": 6,
+      "seconds": 1.7774676810004166,
+      "train_mse_X_IQ": 0.02112831291742623,
+      "validation_mse_XY_IQ": 0.021316833794116974
+    },
+    {
+      "epoch": 35,
+      "improved": false,
+      "learning_rate": 0.0005345224838248488,
+      "optimizer_step": 280,
+      "patience_used": 7,
+      "seconds": 1.8127759470007732,
+      "train_mse_X_IQ": 0.02112684235908091,
+      "validation_mse_XY_IQ": 0.021316248923540115
+    },
+    {
+      "epoch": 36,
+      "improved": false,
+      "learning_rate": 0.0005270462766947299,
+      "optimizer_step": 288,
+      "patience_used": 8,
+      "seconds": 1.817337383996346,
+      "train_mse_X_IQ": 0.021125352941453457,
+      "validation_mse_XY_IQ": 0.021316690370440483
+    },
+    {
+      "epoch": 37,
+      "improved": false,
+      "learning_rate": 0.0005198752449100363,
+      "optimizer_step": 296,
+      "patience_used": 9,
+      "seconds": 1.8233508210032596,
+      "train_mse_X_IQ": 0.021124898688867688,
+      "validation_mse_XY_IQ": 0.02131752297282219
+    },
+    {
+      "epoch": 38,
+      "improved": false,
+      "learning_rate": 0.000512989176042577,
+      "optimizer_step": 304,
+      "patience_used": 10,
+      "seconds": 1.7844867820022046,
+      "train_mse_X_IQ": 0.02112315408885479,
+      "validation_mse_XY_IQ": 0.021317046135663986
+    },
+    {
+      "epoch": 39,
+      "improved": false,
+      "learning_rate": 0.0005063696835418333,
+      "optimizer_step": 312,
+      "patience_used": 11,
+      "seconds": 1.7865423409966752,
+      "train_mse_X_IQ": 0.021122170379385352,
+      "validation_mse_XY_IQ": 0.021317679435014725
+    },
+    {
+      "epoch": 40,
+      "improved": false,
+      "learning_rate": 0.0005,
+      "optimizer_step": 320,
+      "patience_used": 12,
+      "seconds": 1.7800893669991638,
+      "train_mse_X_IQ": 0.021122444653883576,
+      "validation_mse_XY_IQ": 0.0213174968957901
+    },
+    {
+      "epoch": 41,
+      "improved": false,
+      "learning_rate": 0.0004938647983247948,
+      "optimizer_step": 328,
+      "patience_used": 13,
+      "seconds": 1.793808219001221,
+      "train_mse_X_IQ": 0.021120130782946944,
+      "validation_mse_XY_IQ": 0.021318120881915092
+    },
+    {
+      "epoch": 42,
+      "improved": false,
+      "learning_rate": 0.0004879500364742666,
+      "optimizer_step": 336,
+      "patience_used": 14,
+      "seconds": 1.7807955179960118,
+      "train_mse_X_IQ": 0.02111873053945601,
+      "validation_mse_XY_IQ": 0.02131828386336565
+    },
+    {
+      "epoch": 43,
+      "improved": false,
+      "learning_rate": 0.0004822428221704121,
+      "optimizer_step": 344,
+      "patience_used": 15,
+      "seconds": 1.7843103100021835,
+      "train_mse_X_IQ": 0.021118098171427846,
+      "validation_mse_XY_IQ": 0.021320385858416557
+    },
+    {
+      "epoch": 44,
+      "improved": false,
+      "learning_rate": 0.0004767312946227962,
+      "optimizer_step": 352,
+      "patience_used": 16,
+      "seconds": 1.782008782000048,
+      "train_mse_X_IQ": 0.021116594783961773,
+      "validation_mse_XY_IQ": 0.021319633349776268
+    },
+    {
+      "epoch": 45,
+      "improved": false,
+      "learning_rate": 0.0004714045207910317,
+      "optimizer_step": 360,
+      "patience_used": 17,
+      "seconds": 1.7827047989994753,
+      "train_mse_X_IQ": 0.02111567184329033,
+      "validation_mse_XY_IQ": 0.021318613551557064
+    },
+    {
+      "epoch": 46,
+      "improved": false,
+      "learning_rate": 0.0004662524041201569,
+      "optimizer_step": 368,
+      "patience_used": 18,
+      "seconds": 1.7832980050006881,
+      "train_mse_X_IQ": 0.021114632720127702,
+      "validation_mse_XY_IQ": 0.021318848244845867
+    },
+    {
+      "epoch": 47,
+      "improved": false,
+      "learning_rate": 0.00046126560401444256,
+      "optimizer_step": 376,
+      "patience_used": 19,
+      "seconds": 1.7903839240025263,
+      "train_mse_X_IQ": 0.021113623399287462,
+      "validation_mse_XY_IQ": 0.021320022642612457
+    },
+    {
+      "epoch": 48,
+      "improved": false,
+      "learning_rate": 0.0004564354645876385,
+      "optimizer_step": 384,
+      "patience_used": 20,
+      "seconds": 1.779441594000673,
+      "train_mse_X_IQ": 0.021112657617777586,
+      "validation_mse_XY_IQ": 0.021319450810551643
+    },
+    {
+      "epoch": 49,
+      "improved": false,
+      "learning_rate": 0.00045175395145262567,
+      "optimizer_step": 392,
+      "patience_used": 21,
+      "seconds": 1.7781969690040569,
+      "train_mse_X_IQ": 0.02111181546933949,
+      "validation_mse_XY_IQ": 0.021320777013897896
+    },
+    {
+      "epoch": 50,
+      "improved": false,
+      "learning_rate": 0.00044721359549995795,
+      "optimizer_step": 400,
+      "patience_used": 22,
+      "seconds": 1.7792025829985505,
+      "train_mse_X_IQ": 0.021111106500029564,
+      "validation_mse_XY_IQ": 0.021321360021829605
+    },
+    {
+      "epoch": 51,
+      "improved": false,
+      "learning_rate": 0.00044280744277004765,
+      "optimizer_step": 408,
+      "patience_used": 23,
+      "seconds": 1.7706151309976121,
+      "train_mse_X_IQ": 0.021110672736540437,
+      "validation_mse_XY_IQ": 0.021320562809705734
+    },
+    {
+      "epoch": 52,
+      "improved": false,
+      "learning_rate": 0.0004385290096535146,
+      "optimizer_step": 416,
+      "patience_used": 24,
+      "seconds": 1.7905867560039042,
+      "train_mse_X_IQ": 0.02111012930981815,
+      "validation_mse_XY_IQ": 0.021321539767086506
+    },
+    {
+      "epoch": 53,
+      "improved": false,
+      "learning_rate": 0.0004343722427630694,
+      "optimizer_step": 424,
+      "patience_used": 25,
+      "seconds": 1.8344232340023154,
+      "train_mse_X_IQ": 0.02110933978110552,
+      "validation_mse_XY_IQ": 0.02132241800427437
+    },
+    {
+      "epoch": 54,
+      "improved": false,
+      "learning_rate": 0.0004303314829119352,
+      "optimizer_step": 432,
+      "patience_used": 26,
+      "seconds": 1.8180199389971676,
+      "train_mse_X_IQ": 0.021108381915837526,
+      "validation_mse_XY_IQ": 0.021320930682122707
+    },
+    {
+      "epoch": 55,
+      "improved": false,
+      "learning_rate": 0.0004264014327112209,
+      "optimizer_step": 440,
+      "patience_used": 27,
+      "seconds": 1.7946703569978126,
+      "train_mse_X_IQ": 0.021106912987306714,
+      "validation_mse_XY_IQ": 0.021321295760571957
+    },
+    {
+      "epoch": 56,
+      "improved": false,
+      "learning_rate": 0.0004225771273642583,
+      "optimizer_step": 448,
+      "patience_used": 28,
+      "seconds": 1.8054963039976428,
+      "train_mse_X_IQ": 0.021106308326125145,
+      "validation_mse_XY_IQ": 0.02132178470492363
+    },
+    {
+      "epoch": 57,
+      "improved": false,
+      "learning_rate": 0.0004188539082916955,
+      "optimizer_step": 456,
+      "patience_used": 29,
+      "seconds": 1.7842527280008653,
+      "train_mse_X_IQ": 0.02110565220937133,
+      "validation_mse_XY_IQ": 0.021322197280824184
+    },
+    {
+      "epoch": 58,
+      "improved": false,
+      "learning_rate": 0.00041522739926869986,
+      "optimizer_step": 464,
+      "patience_used": 30,
+      "seconds": 1.7760535389970755,
+      "train_mse_X_IQ": 0.021105011692270637,
+      "validation_mse_XY_IQ": 0.02132223267108202
+    },
+    {
+      "epoch": 59,
+      "improved": false,
+      "learning_rate": 0.00041169348479630914,
+      "optimizer_step": 472,
+      "patience_used": 31,
+      "seconds": 1.7734138239975437,
+      "train_mse_X_IQ": 0.021104154642671347,
+      "validation_mse_XY_IQ": 0.02132245432585478
+    },
+    {
+      "epoch": 60,
+      "improved": false,
+      "learning_rate": 0.00040824829046386303,
+      "optimizer_step": 480,
+      "patience_used": 32,
+      "seconds": 1.7858333399999538,
+      "train_mse_X_IQ": 0.02110363682731986,
+      "validation_mse_XY_IQ": 0.0213234955444932
+    },
+    {
+      "epoch": 61,
+      "improved": false,
+      "learning_rate": 0.00040488816508945795,
+      "optimizer_step": 488,
+      "patience_used": 33,
+      "seconds": 1.772761273998185,
+      "train_mse_X_IQ": 0.021103065460920334,
+      "validation_mse_XY_IQ": 0.02132338099181652
+    },
+    {
+      "epoch": 62,
+      "improved": false,
+      "learning_rate": 0.00040160966445124943,
+      "optimizer_step": 496,
+      "patience_used": 34,
+      "seconds": 1.7733388609995018,
+      "train_mse_X_IQ": 0.02110292622819543,
+      "validation_mse_XY_IQ": 0.0213232459500432
+    },
+    {
+      "epoch": 63,
+      "improved": false,
+      "learning_rate": 0.0003984095364447979,
+      "optimizer_step": 504,
+      "patience_used": 35,
+      "seconds": 1.7791778160026297,
+      "train_mse_X_IQ": 0.02110141236335039,
+      "validation_mse_XY_IQ": 0.021323896944522858
+    },
+    {
+      "epoch": 64,
+      "improved": false,
+      "learning_rate": 0.0003952847075210474,
+      "optimizer_step": 512,
+      "patience_used": 36,
+      "seconds": 1.7824116910051089,
+      "train_mse_X_IQ": 0.02110137091949582,
+      "validation_mse_XY_IQ": 0.021326247602701187
+    },
+    {
+      "epoch": 65,
+      "improved": false,
+      "learning_rate": 0.0003922322702763681,
+      "optimizer_step": 520,
+      "patience_used": 37,
+      "seconds": 1.7704826570043224,
+      "train_mse_X_IQ": 0.02110061701387167,
+      "validation_mse_XY_IQ": 0.021325373090803623
+    },
+    {
+      "epoch": 66,
+      "improved": false,
+      "learning_rate": 0.0003892494720807615,
+      "optimizer_step": 528,
+      "patience_used": 38,
+      "seconds": 1.7825955510052154,
+      "train_mse_X_IQ": 0.021100356709212065,
+      "validation_mse_XY_IQ": 0.02132532838732004
+    },
+    {
+      "epoch": 67,
+      "improved": false,
+      "learning_rate": 0.0003863337046431279,
+      "optimizer_step": 536,
+      "patience_used": 39,
+      "seconds": 1.7857651849990361,
+      "train_mse_X_IQ": 0.021099193254485726,
+      "validation_mse_XY_IQ": 0.02132608089596033
+    },
+    {
+      "epoch": 68,
+      "improved": false,
+      "learning_rate": 0.0003834824944236852,
+      "optimizer_step": 544,
+      "patience_used": 40,
+      "seconds": 1.7764341249931022,
+      "train_mse_X_IQ": 0.02109936368651688,
+      "validation_mse_XY_IQ": 0.02132531814277172
+    },
+    {
+      "epoch": 69,
+      "improved": false,
+      "learning_rate": 0.00038069349381344053,
+      "optimizer_step": 552,
+      "patience_used": 41,
+      "seconds": 1.7857452870011912,
+      "train_mse_X_IQ": 0.02109899092465639,
+      "validation_mse_XY_IQ": 0.021325234323740005
+    },
+    {
+      "epoch": 70,
+      "improved": false,
+      "learning_rate": 0.0003779644730092272,
+      "optimizer_step": 560,
+      "patience_used": 42,
+      "seconds": 1.8332850320002763,
+      "train_mse_X_IQ": 0.02109863143414259,
+      "validation_mse_XY_IQ": 0.0213269405066967
+    },
+    {
+      "epoch": 71,
+      "improved": false,
+      "learning_rate": 0.0003752933125204008,
+      "optimizer_step": 568,
+      "patience_used": 43,
+      "seconds": 1.8182735969967325,
+      "train_mse_X_IQ": 0.021097215823829174,
+      "validation_mse_XY_IQ": 0.02132536470890045
+    },
+    {
+      "epoch": 72,
+      "improved": false,
+      "learning_rate": 0.000372677996249965,
+      "optimizer_step": 576,
+      "patience_used": 44,
+      "seconds": 1.80955393199838,
+      "train_mse_X_IQ": 0.021096351789310575,
+      "validation_mse_XY_IQ": 0.021325433626770973
+    },
+    {
+      "epoch": 73,
+      "improved": false,
+      "learning_rate": 0.00037011660509880264,
+      "optimizer_step": 584,
+      "patience_used": 45,
+      "seconds": 1.779488643995137,
+      "train_mse_X_IQ": 0.021095725474879146,
+      "validation_mse_XY_IQ": 0.021325690671801567
+    },
+    {
+      "epoch": 74,
+      "improved": false,
+      "learning_rate": 0.0003676073110469039,
+      "optimizer_step": 592,
+      "patience_used": 46,
+      "seconds": 1.776347901999543,
+      "train_mse_X_IQ": 0.021095265867188573,
+      "validation_mse_XY_IQ": 0.02132584899663925
+    },
+    {
+      "epoch": 75,
+      "improved": false,
+      "learning_rate": 0.00036514837167011074,
+      "optimizer_step": 600,
+      "patience_used": 47,
+      "seconds": 1.7851420840015635,
+      "train_mse_X_IQ": 0.02109470358118415,
+      "validation_mse_XY_IQ": 0.021325943060219288
+    },
+    {
+      "epoch": 76,
+      "improved": false,
+      "learning_rate": 0.00036273812505500583,
+      "optimizer_step": 608,
+      "patience_used": 48,
+      "seconds": 1.782173182000406,
+      "train_mse_X_IQ": 0.021094103576615453,
+      "validation_mse_XY_IQ": 0.021327144466340542
+    },
+    {
+      "epoch": 77,
+      "improved": false,
+      "learning_rate": 0.0003603749850782236,
+      "optimizer_step": 616,
+      "patience_used": 49,
+      "seconds": 1.7774127499942551,
+      "train_mse_X_IQ": 0.021093701012432575,
+      "validation_mse_XY_IQ": 0.02132681291550398
+    },
+    {
+      "epoch": 78,
+      "improved": false,
+      "learning_rate": 0.0003580574370197164,
+      "optimizer_step": 624,
+      "patience_used": 50,
+      "seconds": 1.7832902000009199,
+      "train_mse_X_IQ": 0.021093067480251193,
+      "validation_mse_XY_IQ": 0.021326541900634766
+    },
+    {
+      "epoch": 79,
+      "improved": false,
+      "learning_rate": 0.0003557840334824101,
+      "optimizer_step": 632,
+      "patience_used": 51,
+      "seconds": 1.7741820160008501,
+      "train_mse_X_IQ": 0.021092564333230257,
+      "validation_mse_XY_IQ": 0.02132704947143793
+    },
+    {
+      "epoch": 80,
+      "improved": false,
+      "learning_rate": 0.0003535533905932738,
+      "optimizer_step": 640,
+      "patience_used": 52,
+      "seconds": 1.792395848002343,
+      "train_mse_X_IQ": 0.0210924637503922,
+      "validation_mse_XY_IQ": 0.02133007161319256
+    },
+    {
+      "epoch": 81,
+      "improved": false,
+      "learning_rate": 0.00035136418446315325,
+      "optimizer_step": 648,
+      "patience_used": 53,
+      "seconds": 1.788602398999501,
+      "train_mse_X_IQ": 0.021092334063723683,
+      "validation_mse_XY_IQ": 0.02132991887629032
+    },
+    {
+      "epoch": 82,
+      "improved": false,
+      "learning_rate": 0.0003492151478847891,
+      "optimizer_step": 656,
+      "patience_used": 54,
+      "seconds": 1.7815351389945135,
+      "train_mse_X_IQ": 0.021091888193041086,
+      "validation_mse_XY_IQ": 0.021327960304915905
+    },
+    {
+      "epoch": 83,
+      "improved": false,
+      "learning_rate": 0.00034710506725031166,
+      "optimizer_step": 664,
+      "patience_used": 55,
+      "seconds": 1.781318157001806,
+      "train_mse_X_IQ": 0.021090855356305838,
+      "validation_mse_XY_IQ": 0.021329357288777828
+    },
+    {
+      "epoch": 84,
+      "improved": false,
+      "learning_rate": 0.0003450327796711771,
+      "optimizer_step": 672,
+      "patience_used": 56,
+      "seconds": 1.793687705998309,
+      "train_mse_X_IQ": 0.021091045113280416,
+      "validation_mse_XY_IQ": 0.021329160779714584
+    },
+    {
+      "epoch": 85,
+      "improved": false,
+      "learning_rate": 0.0003429971702850177,
+      "optimizer_step": 680,
+      "patience_used": 57,
+      "seconds": 1.7979258880004636,
+      "train_mse_X_IQ": 0.021090374095365405,
+      "validation_mse_XY_IQ": 0.021331172436475754
+    },
+    {
+      "epoch": 86,
+      "improved": false,
+      "learning_rate": 0.00034099716973523677,
+      "optimizer_step": 688,
+      "patience_used": 58,
+      "seconds": 1.7972367799957283,
+      "train_mse_X_IQ": 0.021089944522827864,
+      "validation_mse_XY_IQ": 0.021332518197596073
+    },
+    {
+      "epoch": 87,
+      "improved": false,
+      "learning_rate": 0.00033903175181040516,
+      "optimizer_step": 696,
+      "patience_used": 59,
+      "seconds": 1.842399426997872,
+      "train_mse_X_IQ": 0.021089744521304965,
+      "validation_mse_XY_IQ": 0.021332647651433945
+    },
+    {
+      "epoch": 88,
+      "improved": false,
+      "learning_rate": 0.00033709993123162105,
+      "optimizer_step": 704,
+      "patience_used": 60,
+      "seconds": 1.8298972180054989,
+      "train_mse_X_IQ": 0.021090028109028935,
+      "validation_mse_XY_IQ": 0.02133014425635338
+    },
+    {
+      "epoch": 89,
+      "improved": false,
+      "learning_rate": 0.0003352007615769955,
+      "optimizer_step": 712,
+      "patience_used": 61,
+      "seconds": 1.8160132960038027,
+      "train_mse_X_IQ": 0.021088479552417994,
+      "validation_mse_XY_IQ": 0.02133058663457632
+    },
+    {
+      "epoch": 90,
+      "improved": false,
+      "learning_rate": 0.0003333333333333333,
+      "optimizer_step": 720,
+      "patience_used": 62,
+      "seconds": 1.7822992450019228,
+      "train_mse_X_IQ": 0.021087166154757142,
+      "validation_mse_XY_IQ": 0.02132840920239687
+    },
+    {
+      "epoch": 91,
+      "improved": false,
+      "learning_rate": 0.00033149677206589795,
+      "optimizer_step": 728,
+      "patience_used": 63,
+      "seconds": 1.779978464001033,
+      "train_mse_X_IQ": 0.021086792461574078,
+      "validation_mse_XY_IQ": 0.021328683011233807
+    },
+    {
+      "epoch": 92,
+      "improved": false,
+      "learning_rate": 0.0003296902366978935,
+      "optimizer_step": 736,
+      "patience_used": 64,
+      "seconds": 1.7788889650037163,
+      "train_mse_X_IQ": 0.021086350781843066,
+      "validation_mse_XY_IQ": 0.02132887952029705
+    },
+    {
+      "epoch": 93,
+      "improved": false,
+      "learning_rate": 0.0003279129178919765,
+      "optimizer_step": 744,
+      "patience_used": 65,
+      "seconds": 1.7862832280006842,
+      "train_mse_X_IQ": 0.021085774060338736,
+      "validation_mse_XY_IQ": 0.02132914401590824
+    },
+    {
+      "epoch": 94,
+      "improved": false,
+      "learning_rate": 0.0003261640365267211,
+      "optimizer_step": 752,
+      "patience_used": 66,
+      "seconds": 1.7879221339971991,
+      "train_mse_X_IQ": 0.0210853717289865,
+      "validation_mse_XY_IQ": 0.02132962178438902
+    },
+    {
+      "epoch": 95,
+      "improved": false,
+      "learning_rate": 0.0003244428422615251,
+      "optimizer_step": 760,
+      "patience_used": 67,
+      "seconds": 1.7839215400017565,
+      "train_mse_X_IQ": 0.02108470001257956,
+      "validation_mse_XY_IQ": 0.02132967859506607
+    },
+    {
+      "epoch": 96,
+      "improved": false,
+      "learning_rate": 0.0003227486121839514,
+      "optimizer_step": 768,
+      "patience_used": 68,
+      "seconds": 1.785514149996743,
+      "train_mse_X_IQ": 0.02108457055874169,
+      "validation_mse_XY_IQ": 0.021329829469323158
+    },
+    {
+      "epoch": 97,
+      "improved": false,
+      "learning_rate": 0.00032108064953396774,
+      "optimizer_step": 776,
+      "patience_used": 69,
+      "seconds": 1.7997031650011195,
+      "train_mse_X_IQ": 0.021083909086883068,
+      "validation_mse_XY_IQ": 0.021330395713448524
+    },
+    {
+      "epoch": 98,
+      "improved": false,
+      "learning_rate": 0.00031943828249997,
+      "optimizer_step": 784,
+      "patience_used": 70,
+      "seconds": 1.8059187729959376,
+      "train_mse_X_IQ": 0.021083771949633956,
+      "validation_mse_XY_IQ": 0.021331301890313625
+    },
+    {
+      "epoch": 99,
+      "improved": false,
+      "learning_rate": 0.0003178208630818641,
+      "optimizer_step": 792,
+      "patience_used": 71,
+      "seconds": 1.7593692599984934,
+      "train_mse_X_IQ": 0.02108338288962841,
+      "validation_mse_XY_IQ": 0.021330724470317364
+    },
+    {
+      "epoch": 100,
+      "improved": false,
+      "learning_rate": 0.00031622776601683794,
+      "optimizer_step": 800,
+      "patience_used": 72,
+      "seconds": 1.7752575030026492,
+      "train_mse_X_IQ": 0.021082021994516253,
+      "validation_mse_XY_IQ": 0.02133126463741064
+    },
+    {
+      "epoch": 101,
+      "improved": false,
+      "learning_rate": 0.0003146583877637763,
+      "optimizer_step": 808,
+      "patience_used": 73,
+      "seconds": 1.7681541909987573,
+      "train_mse_X_IQ": 0.021082095568999648,
+      "validation_mse_XY_IQ": 0.021331806667149067
+    },
+    {
+      "epoch": 102,
+      "improved": false,
+      "learning_rate": 0.00031311214554257473,
+      "optimizer_step": 816,
+      "patience_used": 74,
+      "seconds": 1.7692008619997068,
+      "train_mse_X_IQ": 0.02108300128020346,
+      "validation_mse_XY_IQ": 0.021332010626792908
+    },
+    {
+      "epoch": 103,
+      "improved": false,
+      "learning_rate": 0.0003115884764248779,
+      "optimizer_step": 824,
+      "patience_used": 75,
+      "seconds": 1.7865574050010764,
+      "train_mse_X_IQ": 0.021081500221043825,
+      "validation_mse_XY_IQ": 0.021332467906177044
+    },
+    {
+      "epoch": 104,
+      "improved": false,
+      "learning_rate": 0.00031008683647302116,
+      "optimizer_step": 832,
+      "patience_used": 76,
+      "seconds": 1.839937231001386,
+      "train_mse_X_IQ": 0.021080729318782687,
+      "validation_mse_XY_IQ": 0.021332883276045322
+    },
+    {
+      "epoch": 105,
+      "improved": false,
+      "learning_rate": 0.00030860669992418383,
+      "optimizer_step": 840,
+      "patience_used": 77,
+      "seconds": 1.8235624130029464,
+      "train_mse_X_IQ": 0.021079766331240535,
+      "validation_mse_XY_IQ": 0.02133329026401043
+    },
+    {
+      "epoch": 106,
+      "improved": false,
+      "learning_rate": 0.0003071475584169756,
+      "optimizer_step": 848,
+      "patience_used": 78,
+      "seconds": 1.8261407039972255,
+      "train_mse_X_IQ": 0.021079215686768293,
+      "validation_mse_XY_IQ": 0.021333075128495693
+    },
+    {
+      "epoch": 107,
+      "improved": false,
+      "learning_rate": 0.0003057089202578715,
+      "optimizer_step": 856,
+      "patience_used": 79,
+      "seconds": 1.7865098749971366,
+      "train_mse_X_IQ": 0.02107895934022963,
+      "validation_mse_XY_IQ": 0.021335157565772533
+    },
+    {
+      "epoch": 108,
+      "improved": false,
+      "learning_rate": 0.0003042903097250923,
+      "optimizer_step": 864,
+      "patience_used": 80,
+      "seconds": 1.78058256800432,
+      "train_mse_X_IQ": 0.021078628953546286,
+      "validation_mse_XY_IQ": 0.021333564072847366
+    },
+    {
+      "epoch": 109,
+      "improved": false,
+      "learning_rate": 0.00030289126640769133,
+      "optimizer_step": 872,
+      "patience_used": 81,
+      "seconds": 1.7907633599970723,
+      "train_mse_X_IQ": 0.02107776701450348,
+      "validation_mse_XY_IQ": 0.021333592012524605
+    },
+    {
+      "epoch": 110,
+      "improved": false,
+      "learning_rate": 0.00030151134457776364,
+      "optimizer_step": 880,
+      "patience_used": 82,
+      "seconds": 1.7930880200001411,
+      "train_mse_X_IQ": 0.021076835691928864,
+      "validation_mse_XY_IQ": 0.02133395429700613
+    },
+    {
+      "epoch": 111,
+      "improved": false,
+      "learning_rate": 0.0003001501125938321,
+      "optimizer_step": 888,
+      "patience_used": 83,
+      "seconds": 1.782692616005079,
+      "train_mse_X_IQ": 0.021076340461149812,
+      "validation_mse_XY_IQ": 0.021334288641810417
+    },
+    {
+      "epoch": 112,
+      "improved": false,
+      "learning_rate": 0.00029880715233359837,
+      "optimizer_step": 896,
+      "patience_used": 84,
+      "seconds": 1.7843732809997164,
+      "train_mse_X_IQ": 0.021076614502817392,
+      "validation_mse_XY_IQ": 0.021335662342607975
+    },
+    {
+      "epoch": 113,
+      "improved": false,
+      "learning_rate": 0.0002974820586543648,
+      "optimizer_step": 904,
+      "patience_used": 85,
+      "seconds": 1.7781884050054941,
+      "train_mse_X_IQ": 0.0210768966935575,
+      "validation_mse_XY_IQ": 0.021335461176931858
+    },
+    {
+      "epoch": 114,
+      "improved": false,
+      "learning_rate": 0.0002961744388795462,
+      "optimizer_step": 912,
+      "patience_used": 86,
+      "seconds": 1.7776742599962745,
+      "train_mse_X_IQ": 0.021076577715575695,
+      "validation_mse_XY_IQ": 0.021335585042834282
+    },
+    {
+      "epoch": 115,
+      "improved": false,
+      "learning_rate": 0.0002948839123097943,
+      "optimizer_step": 920,
+      "patience_used": 87,
+      "seconds": 1.7767601079976885,
+      "train_mse_X_IQ": 0.021075843833386898,
+      "validation_mse_XY_IQ": 0.02133556641638279
+    },
+    {
+      "epoch": 116,
+      "improved": false,
+      "learning_rate": 0.00029361010975735173,
+      "optimizer_step": 928,
+      "patience_used": 88,
+      "seconds": 1.823705897993932,
+      "train_mse_X_IQ": 0.021075284807011485,
+      "validation_mse_XY_IQ": 0.0213357862085104
+    },
+    {
+      "epoch": 117,
+      "improved": false,
+      "learning_rate": 0.0002923526731023431,
+      "optimizer_step": 936,
+      "patience_used": 89,
+      "seconds": 1.8008875320010702,
+      "train_mse_X_IQ": 0.021073800045996904,
+      "validation_mse_XY_IQ": 0.021336600184440613
+    },
+    {
+      "epoch": 118,
+      "improved": false,
+      "learning_rate": 0.000291111254869791,
+      "optimizer_step": 944,
+      "patience_used": 90,
+      "seconds": 1.7866476819981472,
+      "train_mse_X_IQ": 0.021074069431051612,
+      "validation_mse_XY_IQ": 0.021336853504180908
+    },
+    {
+      "epoch": 119,
+      "improved": false,
+      "learning_rate": 0.00028988551782622426,
+      "optimizer_step": 952,
+      "patience_used": 91,
+      "seconds": 1.7801167299985536,
+      "train_mse_X_IQ": 0.021073464071378112,
+      "validation_mse_XY_IQ": 0.021337256766855717
+    },
+    {
+      "epoch": 120,
+      "improved": false,
+      "learning_rate": 0.0002886751345948129,
+      "optimizer_step": 960,
+      "patience_used": 92,
+      "seconds": 1.7809310969969374,
+      "train_mse_X_IQ": 0.02107369643636048,
+      "validation_mse_XY_IQ": 0.021339871920645237
+    },
+    {
+      "epoch": 121,
+      "improved": false,
+      "learning_rate": 0.00028747978728803445,
+      "optimizer_step": 968,
+      "patience_used": 93,
+      "seconds": 1.8040527669945732,
+      "train_mse_X_IQ": 0.02107285475358367,
+      "validation_mse_XY_IQ": 0.0213375985622406
+    },
+    {
+      "epoch": 122,
+      "improved": false,
+      "learning_rate": 0.0002862991671569341,
+      "optimizer_step": 976,
+      "patience_used": 94,
+      "seconds": 1.814770695003972,
+      "train_mse_X_IQ": 0.021071895491331816,
+      "validation_mse_XY_IQ": 0.02133822627365589
+    },
+    {
+      "epoch": 123,
+      "improved": false,
+      "learning_rate": 0.0002851329742561005,
+      "optimizer_step": 984,
+      "patience_used": 95,
+      "seconds": 1.8039405140007148,
+      "train_mse_X_IQ": 0.021070730406790972,
+      "validation_mse_XY_IQ": 0.02133908588439226
+    },
+    {
+      "epoch": 124,
+      "improved": false,
+      "learning_rate": 0.0002839809171235324,
+      "optimizer_step": 992,
+      "patience_used": 96,
+      "seconds": 1.7978314540014253,
+      "train_mse_X_IQ": 0.02107023890130222,
+      "validation_mse_XY_IQ": 0.021339143626391888
+    },
+    {
+      "epoch": 125,
+      "improved": false,
+      "learning_rate": 0.000282842712474619,
+      "optimizer_step": 1000,
+      "patience_used": 97,
+      "seconds": 1.7858777349974844,
+      "train_mse_X_IQ": 0.02106963819824159,
+      "validation_mse_XY_IQ": 0.021340468898415565
+    },
+    {
+      "epoch": 126,
+      "improved": false,
+      "learning_rate": 0.0002817180849095055,
+      "optimizer_step": 1008,
+      "patience_used": 98,
+      "seconds": 1.80281148100039,
+      "train_mse_X_IQ": 0.02106921630911529,
+      "validation_mse_XY_IQ": 0.021341281943023205
+    },
+    {
+      "epoch": 127,
+      "improved": false,
+      "learning_rate": 0.0002806067666331569,
+      "optimizer_step": 1016,
+      "patience_used": 99,
+      "seconds": 1.795634598005563,
+      "train_mse_X_IQ": 0.021069573936983943,
+      "validation_mse_XY_IQ": 0.021340730600059032
+    },
+    {
+      "epoch": 128,
+      "improved": false,
+      "learning_rate": 0.00027950849718747374,
+      "optimizer_step": 1024,
+      "patience_used": 100,
+      "seconds": 1.789910551997309,
+      "train_mse_X_IQ": 0.021068895468488336,
+      "validation_mse_XY_IQ": 0.021341321989893913
+    }
+  ],
+  "identities": {
+    "code_content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142",
+    "config_sha256": "1b41a6d8eba8dd85ac0db1a8d0c5ffb12b62642441881352cb9b0a4c952a8b73",
+    "data_manifest_sha256": "427a50e5dd281db62281d00b86eb5dd69d21393632c1b4bc3e671f4eabea08cd",
+    "runtime_sha256": "6d66b05263bd794841a003750f7b183351053ccbb3ddacec3e6f90c1cebf5acb"
+  },
+  "optimizer_steps": 1024,
+  "peak_allocated_GPU_bytes": 2390054400,
+  "plan": {
+    "accumulation_max": 1,
+    "blocks_per_epoch": 4096,
+    "config": {
+      "adam_betas": [
+        0.9,
+        0.999
+      ],
+      "adam_eps": 1e-08,
+      "candidate": "A",
+      "condition": 16,
+      "cpu_threads": 1,
+      "deterministic": true,
+      "device": "cuda",
+      "effective_batch_blocks": 512,
+      "gpu_resume_atol": 1e-06,
+      "gpu_resume_rtol": 1e-05,
+      "masked": false,
+      "max_epochs": 500,
+      "max_lr": 0.001,
+      "microbatch_blocks": 512,
+      "model": {
+        "attention_projection_dim": 64,
+        "b": 128,
+        "d_ff": 64,
+        "d_model": 96,
+        "dropout": 0.0,
+        "h": 4,
+        "initialization": "xavier_uniform",
+        "k": 9,
+        "layer_norm_eps": 1e-05,
+        "layers": 3,
+        "mask_rho": null,
+        "negative_slope": 0.2,
+        "output_window": 15,
+        "t": 96
+      },
+      "patience": 100,
+      "pilot_validation_symbols": null,
+      "regime": "production",
+      "warmup_epochs": 10,
+      "weight_decay": 0.0
+    },
+    "data_config_sha256": "efe685bc956458714bfd319b49727e917a6c3121c714876e9af343b397e88462",
+    "data_manifest": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/artifacts/transformer-nlc/data-main16-r0-20261025/manifest.json",
+    "data_manifest_sha256": "427a50e5dd281db62281d00b86eb5dd69d21393632c1b4bc3e671f4eabea08cd",
+    "data_regime": "production",
+    "effective_batch_blocks": 512,
+    "loss": "X residual mean over central b*2 real coordinates; validation equal XY mean",
+    "max_optimizer_steps": 4000,
+    "microbatch_blocks": 512,
+    "optimizer_steps_per_epoch": 8,
+    "replicate": 0,
+    "restart_boundary": "last_completed_epoch",
+    "test_access": "forbidden",
+    "validation_blocks": 1024,
+    "validation_generated_DP_times_per_frame": 65536,
+    "validation_used_DP_times_per_frame": 65536,
+    "warmup_steps": 80
+  },
+  "progress": {
+    "epoch_in_progress": null,
+    "microbatch_position": 0,
+    "optimizer_step": 1024,
+    "sampler_cursor": 4096
+  },
+  "progress_durability": "completed_optimizer_boundary",
+  "replicate": 0,
+  "resume_tolerance": {
+    "CPU": "bitwise equality in fixed runtime",
+    "GPU_atol": 1e-06,
+    "GPU_rtol": 1e-05,
+    "GPU_verification": "not_run"
+  },
+  "runtime": {
+    "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+    "SDPA_backends": {
+      "flash": true,
+      "math": true,
+      "memory_efficient": true
+    },
+    "attention_backend": "torch.scaled_dot_product_attention dense dispatcher",
+    "byteorder": "little",
+    "capability": [
+      12,
+      0
+    ],
+    "cpu_threads": 1,
+    "cuda_build": "12.8",
+    "cudnn": 90701,
+    "default_dtype": "torch.float32",
+    "deterministic": true,
+    "device": "cuda",
+    "dtype": "float32",
+    "float32_matmul_precision": "highest",
+    "gpu_name": "NVIDIA GeForce RTX 5060 Ti",
+    "gpu_total_bytes": 17102864384,
+    "numpy": "2.5.4",
+    "physical_dtype": "complex128",
+    "platform": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "scipy": "1.18.1",
+    "tf32": false,
+    "torch": "2.7.1+cu128"
+  },
+  "schema": "transformer-training-v1",
+  "seeds": {
+    "model": {
+      "PCG64_initial_state": {
+        "bit_generator": "PCG64",
+        "has_uint32": 0,
+        "state": {
+          "inc": 140855455651256018518511232876589080657,
+          "state": 5807654676074954323210484174813333144
+        },
+        "uinteger": 0
+      },
+      "master_entropy": 2026102543,
+      "native_seed_uint64": 2402636170396824470,
+      "spawn_key": [
+        16,
+        0,
+        0,
+        0,
+        2
+      ]
+    },
+    "shuffle": {
+      "PCG64_initial_state": {
+        "bit_generator": "PCG64",
+        "has_uint32": 0,
+        "state": {
+          "inc": 157991974053236231524103409331097219739,
+          "state": 330766917322986659982573589657593375525
+        },
+        "uinteger": 0
+      },
+      "master_entropy": 2026102543,
+      "native_seed_uint64": 13244472146707409197,
+      "spawn_key": [
+        16,
+        0,
+        0,
+        0,
+        3
+      ]
+    }
+  },
+  "source": {
+    "commit": "5705e7b9fe8db08b26e829979d39e2279f1739dd",
+    "content_sha256": "c67441678e6720387a830e9db781849f817e16e99920c8611fdade1cbe591142",
+    "dependency_locks": {
+      "pyproject.toml": "765dc44a313305eb3c18621540aa43bf2ef35baee30177c8f56f5ee0e834d4e7",
+      "uv.lock": "5d271b22d75e2dbe39f7a60b128d7583a22b498a1e0f24d04ed70f4ad603122a"
+    },
+    "dirty_status": [
+      "?? artifacts/transformer-nlc/"
+    ],
+    "files": {
+      "experiments/transformer_nlc/__init__.py": "87c03866af856323d837620659715a32e06170b0bd68010cb8d91e867a07a53a",
+      "experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
+      "experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
+      "experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+      "experiments/transformer_nlc/data_cli.py": "df3c8c165939f672a486c421f7261ba40276bd72cbb0afab2c8a8528465505be",
+      "experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+      "experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
+      "experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
+      "experiments/transformer_nlc/model.py": "b4165d3ecfe81bdbd4e81436df67dcf71bc18d3573be9387a21186718db883af",
+      "experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
+      "experiments/transformer_nlc/qualification.py": "b21ca2f7d067d18a9e280c0b573e38a0f095d1dca619a2121985004b38459e54",
+      "experiments/transformer_nlc/receiver.py": "42d0f7b6e5c653caa9a02862572d94bac57bce8fefb895239936e2ff25429bee",
+      "experiments/transformer_nlc/training.py": "ae507b7653e3b6b9c64c074de3e88777272ec9a1d74cd8ccc49f5177a9a130dd",
+      "experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
+      "src/optical_comm/channel.py": "01641767e6bc5c1ae68abe0973e82c65d7bac5bbe56c4abdbfcc0a5cdf3c2324",
+      "src/optical_comm/config.py": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2",
+      "src/optical_comm/dsp.py": "ce2a11529f932a35f0f1822ccefd538a3e6d27222fa04983b57cda081da01d07",
+      "src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56"
+    },
+    "guard_exclusions": "CLI dispatch, prose, report modules; observed hashes retained, resolved configs guarded",
+    "observed_provenance": {
+      "content_sha256": "58d4e0420dc192bd8b2e2b3fed9483bbf2eb62111099768b95ab307648ba5adc",
+      "files": {
+        "experiments/transformer_nlc/README.md": "5eeae9dcdc1b31ecdf757d9d9184fdb08f0832fc4d040c0726294f62cddc0654",
+        "experiments/transformer_nlc/__init__.py": "87c03866af856323d837620659715a32e06170b0bd68010cb8d91e867a07a53a",
+        "experiments/transformer_nlc/__main__.py": "953bfc7f7b3344ed3c33d8076b3e98bf9328220825c94b2edc497658cabb8392",
+        "experiments/transformer_nlc/checkpoint.py": "3a03b9e9d5ee31d89ca27c77643e1af18c0679211262d2f21131796dfee6896f",
+        "experiments/transformer_nlc/complexity.py": "207bfd0b9e91d6dbce41d361fd76a970355aca49479c1aae51f08a0a31570d9c",
+        "experiments/transformer_nlc/configs/learning-pilot-main16-masked.json": "8f83e5306b5eb324c6e5e7a668068f96daba65919e58d3053a6c90706e2272ce",
+        "experiments/transformer_nlc/configs/learning-pilot-main16-unmasked.json": "ee65cd103a7bcdda97dcdf6f17351bfacdb70769b2d4b805749addf76a99af24",
+        "experiments/transformer_nlc/configs/learning-pilot-main64-masked.json": "c61a6d397a7d8048ba20e2f1e1aa258039794eafa46ae8ee94c513f05f5bf894",
+        "experiments/transformer_nlc/configs/learning-pilot-main64-unmasked.json": "c017ccfa8dc1bb77c555b2c43cb0432b0b0994c09ef055c6a1e0f5136bd3bfd0",
+        "experiments/transformer_nlc/configs/smoke-main16-masked.json": "5d383f758afe322d607fede08be963a808ab76a963f220858538a6ba1e4545e1",
+        "experiments/transformer_nlc/configs/smoke-main16-unmasked.json": "bd445eb7bb5cf875be37972c85bb4a46fd64ad897c37456bd0bbf771d931927a",
+        "experiments/transformer_nlc/configs/smoke-main64-masked.json": "d38e80e80d47f1466b6bf5f03e4b16709114a74b58da03686549b9c14a1f2e93",
+        "experiments/transformer_nlc/configs/smoke-main64-unmasked.json": "5e942b87995aa6a92f97cd175b1476ac24561c83641ea0af91f2ea5ea6017f57",
+        "experiments/transformer_nlc/data.py": "88d9ecfa0fdd5be8944d47c21c8442c3c8b1716bbe06d9b4e1cfc5a6d3f53429",
+        "experiments/transformer_nlc/data_cli.py": "df3c8c165939f672a486c421f7261ba40276bd72cbb0afab2c8a8528465505be",
+        "experiments/transformer_nlc/data_config.py": "9b43204f557d6b9fde826aecab89e945a35b83ba0182df9f49594fafface004d",
+        "experiments/transformer_nlc/docs/data-pipeline.md": "1a4742b2f62e54204cdd57dc0fa1ec4e5841a5a3abd8aaefccc6d0145ed8b29d",
+        "experiments/transformer_nlc/docs/reproduction-spec.md": "4d79b4e2a61b20f90ba513f1edb8ab500353c6350f37552b87670c66aa2af3a4",
+        "experiments/transformer_nlc/evaluation.py": "8f14e311beeff59bdeb6da3493be6161f4cf77cdd4a28344b23ce59e972ea1e3",
+        "experiments/transformer_nlc/mask.py": "8eaea4ef1193eb7612bb85a138baa975e8b89425da5cd10451617512214af5a6",
+        "experiments/transformer_nlc/model.py": "b4165d3ecfe81bdbd4e81436df67dcf71bc18d3573be9387a21186718db883af",
+        "experiments/transformer_nlc/model_config.py": "c51547aac7054f9d0ede71274cbfa47365d69831ca72dfbaf00cfed5a8be477c",
+        "experiments/transformer_nlc/qualification.py": "b21ca2f7d067d18a9e280c0b573e38a0f095d1dca619a2121985004b38459e54",
+        "experiments/transformer_nlc/receiver.py": "42d0f7b6e5c653caa9a02862572d94bac57bce8fefb895239936e2ff25429bee",
+        "experiments/transformer_nlc/training.py": "ae507b7653e3b6b9c64c074de3e88777272ec9a1d74cd8ccc49f5177a9a130dd",
+        "experiments/transformer_nlc/training_config.py": "8f28a3d9569716d5f2d9cba1ff653643c00821290856c19767a472d8e5fe7018",
+        "pyproject.toml": "765dc44a313305eb3c18621540aa43bf2ef35baee30177c8f56f5ee0e834d4e7",
+        "src/optical_comm/README.md": "9e598b5dcad3c5a523d4b8a440c7cd7c20f3ed6c6c3cdcd7be2ed3b5c4908eb3",
+        "src/optical_comm/__init__.py": "7be7e87dec6fecec2b3b0763b70981c173920317f1afb8640f284a5431c949fd",
+        "src/optical_comm/channel.py": "01641767e6bc5c1ae68abe0973e82c65d7bac5bbe56c4abdbfcc0a5cdf3c2324",
+        "src/optical_comm/config.py": "fc4ec369cb99f141b0c6ec1a66c1cfe23b2f23e862491d145a9632da86dce7f2",
+        "src/optical_comm/dsp.py": "ce2a11529f932a35f0f1822ccefd538a3e6d27222fa04983b57cda081da01d07",
+        "src/optical_comm/experiment.py": "0d776fef2531f9c3a62f8c3ad0915371e5333b643c8f0b01aca6d6cf65821939",
+        "src/optical_comm/metrics.py": "3805300fef69bae8aa41e70d284121c47c23b8928192183dd42f6c15a8095f56",
+        "src/optical_comm/reservoir.py": "fcbc4cac80c1887bdee1f2d4721c1f9d6905c96ea50f6dc0f239ad30c2cf95f8",
+        "src/optical_comm/visualization/README.md": "e07b745354000de7bed31b4d37203e079faf6f010105ce085167c1dd8df72df1",
+        "src/optical_comm/visualization/__init__.py": "9768a3bde719abbb78e660550ffe1b8d36a3d6d08f931040d337c47807e5fdcc",
+        "src/optical_comm/visualization/pulses.py": "6108c410ef1c2372d591880e4ce1c0551af94f90b8ff2e4fe383ee6cc65c85c1",
+        "src/optical_comm/visualization/spatial.py": "1f65be9d50fbb9c2878cedefee48b83e836954aca63c55989ecc3d41dfa2e617",
+        "src/optical_comm/visualization/spatial_artifacts.py": "68f4ad0cc658f29e00fa5340fa5c7082f77efd009ef8b24a8ea559bcf40f63d3",
+        "uv.lock": "5d271b22d75e2dbe39f7a60b128d7583a22b498a1e0f24d04ed70f4ad603122a"
+      },
+      "scope": "actual_shared_and_study_trees_plus_checkout_pyproject_lock_when_present"
+    },
+    "provenance_kind": "source_checkout",
+    "scope_version": "transformer-training-source-v1",
+    "source_layout": {
+      "kind": "source_checkout",
+      "module_paths": {
+        "experiments/transformer_nlc/__init__.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/__init__.py",
+        "experiments/transformer_nlc/checkpoint.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/checkpoint.py",
+        "experiments/transformer_nlc/complexity.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/complexity.py",
+        "experiments/transformer_nlc/data.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data.py",
+        "experiments/transformer_nlc/data_cli.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data_cli.py",
+        "experiments/transformer_nlc/data_config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/data_config.py",
+        "experiments/transformer_nlc/evaluation.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/evaluation.py",
+        "experiments/transformer_nlc/mask.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/mask.py",
+        "experiments/transformer_nlc/model.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/model.py",
+        "experiments/transformer_nlc/model_config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/model_config.py",
+        "experiments/transformer_nlc/qualification.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/qualification.py",
+        "experiments/transformer_nlc/receiver.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/receiver.py",
+        "experiments/transformer_nlc/training.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/training.py",
+        "experiments/transformer_nlc/training_config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/experiments/transformer_nlc/training_config.py",
+        "src/optical_comm/channel.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/channel.py",
+        "src/optical_comm/config.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/config.py",
+        "src/optical_comm/dsp.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/dsp.py",
+        "src/optical_comm/metrics.py": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results/src/optical_comm/metrics.py"
+      },
+      "root": "/home/kamimura/projects/optical-comm-lab/.work/worktrees/transformer-results",
+      "schema": "transformer-import-layout-v1"
+    }
+  },
+  "status": "complete",
+  "stop_reason": "patience",
+  "validation_targets": [
+    {
+      "frame": 0,
+      "generated_scored_DP_times": 65536,
+      "split": "validation",
+      "symbol_index_range": {
+        "first": 6240,
+        "last_inclusive": 71775,
+        "stride": 1
+      },
+      "used_DP_times": 65536
+    },
+    {
+      "frame": 1,
+      "generated_scored_DP_times": 65536,
+      "split": "validation",
+      "symbol_index_range": {
+        "first": 6240,
+        "last_inclusive": 71775,
+        "stride": 1
+      },
+      "used_DP_times": 65536
+    }
+  ]
+}
